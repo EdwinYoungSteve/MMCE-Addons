@@ -1,0 +1,102 @@
+package github.alecsio.mmceaddons.common.registry;
+
+import github.alecsio.mmceaddons.ModularMachineryAddons;
+import github.alecsio.mmceaddons.common.block.BlockRadiationProviderInput;
+import github.alecsio.mmceaddons.common.block.BlockRadiationProviderOutput;
+import github.alecsio.mmceaddons.common.lib.BlocksMM;
+import github.alecsio.mmceaddons.common.tile.TileRadiationProvider;
+import github.kasuminova.mmce.common.block.appeng.BlockMEMachineComponent;
+import hellfirepvp.modularmachinery.common.block.BlockCustomName;
+import hellfirepvp.modularmachinery.common.block.BlockMachineComponent;
+import hellfirepvp.modularmachinery.common.item.ItemBlockCustomName;
+import hellfirepvp.modularmachinery.common.item.ItemBlockMEMachineComponent;
+import hellfirepvp.modularmachinery.common.item.ItemBlockMachineComponent;
+import hellfirepvp.modularmachinery.common.item.ItemBlockMachineComponentCustomName;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class RegistryBlocks {
+    public static final ResourceLocation KEY_COMPONENT_RADIATION = new ResourceLocation(ModularMachineryAddons.MODID, "radiation");
+
+    private static final List<Block> blockModelRegister = new ArrayList<>();
+
+    public static final List<Block> BLOCKS = new ArrayList<>();
+
+    public static void initialise() {
+        registerBlocks();
+        registerTileEntities();
+        registerBlockModels();
+    }
+
+    private static void registerBlocks() {
+        BlocksMM.blockRadiationProviderInput = prepareRegister(new BlockRadiationProviderInput());
+        BlocksMM.blockRadiationProviderOutput = prepareRegister(new BlockRadiationProviderOutput());
+
+        prepareItemBlockRegister(BlocksMM.blockRadiationProviderInput);
+        prepareItemBlockRegister(BlocksMM.blockRadiationProviderOutput);
+    }
+
+    private static void registerTileEntities() {
+        registerTileEntity(TileRadiationProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, "radiation_provider_input"));
+        registerTileEntity(TileRadiationProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, "radiation_provider_output"));
+    }
+
+    private static void registerTileEntity(Class<? extends TileEntity> entityClass, ResourceLocation name) {
+        ModularMachineryAddons.logger.info("Registering TileEntity: " + entityClass);
+        GameRegistry.registerTileEntity(entityClass, name);
+    }
+
+    private static void registerBlockModels() {
+        for (Block block : blockModelRegister) {
+            ModularMachineryAddons.proxy.registerBlockModel(block); // If on client side, will call ClientProxy.registerBlockModel
+        }
+    }
+
+    private static ItemBlock prepareItemBlockRegister(Block block) {
+        if (block instanceof BlockMachineComponent) {
+            if (block instanceof BlockMEMachineComponent) {
+                return prepareItemBlockRegister(new ItemBlockMEMachineComponent(block));
+            } else if (block instanceof BlockCustomName) {
+                return prepareItemBlockRegister(new ItemBlockMachineComponentCustomName(block));
+            } else {
+                return prepareItemBlockRegister(new ItemBlockMachineComponent(block));
+            }
+        } else {
+            if (block instanceof BlockCustomName) {
+                return prepareItemBlockRegister(new ItemBlockCustomName(block));
+            } else {
+                return prepareItemBlockRegister(new ItemBlock(block));
+            }
+        }
+    }
+
+    private static <T extends ItemBlock> T prepareItemBlockRegister(T item) {
+        String name = item.getBlock().getClass().getSimpleName().toLowerCase();
+        item.setRegistryName(ModularMachineryAddons.MODID, name).setTranslationKey(ModularMachineryAddons.MODID + '.' + name);
+
+        ModularMachineryAddons.REGISTRY_ITEMS.registerItemBlock(item);
+        return item;
+    }
+
+    private static <T extends Block> T prepareRegister(T block) {
+        String name = block.getClass().getSimpleName().toLowerCase();
+        block.setRegistryName(ModularMachineryAddons.MODID, name).setTranslationKey(ModularMachineryAddons.MODID + '.' + name);
+        BLOCKS.add(block);
+
+        return prepareRegisterWithCustomName(block);
+    }
+
+    private static <T extends Block> T prepareRegisterWithCustomName(T block) {
+        blockModelRegister.add(block);
+        //CommonProxy.registryPrimer.register(block);
+
+        return block;
+    }
+
+}
