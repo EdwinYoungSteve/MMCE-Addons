@@ -1,7 +1,3 @@
 {
-  "parent": "modularmachinery:block/blockmodel_overlay_all",
-  "textures": {
-    "bg_all": "modularmachinery:blocks/blockcasing_plain",
-    "ov_all": "modularmachineryaddons:blocks/overlay_radiationprovideroutput"
-  }
+  "parent": "modularmachineryaddons:block/blockradiationprovideroutput"
 }

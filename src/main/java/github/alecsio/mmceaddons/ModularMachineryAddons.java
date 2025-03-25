@@ -5,11 +5,11 @@ import github.alecsio.mmceaddons.common.registry.RegistryItems;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import org.apache.logging.log4j.Logger;
-//import org.spongepowered.asm.mixin.Mixins;
 
 @Mod(
         modid = ModularMachineryAddons.MODID,
@@ -32,7 +32,6 @@ public class ModularMachineryAddons {
 
     // Registries handlers
     public static final RegistryItems REGISTRY_ITEMS = new RegistryItems();
-    public static final RegistryBlocks REGISTRY_BLOCKS = new RegistryBlocks();
 
     @Mod.Instance(MODID)
     public static ModularMachineryAddons instance;
@@ -45,18 +44,17 @@ public class ModularMachineryAddons {
 
     public ModularMachineryAddons() {
         System.out.println("Initializing ModularMachineryAddons...");
-
-        //Mixins.addConfiguration("mixins.mmcea_minecraft.json");
-
-        // 🚀 FIXED: Move this to preInit()
-        // proxy.preInit();
     }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         event.getModMetadata().version = VERSION;
         logger = event.getModLog();
-        proxy.preInit(event); // 🚀 FIXED: Now runs at the correct time
-        MinecraftForge.EVENT_BUS.register(this); // 🚀 FIXED: Now instance-based
+
+        proxy.preInit(event);
+        MinecraftForge.EVENT_BUS.register(this);
     }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {}
 }

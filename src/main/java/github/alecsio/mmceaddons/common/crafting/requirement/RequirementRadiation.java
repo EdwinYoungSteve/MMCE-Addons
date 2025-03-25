@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.crafting.requirement;
 
 import github.alecsio.mmceaddons.common.crafting.component.ComponentRadiation;
-import github.alecsio.mmceaddons.common.crafting.requirement.types.AddonRequirements;
+import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.RequirementTypeRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
@@ -23,8 +23,8 @@ public class RequirementRadiation extends ComponentRequirement.PerTick<Radiation
     private final double amount;
     private final boolean perTick;
 
-    public RequirementRadiation(RequirementTypeRadiation requirementType, IOType actionType, double amount, boolean perTick) { //todo: fix unused req type
-        super((RequirementTypeRadiation) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(AddonRequirements.KEY_REQUIREMENT_RADIATION), actionType);
+    public RequirementRadiation(IOType actionType, double amount, boolean perTick) {
+        super((RequirementTypeRadiation) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsRequirements.KEY_REQUIREMENT_RADIATION), actionType);
         this.amount = amount;
         this.perTick = perTick;
     }
@@ -50,7 +50,7 @@ public class RequirementRadiation extends ComponentRequirement.PerTick<Radiation
 
         if (getActionType() == IOType.INPUT) {
             TileRadiationProvider radiationProvider = (TileRadiationProvider) processingComponent.getComponent().getContainerProvider();
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> radiationProvider.removeRadiation(amount));
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> radiationProvider.removeRadiation(amount, recipeCraftingContext.getMachineController().getPos()));
         }
         return CraftCheck.success();
     }
@@ -63,7 +63,7 @@ public class RequirementRadiation extends ComponentRequirement.PerTick<Radiation
 
         if (getActionType() == IOType.INPUT) {
             TileRadiationProvider radiationProvider = (TileRadiationProvider) component.getComponent().getContainerProvider();
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> radiationProvider.removeRadiation(amount));
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> radiationProvider.removeRadiation(amount, context.getMachineController().getPos()));
         }
         return true;
     }

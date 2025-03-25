@@ -1,10 +1,13 @@
 {
-    "package": "github.alecsio.mmceaddons.mixin",
-    "refmap": "mixins.mmcea.refmap.json",
-    "target": "@env(DEFAULT)",
-    "minVersion": "0.8",
-    "compatibilityLevel": "JAVA_8",
-    "client": [
-
-    ]
+  "required": true,
+  "minVersion": "0.8",
+  "package": "github.alecsio.mmceaddons.mixin",
+  "refmap": "mixins.mmcea.refmap.json",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": []
 }

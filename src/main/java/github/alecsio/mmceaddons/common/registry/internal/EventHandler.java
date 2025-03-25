@@ -1,24 +1,23 @@
 package github.alecsio.mmceaddons.common.registry.internal;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
-import github.alecsio.mmceaddons.common.crafting.component.ModularMachineryAddonComponents;
-import github.alecsio.mmceaddons.common.crafting.requirement.types.AddonRequirements;
+import github.alecsio.mmceaddons.common.crafting.component.ModularMachineryAddonsComponents;
+import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.registry.RegistryBlocks;
 import github.alecsio.mmceaddons.common.registry.RegistryItems;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.crafting.requirement.type.RequirementType;
+import kport.modularmagic.common.crafting.requirement.types.ModularMagicRequirements;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EventHandler {
     public static class InternalRegistryPrimer {
@@ -52,8 +51,8 @@ public class EventHandler {
 
     @SubscribeEvent
     public void onComponentTypeRegister(RegistryEvent.Register<ComponentType> event) {
-        ModularMachineryAddonComponents.initComponents(event);
-        for (ComponentType component : ModularMachineryAddonComponents.COMPONENTS) {
+        ModularMachineryAddonsComponents.initComponents(event);
+        for (ComponentType component : ModularMachineryAddonsComponents.COMPONENTS) {
             event.getRegistry().register(component);
         }
     }
@@ -67,16 +66,10 @@ public class EventHandler {
         }
         ModularMachineryAddons.logger.info("Registering custom requirements...");
 
-        AddonRequirements.initRequirements();
+        ModularMachineryAddonsRequirements.initRequirements();
 
-        for (RequirementType<?, ?> requirement : AddonRequirements.REQUIREMENTS) {
+        for (RequirementType<?, ?> requirement : ModularMachineryAddonsRequirements.REQUIREMENTS) {
             ResourceLocation name = requirement.getRegistryName();
-
-            if (event.getRegistry().containsKey(name)) {
-                ModularMachineryAddons.logger.error("⚠️ Duplicate registry entry: " + name);
-                continue;
-            }
-
             ModularMachineryAddons.logger.info("✅ Registering: " + name);
             event.getRegistry().register(requirement);
         }

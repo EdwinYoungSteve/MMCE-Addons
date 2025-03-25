@@ -42,7 +42,7 @@ public class RadiationRenderer implements IIngredientRenderer<Radiation> {
     public List<String> getTooltip(Minecraft minecraft, Radiation ingredient) {
         List<String> tooltip = new ArrayList<>();
         if (ingredient.getIoType() == IOType.INPUT) {
-            tooltip.add(String.format("To Infinity and Beyond!"));
+            tooltip.add("To Infinity and Beyond!");
         } else {
             tooltip.add(String.format("%s: %s", "Radiation", ingredient.getAmount()));
         }

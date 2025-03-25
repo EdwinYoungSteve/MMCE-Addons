@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.block;
 
 import github.alecsio.mmceaddons.common.block.base.BaseBlockMachineComponent;
-import github.alecsio.mmceaddons.common.tile.TileRadiationProvider;
+import github.alecsio.mmceaddons.common.tile.TileWillMultiChunkProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -10,9 +10,8 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockRadiationProviderOutput extends BaseBlockMachineComponent {
-
-    public BlockRadiationProviderOutput() {
+public class BlockWillMultiChunkProviderInput extends BaseBlockMachineComponent {
+    public BlockWillMultiChunkProviderInput() {
         super();
     }
 
@@ -34,6 +33,12 @@ public class BlockRadiationProviderOutput extends BaseBlockMachineComponent {
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileRadiationProvider.Output();
+        return new TileWillMultiChunkProvider.Input();
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return null;
     }
 }

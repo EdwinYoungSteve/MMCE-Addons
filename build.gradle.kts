@@ -7,6 +7,7 @@ plugins {
     id("maven-publish")
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
     id("eclipse")
+    id("groovy")
     id("com.gtnewhorizons.retrofuturagradle") version "1.3.19"
 }
 
@@ -44,9 +45,9 @@ minecraft {
 
     // Mixin args
     //args.add("-Dfml.coreMods.load=github.kasuminova.mmce.mixin.MMCEEarlyMixinLoader")
-    //args.add("-Dmixin.hotSwap=true")
-    //args.add("-Dmixin.checks.interfaces=true")
-    //args.add("-Dmixin.debug.export=true")
+    args.add("-Dmixin.hotSwap=true")
+    args.add("-Dmixin.checks.interfaces=true")
+    args.add("-Dmixin.debug.export=true")
     extraRunJvmArguments.addAll(args)
 
     // If needed, add extra tweaker classes like for mixins.
@@ -159,13 +160,23 @@ dependencies {
     patchedMinecraft("me.eigenraven.java8unsupported:java-8-unsupported-shim:1.0.0")
     // allow Jabel to work in tests
     testAnnotationProcessor("com.github.bsideup.jabel:jabel-javac-plugin:1.0.0")
+    testImplementation("org.mockito:mockito-core:5.5.0")
+    testImplementation ("org.codehaus.groovy:groovy-all:4.0.15")  // Latest Groovy version
+
+    // Testing dependencies
+    testImplementation("org.mockito:mockito-inline:5.5.0")  // To mock final classes (optional)
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+
+    testImplementation("org.spockframework:spock-core:2.4-groovy-4.0")
+
     testCompileOnly("com.github.bsideup.jabel:jabel-javac-plugin:1.0.0") {
         isTransitive = false // We only care about the 1 annotation class
     }
     testCompileOnly("me.eigenraven.java8unsupported:java-8-unsupported-shim:1.0.0")
     implementation("zone.rong:mixinbooter:8.9")
     // Mixins
-    val mixin : String = modUtils.enableMixins("zone.rong:mixinbooter:8.9", "mixins.mmce.refmap.json").toString()
+    val mixin : String = modUtils.enableMixins("zone.rong:mixinbooter:8.9", "mixins.mmcea.refmap.json").toString()
     api (mixin) {
         isTransitive = false
     }
@@ -179,13 +190,12 @@ dependencies {
     }
 
     implementation(rfg.deobf("curse.maven:ModularMachineryCE-817377:5527355"))
+    implementation(rfg.deobf("curse.maven:ModularMachineryCE-817377:5527355"))
     implementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+")
     implementation(rfg.deobf("curse.maven:contentTweaker-237065:3331364"))
     implementation(rfg.deobf("curse.maven:contentTweakerDependency-246996:3440963"))
-    //implementation(rfg.deobf("curse.maven:mixinbootstrap-357178:3437402"))
+    implementation(rfg.deobf("curse.maven:mixinbootstrap-357178:3437402"))
     implementation(rfg.deobf("curse.maven:had-enough-items-557549:4810661"))
-    implementation("curse.maven:zenutil-401178:6091806")
-    implementation("curse.maven:configanytime-870276:5212709")
     implementation(rfg.deobf("curse.maven:CodeChickenLib-242818:2779848"))
     implementation(rfg.deobf("curse.maven:the-one-probe-245211:2667280"))
     implementation(rfg.deobf("curse.maven:nuclearcraft-226254:6151363-sources-6151372"))

@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.tile.machinecomponent;
 
-import github.alecsio.mmceaddons.common.crafting.component.ModularMachineryAddonComponents;
+import github.alecsio.mmceaddons.common.crafting.component.ModularMachineryAddonsComponents;
 import github.alecsio.mmceaddons.common.tile.TileRadiationProvider;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;
@@ -15,7 +15,7 @@ public class MachineComponentRadiationProvider extends MachineComponent<TileRadi
 
     @Override
     public ComponentType getComponentType() {
-        return ModularMachineryAddonComponents.COMPONENT_TYPE_REGISTRY.getValue(ModularMachineryAddonComponents.KEY_COMPONENT_RADIATION);
+        return ModularMachineryAddonsComponents.COMPONENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsComponents.KEY_COMPONENT_RADIATION);
     }
 
     @Override

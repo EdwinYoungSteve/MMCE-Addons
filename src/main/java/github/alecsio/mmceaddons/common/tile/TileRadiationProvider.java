@@ -21,8 +21,8 @@ public abstract class TileRadiationProvider extends TileColorableMachineComponen
         RadiationHelper.addToSourceBuffer(RadiationHelper.getRadiationSource(world.getChunk(pos)), amount);
     }
 
-    public void removeRadiation(double amount) {
-        getSurroundingChunks(world, pos).stream()
+    public void removeRadiation(double amount, BlockPos controllerPos) {
+        getSurroundingChunks(world, controllerPos).stream()
                 .filter(Chunk::isLoaded)
                 .forEach(chunk -> {
                     IRadiationSource radiationSource = RadiationHelper.getRadiationSource(chunk);

@@ -3,8 +3,11 @@ package github.alecsio.mmceaddons.common.registry;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.block.BlockRadiationProviderInput;
 import github.alecsio.mmceaddons.common.block.BlockRadiationProviderOutput;
-import github.alecsio.mmceaddons.common.lib.BlocksMM;
+import github.alecsio.mmceaddons.common.block.BlockWillMultiChunkProviderInput;
+import github.alecsio.mmceaddons.common.block.BlockWillMultiChunkProviderOutput;
+import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
 import github.alecsio.mmceaddons.common.tile.TileRadiationProvider;
+import github.alecsio.mmceaddons.common.tile.TileWillMultiChunkProvider;
 import github.kasuminova.mmce.common.block.appeng.BlockMEMachineComponent;
 import hellfirepvp.modularmachinery.common.block.BlockCustomName;
 import hellfirepvp.modularmachinery.common.block.BlockMachineComponent;
@@ -12,6 +15,7 @@ import hellfirepvp.modularmachinery.common.item.ItemBlockCustomName;
 import hellfirepvp.modularmachinery.common.item.ItemBlockMEMachineComponent;
 import hellfirepvp.modularmachinery.common.item.ItemBlockMachineComponent;
 import hellfirepvp.modularmachinery.common.item.ItemBlockMachineComponentCustomName;
+import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
@@ -35,16 +39,34 @@ public class RegistryBlocks {
     }
 
     private static void registerBlocks() {
-        BlocksMM.blockRadiationProviderInput = prepareRegister(new BlockRadiationProviderInput());
-        BlocksMM.blockRadiationProviderOutput = prepareRegister(new BlockRadiationProviderOutput());
+        ModularMachineryAddonsBlocks.blockRadiationProviderInput = prepareRegister(new BlockRadiationProviderInput());
+        ModularMachineryAddonsBlocks.blockRadiationProviderOutput = prepareRegister(new BlockRadiationProviderOutput());
+        ModularMachineryAddonsBlocks.blockWillMultiChunkProviderInput = prepareRegister(new BlockWillMultiChunkProviderInput());
+        ModularMachineryAddonsBlocks.blockWillMultiChunkProviderOutput = prepareRegister(new BlockWillMultiChunkProviderOutput());
 
-        prepareItemBlockRegister(BlocksMM.blockRadiationProviderInput);
-        prepareItemBlockRegister(BlocksMM.blockRadiationProviderOutput);
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderInput);
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderOutput);
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockWillMultiChunkProviderInput);
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockWillMultiChunkProviderOutput);
     }
 
     private static void registerTileEntities() {
-        registerTileEntity(TileRadiationProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, "radiation_provider_input"));
-        registerTileEntity(TileRadiationProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, "radiation_provider_output"));
+        registerTileEntity(TileRadiationProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileRadiationProvider.Input.class)));
+        registerTileEntity(TileRadiationProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileRadiationProvider.Output.class)));
+        registerTileEntity(TileWillMultiChunkProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileWillMultiChunkProvider.Input.class)));
+        registerTileEntity(TileWillMultiChunkProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileWillMultiChunkProvider.Output.class)));
+    }
+
+    /**
+     * Builds the tile path given the class name. It removes the package name and concatenates the base class name with the nested, static class' name.
+     * For example:
+     *  main class: TileRadiationProvider
+     *  nested class: Input
+     *  canonical name: {packageName}.TileRadiationProvider$Input
+     *  output: tileradiationproviderinput
+     */
+    private static String buildPathForClass(Class<? extends MachineComponentTile> clazz) {
+        return clazz.getCanonicalName().replace(clazz.getPackage().getName(), "").replace(".", "").toLowerCase();
     }
 
     private static void registerTileEntity(Class<? extends TileEntity> entityClass, ResourceLocation name) {
