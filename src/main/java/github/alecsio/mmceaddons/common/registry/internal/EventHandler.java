@@ -7,17 +7,18 @@ import github.alecsio.mmceaddons.common.registry.RegistryBlocks;
 import github.alecsio.mmceaddons.common.registry.RegistryItems;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.crafting.requirement.type.RequirementType;
-import kport.modularmagic.common.crafting.requirement.types.ModularMagicRequirements;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class EventHandler {
     public static class InternalRegistryPrimer {

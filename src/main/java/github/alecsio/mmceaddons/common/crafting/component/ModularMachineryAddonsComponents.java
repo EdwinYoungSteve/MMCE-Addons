@@ -13,6 +13,7 @@ public class ModularMachineryAddonsComponents {
 
     public static IForgeRegistry<ComponentType> COMPONENT_TYPE_REGISTRY;
     public static final ResourceLocation KEY_COMPONENT_RADIATION = new ResourceLocation(ModularMachineryAddons.MODID, "radiation");
+    public static final ResourceLocation KEY_COMPONENT_METEOR = new ResourceLocation(ModularMachineryAddons.MODID, "meteor");
     public static final ResourceLocation KEY_COMPONENT_WILL = new ResourceLocation(ModularMachineryAddons.MODID, "willMultiChunk");
 
     public static final ArrayList<ComponentType> COMPONENTS = new ArrayList<>();
@@ -26,6 +27,7 @@ public class ModularMachineryAddonsComponents {
 
         if (Mods.BLOODMAGIC.isPresent()) {
             registerComponent(new ComponentWillMultiChunk(), KEY_COMPONENT_WILL);
+            registerComponent(new ComponentMeteor(), KEY_COMPONENT_METEOR);
         }
     }
 

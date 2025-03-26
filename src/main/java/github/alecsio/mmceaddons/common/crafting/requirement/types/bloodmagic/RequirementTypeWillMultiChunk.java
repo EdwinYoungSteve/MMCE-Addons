@@ -1,9 +1,10 @@
-package github.alecsio.mmceaddons.common.crafting.requirement.types;
+package github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic;
 
 import WayofTime.bloodmagic.soul.EnumDemonWillType;
 import com.google.gson.JsonObject;
 import github.alecsio.mmceaddons.common.base.Mods;
-import github.alecsio.mmceaddons.common.crafting.requirement.RequirementWillMultiChunk;
+import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementWillMultiChunk;
+import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import hellfirepvp.modularmachinery.common.crafting.helper.ComponentRequirement;
 import hellfirepvp.modularmachinery.common.crafting.requirement.type.RequirementType;
 import hellfirepvp.modularmachinery.common.machine.IOType;

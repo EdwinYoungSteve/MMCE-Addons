@@ -1,6 +1,5 @@
 package github.alecsio.mmceaddons;
 
-import github.alecsio.mmceaddons.common.registry.RegistryBlocks;
 import github.alecsio.mmceaddons.common.registry.RegistryItems;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;

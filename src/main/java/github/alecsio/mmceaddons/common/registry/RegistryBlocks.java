@@ -1,11 +1,9 @@
 package github.alecsio.mmceaddons.common.registry;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
-import github.alecsio.mmceaddons.common.block.BlockRadiationProviderInput;
-import github.alecsio.mmceaddons.common.block.BlockRadiationProviderOutput;
-import github.alecsio.mmceaddons.common.block.BlockWillMultiChunkProviderInput;
-import github.alecsio.mmceaddons.common.block.BlockWillMultiChunkProviderOutput;
+import github.alecsio.mmceaddons.common.block.*;
 import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
+import github.alecsio.mmceaddons.common.tile.TileMeteorProvider;
 import github.alecsio.mmceaddons.common.tile.TileRadiationProvider;
 import github.alecsio.mmceaddons.common.tile.TileWillMultiChunkProvider;
 import github.kasuminova.mmce.common.block.appeng.BlockMEMachineComponent;
@@ -26,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RegistryBlocks {
-    public static final ResourceLocation KEY_COMPONENT_RADIATION = new ResourceLocation(ModularMachineryAddons.MODID, "radiation");
-
     private static final List<Block> blockModelRegister = new ArrayList<>();
 
     public static final List<Block> BLOCKS = new ArrayList<>();
@@ -44,10 +40,13 @@ public class RegistryBlocks {
         ModularMachineryAddonsBlocks.blockWillMultiChunkProviderInput = prepareRegister(new BlockWillMultiChunkProviderInput());
         ModularMachineryAddonsBlocks.blockWillMultiChunkProviderOutput = prepareRegister(new BlockWillMultiChunkProviderOutput());
 
+        ModularMachineryAddonsBlocks.blockMeteorProviderOutput = prepareRegister(new BlockMeteorProviderOutput());
+
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderOutput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockWillMultiChunkProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockWillMultiChunkProviderOutput);
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockMeteorProviderOutput);
     }
 
     private static void registerTileEntities() {
@@ -55,6 +54,7 @@ public class RegistryBlocks {
         registerTileEntity(TileRadiationProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileRadiationProvider.Output.class)));
         registerTileEntity(TileWillMultiChunkProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileWillMultiChunkProvider.Input.class)));
         registerTileEntity(TileWillMultiChunkProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileWillMultiChunkProvider.Output.class)));
+        registerTileEntity(TileMeteorProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileMeteorProvider.Output.class)));
     }
 
     /**

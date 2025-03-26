@@ -1,10 +1,7 @@
 package github.alecsio.mmceaddons.common.lib;
 
 
-import github.alecsio.mmceaddons.common.block.BlockRadiationProviderInput;
-import github.alecsio.mmceaddons.common.block.BlockRadiationProviderOutput;
-import github.alecsio.mmceaddons.common.block.BlockWillMultiChunkProviderInput;
-import github.alecsio.mmceaddons.common.block.BlockWillMultiChunkProviderOutput;
+import github.alecsio.mmceaddons.common.block.*;
 
 public class ModularMachineryAddonsBlocks {
     // Radiation
@@ -15,11 +12,16 @@ public class ModularMachineryAddonsBlocks {
     public static BlockWillMultiChunkProviderInput blockWillMultiChunkProviderInput;
     public static BlockWillMultiChunkProviderOutput blockWillMultiChunkProviderOutput;
 
+    // Meteor
+    public static BlockMeteorProviderOutput blockMeteorProviderOutput;
+
     public static void initialise() {
         blockRadiationProviderInput = new BlockRadiationProviderInput();
         blockRadiationProviderOutput = new BlockRadiationProviderOutput();
 
         blockWillMultiChunkProviderInput = new BlockWillMultiChunkProviderInput();
         blockWillMultiChunkProviderOutput = new BlockWillMultiChunkProviderOutput();
+
+        blockMeteorProviderOutput = new BlockMeteorProviderOutput();
     }
 }

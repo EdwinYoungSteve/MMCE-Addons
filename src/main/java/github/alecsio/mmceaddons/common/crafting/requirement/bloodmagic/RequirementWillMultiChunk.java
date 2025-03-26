@@ -1,8 +1,11 @@
-package github.alecsio.mmceaddons.common.crafting.requirement;
+package github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic;
 
 import WayofTime.bloodmagic.soul.EnumDemonWillType;
+import github.alecsio.mmceaddons.common.crafting.component.ComponentWillMultiChunk;
+import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
-import github.alecsio.mmceaddons.common.crafting.requirement.types.RequirementTypeWillMultiChunk;
+import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeWillMultiChunk;
+import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentWill;
 import github.alecsio.mmceaddons.common.tile.TileWillMultiChunkProvider;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
@@ -11,18 +14,26 @@ import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
 import hellfirepvp.modularmachinery.common.util.ResultChance;
-import kport.modularmagic.common.crafting.component.ComponentWill;
 import kport.modularmagic.common.integration.jei.ingredient.DemonWill;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
-public class RequirementWillMultiChunk extends AbstractMultiChunkRequirement<DemonWill, RequirementTypeWillMultiChunk> {
+public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, RequirementTypeWillMultiChunk> implements IMultiChunkRequirement {
     public EnumDemonWillType willType;
+    private final int chunkRange;
+    private final double amount;
+    private final double minPerChunk;
+    private final double maxPerChunk;
+
 
     public RequirementWillMultiChunk(IOType actionType, int chunkRange, double amount, double minPerChunk, double maxPerChunk, EnumDemonWillType willType) {
-        super((RequirementTypeWillMultiChunk) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsRequirements.KEY_REQUIREMENT_WILL_MULTI_CHUNK), actionType, chunkRange, amount, minPerChunk, maxPerChunk);
+        super((RequirementTypeWillMultiChunk) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsRequirements.KEY_REQUIREMENT_WILL_MULTI_CHUNK), actionType);
+        this.chunkRange = chunkRange;
+        this.amount = amount;
+        this.minPerChunk = minPerChunk;
+        this.maxPerChunk = maxPerChunk;
         this.willType = willType;
     }
 
@@ -30,7 +41,7 @@ public class RequirementWillMultiChunk extends AbstractMultiChunkRequirement<Dem
     public boolean isValidComponent(ProcessingComponent<?> component, RecipeCraftingContext ctx) {
         MachineComponent<?> cpn = component.getComponent();
         return cpn.getContainerProvider() instanceof TileWillMultiChunkProvider &&
-                cpn.getComponentType() instanceof ComponentWill &&
+                cpn.getComponentType() instanceof ComponentWillMultiChunk &&
                 cpn.ioType == getActionType();
     }
 
@@ -68,12 +79,12 @@ public class RequirementWillMultiChunk extends AbstractMultiChunkRequirement<Dem
 
     @Override
     public ComponentRequirement<DemonWill, RequirementTypeWillMultiChunk> deepCopy() {
-        return null;
+        return new RequirementWillMultiChunk(this.actionType, this.chunkRange, this.amount, this.minPerChunk, this.maxPerChunk, this.willType);
     }
 
     @Override
     public ComponentRequirement<DemonWill, RequirementTypeWillMultiChunk> deepCopyModified(List<RecipeModifier> list) {
-        return null;
+        return deepCopy();
     }
 
     @Nonnull
@@ -84,10 +95,30 @@ public class RequirementWillMultiChunk extends AbstractMultiChunkRequirement<Dem
 
     @Override
     public JEIComponent<DemonWill> provideJEIComponent() {
-        return null;
+        return new JEIComponentWill(this);
     }
 
     private TileWillMultiChunkProvider getProviderFromComponent(ProcessingComponent<?> component) {
         return (TileWillMultiChunkProvider) component.getComponent().getContainerProvider();
+    }
+
+    @Override
+    public int getChunkRange() {
+        return this.chunkRange;
+    }
+
+    @Override
+    public double getAmount() {
+        return this.amount;
+    }
+
+    @Override
+    public double getMinPerChunk() {
+        return this.minPerChunk;
+    }
+
+    @Override
+    public double getMaxPerChunk() {
+        return this.maxPerChunk;
     }
 }

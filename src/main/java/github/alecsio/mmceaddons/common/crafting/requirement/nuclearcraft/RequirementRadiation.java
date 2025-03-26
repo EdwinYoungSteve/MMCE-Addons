@@ -1,8 +1,9 @@
-package github.alecsio.mmceaddons.common.crafting.requirement;
+package github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft;
 
 import github.alecsio.mmceaddons.common.crafting.component.ComponentRadiation;
+import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
-import github.alecsio.mmceaddons.common.crafting.requirement.types.RequirementTypeRadiation;
+import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
 import github.alecsio.mmceaddons.common.tile.TileRadiationProvider;
@@ -19,14 +20,18 @@ import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
-public class RequirementRadiation extends ComponentRequirement.PerTick<Radiation, RequirementTypeRadiation> {
+public class RequirementRadiation extends ComponentRequirement<Radiation, RequirementTypeRadiation> implements IMultiChunkRequirement, IRequirementRadiation {
+    private final int chunkRange;
     private final double amount;
-    private final boolean perTick;
+    private final double minPerChunk;
+    private final double maxPerChunk;
 
-    public RequirementRadiation(IOType actionType, double amount, boolean perTick) {
+    public RequirementRadiation(IOType actionType, int chunkRange, double amount, double minPerChunk, double maxPerChunk) {
         super((RequirementTypeRadiation) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsRequirements.KEY_REQUIREMENT_RADIATION), actionType);
+        this.chunkRange = chunkRange;
         this.amount = amount;
-        this.perTick = perTick;
+        this.minPerChunk = minPerChunk;
+        this.maxPerChunk = maxPerChunk;
     }
 
     @Override
@@ -40,17 +45,10 @@ public class RequirementRadiation extends ComponentRequirement.PerTick<Radiation
     @Nonnull
     @Override
     public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        return CraftCheck.success();
-    }
+        TileRadiationProvider radiationProvider = (TileRadiationProvider) component.getComponent().getContainerProvider();
 
-    @Nonnull
-    @Override
-    public CraftCheck doIOTick(ProcessingComponent<?> processingComponent, RecipeCraftingContext recipeCraftingContext) {
-        if (!perTick) return CraftCheck.success();
-
-        if (getActionType() == IOType.INPUT) {
-            TileRadiationProvider radiationProvider = (TileRadiationProvider) processingComponent.getComponent().getContainerProvider();
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> radiationProvider.removeRadiation(amount, recipeCraftingContext.getMachineController().getPos()));
+        if (!radiationProvider.canHandle(this, context.getMachineController().getPos())) {
+            return CraftCheck.failure("cannot handle this component"); // todo fix:
         }
         return CraftCheck.success();
     }
@@ -63,7 +61,7 @@ public class RequirementRadiation extends ComponentRequirement.PerTick<Radiation
 
         if (getActionType() == IOType.INPUT) {
             TileRadiationProvider radiationProvider = (TileRadiationProvider) component.getComponent().getContainerProvider();
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> radiationProvider.removeRadiation(amount, context.getMachineController().getPos()));
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> radiationProvider.handle(this, context.getMachineController().getPos(), true));
         }
         return true;
     }
@@ -73,8 +71,9 @@ public class RequirementRadiation extends ComponentRequirement.PerTick<Radiation
     public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.OUTPUT) {
             TileRadiationProvider radiationProvider = (TileRadiationProvider) component.getComponent().getContainerProvider();
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> radiationProvider.addRadiation(amount));
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> radiationProvider.handle(this, context.getMachineController().getPos(), true));
         }
+
         return CraftCheck.success();
     }
 
@@ -99,7 +98,28 @@ public class RequirementRadiation extends ComponentRequirement.PerTick<Radiation
         return new JEIComponentRadiation(this);
     }
 
+    @Override
+    public int getChunkRange() {
+        return chunkRange;
+    }
+
+    @Override
     public double getAmount() {
         return amount;
+    }
+
+    @Override
+    public IOType getType() {
+        return actionType;
+    }
+
+    @Override
+    public double getMinPerChunk() {
+        return minPerChunk;
+    }
+
+    @Override
+    public double getMaxPerChunk() {
+        return maxPerChunk;
     }
 }
