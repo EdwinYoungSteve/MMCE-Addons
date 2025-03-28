@@ -2,7 +2,7 @@ package github.alecsio.mmceaddons.common.tile;
 
 import WayofTime.bloodmagic.entity.projectile.EntityMeteor;
 import WayofTime.bloodmagic.meteor.Meteor;
-import github.alecsio.mmceaddons.common.tile.handler.IMeteorHandler;
+import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentMeteorProvider;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
-public abstract class TileMeteorProvider extends TileColorableMachineComponent implements MachineComponentTile, IMeteorHandler {
+public abstract class TileMeteorProvider extends TileColorableMachineComponent implements MachineComponentTile, IRequirementHandler<Meteor> {
 
     public static class Output extends TileMeteorProvider {
 
@@ -28,8 +28,8 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
         @Override
         public CraftCheck canHandle(Meteor meteor) {
             if (currentMeteor != null && !currentMeteor.isDead) {return CraftCheck.failure("Meteor is still alive");}
-            int radius = (int) Math.ceil(meteor.getRadius() * 1);
-            double floatingRadius = meteor.getRadius() * 1;
+            int radius = (int) (double) meteor.getRadius();
+            double floatingRadius = meteor.getRadius();
             BlockPos startingPos = pos.add(0, meteor.getRadius() + 1, 0);
 
             for (int i = -radius; i <= radius; i++) {

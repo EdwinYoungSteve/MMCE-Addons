@@ -45,9 +45,7 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
     @Nonnull
     @Override
     public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        TileRadiationProvider radiationProvider = (TileRadiationProvider) component.getComponent().getContainerProvider();
-
-        if (!radiationProvider.canHandle(this, context.getMachineController().getPos())) {
+        if (!getRadiationProvider(component).canHandle(this, context.getMachineController().getPos())) {
             return CraftCheck.failure("cannot handle this component"); // todo fix:
         }
         return CraftCheck.success();
@@ -55,13 +53,8 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
 
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (!canStartCrafting(component, context, Collections.emptyList()).isSuccess()) {
-            return false;
-        }
-
         if (getActionType() == IOType.INPUT) {
-            TileRadiationProvider radiationProvider = (TileRadiationProvider) component.getComponent().getContainerProvider();
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> radiationProvider.handle(this, context.getMachineController().getPos(), true));
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getRadiationProvider(component).handle(this, context.getMachineController().getPos(), true));
         }
         return true;
     }
@@ -70,8 +63,7 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
     @Override
     public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.OUTPUT) {
-            TileRadiationProvider radiationProvider = (TileRadiationProvider) component.getComponent().getContainerProvider();
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> radiationProvider.handle(this, context.getMachineController().getPos(), true));
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getRadiationProvider(component).handle(this, context.getMachineController().getPos(), true));
         }
 
         return CraftCheck.success();
@@ -121,5 +113,9 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
     @Override
     public double getMaxPerChunk() {
         return maxPerChunk;
+    }
+
+    private TileRadiationProvider getRadiationProvider(ProcessingComponent<?> component) {
+        return (TileRadiationProvider) component.getComponent().getContainerProvider();
     }
 }

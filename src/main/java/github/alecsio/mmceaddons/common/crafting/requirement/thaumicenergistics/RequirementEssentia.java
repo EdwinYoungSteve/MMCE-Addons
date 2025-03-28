@@ -4,8 +4,9 @@ import github.alecsio.mmceaddons.common.crafting.component.ComponentEssentia;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumicenergistics.RequirementTypeEssentia;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentEssentia;
-import github.alecsio.mmceaddons.common.tile.handler.IEssentiaHandler;
+import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentEssentiaProvider;
+import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
@@ -40,12 +41,13 @@ public class RequirementEssentia extends ComponentRequirement<EssentiaStack, Req
     @Nonnull
     @Override
     public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        return getEssentiaHandler(component).canHandle(this);
+        return getEssentiaHandler(component).canHandle(this.essentia);
     }
 
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        return getEssentiaHandler(component).handle(this);
+        ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getEssentiaHandler(component).handle(this.essentia));
+        return true;
     }
 
     @Override
@@ -69,7 +71,7 @@ public class RequirementEssentia extends ComponentRequirement<EssentiaStack, Req
         return new JEIComponentEssentia(this);
     }
 
-    private IEssentiaHandler getEssentiaHandler(ProcessingComponent<?> component) {
-        return (IEssentiaHandler) component.getComponent().getContainerProvider();
+    private IRequirementHandler<EssentiaStack> getEssentiaHandler(ProcessingComponent<?> component) {
+        return (IRequirementHandler<EssentiaStack>) component.getComponent().getContainerProvider();
     }
 }

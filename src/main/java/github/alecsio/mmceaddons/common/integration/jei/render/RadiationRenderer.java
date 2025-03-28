@@ -49,9 +49,4 @@ public class RadiationRenderer implements IIngredientRenderer<Radiation> {
 
         return tooltip;
     }
-
-    @Override
-    public FontRenderer getFontRenderer(Minecraft minecraft, Radiation ingredient) {
-        return minecraft.fontRenderer;
-    }
 }

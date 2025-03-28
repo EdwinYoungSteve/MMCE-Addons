@@ -1,6 +1,7 @@
 package github.alecsio.mmceaddons.common.integration.jei.render;
 
 import com.google.common.collect.Lists;
+import github.alecsio.mmceaddons.common.integration.jei.render.base.BaseIngredientRenderer;
 import kport.modularmagic.common.integration.JeiPlugin;
 import mezz.jei.api.gui.IDrawableBuilder;
 import net.minecraft.client.Minecraft;

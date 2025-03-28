@@ -1,4 +1,4 @@
-package github.alecsio.mmceaddons.common.integration.jei.render;
+package github.alecsio.mmceaddons.common.integration.jei.render.base;
 
 import github.alecsio.mmceaddons.common.integration.jei.JeiPlugin;
 import mezz.jei.api.gui.IDrawableBuilder;

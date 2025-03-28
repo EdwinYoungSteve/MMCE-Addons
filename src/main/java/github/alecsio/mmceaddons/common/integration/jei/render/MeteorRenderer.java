@@ -49,9 +49,4 @@ public class MeteorRenderer implements IIngredientRenderer<Meteor> {
         tooltip.addAll(meteor.getComponents().stream().map(component -> String.format("§7%s §8- §7%.2f %%", component.getOreName(), (double)Math.round(component.weight/total*100))).collect(Collectors.toList()));
         return tooltip;
     }
-
-    @Override
-    public FontRenderer getFontRenderer(Minecraft minecraft, Meteor ingredient) {
-        return minecraft.fontRenderer;
-    }
 }
