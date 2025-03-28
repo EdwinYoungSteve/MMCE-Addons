@@ -7,6 +7,7 @@ import thaumicenergistics.api.EssentiaStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class EssentiaHelper implements IIngredientHelper<EssentiaStack> {
     @Nullable
@@ -30,7 +31,7 @@ public class EssentiaHelper implements IIngredientHelper<EssentiaStack> {
 
     @Override
     public String getResourceId(@Nonnull EssentiaStack t) {
-        return null;
+        return t.getAspect().getImage().getPath();
     }
 
     @Override
@@ -54,7 +55,7 @@ public class EssentiaHelper implements IIngredientHelper<EssentiaStack> {
     @Override
     @Nonnull
     public String getUniqueId(@Nonnull EssentiaStack essentiaStack) {
-        return essentiaStack.getAspect().getTag();
+        return essentiaStack.getAspect().getTag() + UUID.randomUUID();
     }
 
     @Override

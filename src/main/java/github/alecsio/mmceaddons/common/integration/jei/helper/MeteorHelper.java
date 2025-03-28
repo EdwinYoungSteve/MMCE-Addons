@@ -22,8 +22,6 @@ public class MeteorHelper<T extends Meteor> implements IIngredientHelper<T> {
         return null;
     }
 
-
-
     @Override
     public String getDisplayName(T t) {
         return "Meteor";
