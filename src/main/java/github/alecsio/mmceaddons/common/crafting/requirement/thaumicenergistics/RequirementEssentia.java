@@ -3,8 +3,6 @@ package github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics
 import github.alecsio.mmceaddons.common.crafting.component.ComponentEssentia;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumicenergistics.RequirementTypeEssentia;
-import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentEssentia;
-import github.alecsio.mmceaddons.common.integration.jei.wrapper.AspectListWrapper;
 import github.alecsio.mmceaddons.common.tile.handler.IEssentiaHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentEssentiaProvider;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
@@ -13,23 +11,24 @@ import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
 import hellfirepvp.modularmachinery.common.util.ResultChance;
-import thaumcraft.api.aspects.AspectList;
+import kport.modularmagic.common.crafting.requirement.RequirementAspect;
+import kport.modularmagic.common.integration.jei.component.JEIComponentAspect;
+import thaumicenergistics.api.EssentiaStack;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class RequirementEssentia extends ComponentRequirement<AspectListWrapper, RequirementTypeEssentia> {
-    private final AspectList essentiaList;
+public class RequirementEssentia extends ComponentRequirement<EssentiaStack, RequirementTypeEssentia> {
+    private final EssentiaStack essentia;
 
-    public RequirementEssentia(AspectList essentiaList, IOType type) {
+    public RequirementEssentia(EssentiaStack essentia, IOType type) {
         super((RequirementTypeEssentia) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsRequirements.KEY_REQUIREMENT_ESSENTIA), type);
-        this.essentiaList = essentiaList;
+        this.essentia = essentia;
     }
 
-    public AspectList getEssentiaList() {
-        return essentiaList;
+    public EssentiaStack getEssentiaStack() {
+        return essentia;
     }
-
 
     @Override
     public boolean isValidComponent(ProcessingComponent<?> component, RecipeCraftingContext ctx) {
@@ -53,12 +52,12 @@ public class RequirementEssentia extends ComponentRequirement<AspectListWrapper,
     }
 
     @Override
-    public ComponentRequirement<AspectListWrapper, RequirementTypeEssentia> deepCopy() {
+    public ComponentRequirement<EssentiaStack, RequirementTypeEssentia> deepCopy() {
         return this;
     }
 
     @Override
-    public ComponentRequirement<AspectListWrapper, RequirementTypeEssentia> deepCopyModified(List<RecipeModifier> modifiers) {
+    public ComponentRequirement<EssentiaStack, RequirementTypeEssentia> deepCopyModified(List<RecipeModifier> modifiers) {
         return this;
     }
 
@@ -69,9 +68,7 @@ public class RequirementEssentia extends ComponentRequirement<AspectListWrapper,
     }
 
     @Override
-    public JEIComponent<AspectListWrapper> provideJEIComponent() {
-        return new JEIComponentEssentia(this);
+    public JEIComponent<EssentiaStack> provideJEIComponent() {
+        return null;
     }
-
-
 }
