@@ -3,6 +3,7 @@ package github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics
 import github.alecsio.mmceaddons.common.crafting.component.ComponentEssentia;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumicenergistics.RequirementTypeEssentia;
+import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentEssentia;
 import github.alecsio.mmceaddons.common.tile.handler.IEssentiaHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentEssentiaProvider;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
@@ -11,8 +12,6 @@ import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
 import hellfirepvp.modularmachinery.common.util.ResultChance;
-import kport.modularmagic.common.crafting.requirement.RequirementAspect;
-import kport.modularmagic.common.integration.jei.component.JEIComponentAspect;
 import thaumicenergistics.api.EssentiaStack;
 
 import javax.annotation.Nonnull;
@@ -41,24 +40,22 @@ public class RequirementEssentia extends ComponentRequirement<EssentiaStack, Req
     @Nonnull
     @Override
     public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        IEssentiaHandler essentiaHandler = (IEssentiaHandler) component.getComponent().getContainerProvider();
-        return essentiaHandler.canHandle(this);
+        return getEssentiaHandler(component).canHandle(this);
     }
 
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        IEssentiaHandler essentiaHandler = (IEssentiaHandler) component.getComponent().getContainerProvider();
-        return essentiaHandler.handle(this);
+        return getEssentiaHandler(component).handle(this);
     }
 
     @Override
     public ComponentRequirement<EssentiaStack, RequirementTypeEssentia> deepCopy() {
-        return this;
+        return new RequirementEssentia(new EssentiaStack(essentia.getAspect(), essentia.getAmount()), actionType);
     }
 
     @Override
     public ComponentRequirement<EssentiaStack, RequirementTypeEssentia> deepCopyModified(List<RecipeModifier> modifiers) {
-        return this;
+        return deepCopy();
     }
 
     @Nonnull
@@ -69,6 +66,10 @@ public class RequirementEssentia extends ComponentRequirement<EssentiaStack, Req
 
     @Override
     public JEIComponent<EssentiaStack> provideJEIComponent() {
-        return null;
+        return new JEIComponentEssentia(this);
+    }
+
+    private IEssentiaHandler getEssentiaHandler(ProcessingComponent<?> component) {
+        return (IEssentiaHandler) component.getComponent().getContainerProvider();
     }
 }

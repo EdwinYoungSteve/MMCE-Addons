@@ -54,12 +54,13 @@ public class RequirementMeteor extends ComponentRequirement<Meteor, RequirementT
 
     @Override
     public ComponentRequirement<Meteor, RequirementTypeMeteor> deepCopy() {
-        return this;
+        // I know, the components, but whatever
+        return new RequirementMeteor(actionType, new Meteor(meteor.getCatalystStack(), meteor.getComponents(), meteor.getExplosionStrength(), meteor.getRadius()));
     }
 
     @Override
     public ComponentRequirement<Meteor, RequirementTypeMeteor> deepCopyModified(List<RecipeModifier> modifiers) {
-        return this;
+        return deepCopy();
     }
 
     @Nonnull

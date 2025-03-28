@@ -1,11 +1,9 @@
-package github.alecsio.mmceaddons.common.block;
+package github.alecsio.mmceaddons.common.block.nuclearcraft;
 
 import github.alecsio.mmceaddons.common.block.base.BaseBlockMachineComponent;
 import github.alecsio.mmceaddons.common.tile.TileRadiationProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -14,21 +12,6 @@ public class BlockRadiationProviderInput extends BaseBlockMachineComponent {
 
     public BlockRadiationProviderInput() {
         super();
-    }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
     }
 
     @Nullable

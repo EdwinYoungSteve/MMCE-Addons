@@ -1,9 +1,13 @@
 package github.alecsio.mmceaddons.common.lib;
 
 
-import github.alecsio.mmceaddons.common.block.*;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaInputBus;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaOutputBus;
+import github.alecsio.mmceaddons.common.block.bloodmagic.BlockMeteorProviderOutput;
+import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProviderInput;
+import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProviderOutput;
+import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderInput;
+import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderOutput;
 
 public class ModularMachineryAddonsBlocks {
     // Radiation

@@ -4,6 +4,9 @@ import github.alecsio.mmceaddons.CommonProxy;
 import hellfirepvp.modularmachinery.common.block.BlockMachineComponent;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 
 /**
  * The only purpose of this class is to provide some base initialisations for all blocks implemented by this mod. Instead of copying the same hardcoded values, I centralised everything here to
@@ -24,6 +27,21 @@ public class BaseBlockMachineComponent extends BlockMachineComponent {
         setSoundType(BASE_SOUND_TYPE);
         setHarvestLevel(BASE_TOOL_CLASS, BASE_TOOL_LEVEL);
         setCreativeTab(CommonProxy.creativeTabModularMachineryAddons);
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
+    }
+
+    @Override
+    public BlockRenderLayer getRenderLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
     }
 
 }

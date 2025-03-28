@@ -6,6 +6,7 @@ import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.Re
 import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeWillMultiChunk;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeRadiation;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeRadiationPerTick;
+import github.alecsio.mmceaddons.common.crafting.requirement.types.projecte.RequirementTypeEMC;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumicenergistics.RequirementTypeEssentia;
 import hellfirepvp.modularmachinery.common.crafting.requirement.type.RequirementType;
 import net.minecraft.util.ResourceLocation;
@@ -18,17 +19,17 @@ public class ModularMachineryAddonsRequirements {
     public static final ResourceLocation KEY_REQUIREMENT_METEOR = new ResourceLocation(ModularMachineryAddons.MODID, "meteor");
     public static final ResourceLocation KEY_REQUIREMENT_WILL_MULTI_CHUNK = new ResourceLocation(ModularMachineryAddons.MODID, "willMultiChunk");
     public static final ResourceLocation KEY_REQUIREMENT_ESSENTIA = new ResourceLocation(ModularMachineryAddons.MODID, "essentia");
+    public static final ResourceLocation KEY_REQUIREMENT_EMC = new ResourceLocation(ModularMachineryAddons.MODID, "emc");
     public static final ArrayList<RequirementType<?, ?>> REQUIREMENTS = new ArrayList<>();
 
     public static void initRequirements() {
-        ModularMachineryAddons.logger.info("🔄 Initializing Addon Requirements...");
-        REQUIREMENTS.clear(); // 🛑 Prevents duplicate registrations
+        ModularMachineryAddons.logger.info("Initializing MMCE addons requirements...");
+        REQUIREMENTS.clear();
 
         if (Mods.NUCLEARCRAFT.isPresent()) {
             registerRequirement(new RequirementTypeRadiation(), KEY_REQUIREMENT_RADIATION);
             registerRequirement(new RequirementTypeRadiationPerTick(), KEY_REQUIREMENT_RADIATION_PER_TICK);
         }
-
 
         if (Mods.BLOODMAGIC.isPresent()) {
             registerRequirement(new RequirementTypeWillMultiChunk(), KEY_REQUIREMENT_WILL_MULTI_CHUNK);
@@ -37,6 +38,10 @@ public class ModularMachineryAddonsRequirements {
 
         if (Mods.THAUMICENERGISTICS.isPresent()) {
             registerRequirement(new RequirementTypeEssentia(), KEY_REQUIREMENT_ESSENTIA);
+        }
+
+        if (Mods.PROJECTE.isPresent()) {
+            registerRequirement(new RequirementTypeEMC(), KEY_REQUIREMENT_EMC);
         }
     }
 

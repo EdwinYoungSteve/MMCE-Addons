@@ -12,6 +12,7 @@ import github.alecsio.mmceaddons.common.tile.machinecomponent.ae2.MEEssentiaBus;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import net.minecraft.item.ItemStack;
+import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.integration.appeng.AEEssentiaStack;
 
 import javax.annotation.Nonnull;
@@ -47,6 +48,7 @@ public class MEEssentiaInputBus extends MEEssentiaBus {
 
     @Override
     protected boolean canPerformOperation(Actionable actionable, RequirementEssentia essentia) {
-        return getStorageInventory().extractItems(AEEssentiaStack.fromEssentiaStack(essentia.getEssentiaStack()), actionable, this.source) == null;
+        IAEEssentiaStack imported = getStorageInventory().extractItems(AEEssentiaStack.fromEssentiaStack(essentia.getEssentiaStack()), actionable, this.source);
+        return imported == null || imported.getStackSize() >= essentia.getEssentiaStack().getAmount();
     }
 }

@@ -1,9 +1,13 @@
 package github.alecsio.mmceaddons.common.registry;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
-import github.alecsio.mmceaddons.common.block.*;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaInputBus;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaOutputBus;
+import github.alecsio.mmceaddons.common.block.bloodmagic.BlockMeteorProviderOutput;
+import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProviderInput;
+import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProviderOutput;
+import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderInput;
+import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderOutput;
 import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
 import github.alecsio.mmceaddons.common.tile.*;
 import github.kasuminova.mmce.common.block.appeng.BlockMEMachineComponent;
