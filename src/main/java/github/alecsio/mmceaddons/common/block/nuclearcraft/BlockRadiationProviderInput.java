@@ -10,19 +10,9 @@ import javax.annotation.Nullable;
 
 public class BlockRadiationProviderInput extends BaseBlockMachineComponent {
 
-    public BlockRadiationProviderInput() {
-        super();
-    }
-
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileRadiationProvider.Input();
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return null;
     }
 }

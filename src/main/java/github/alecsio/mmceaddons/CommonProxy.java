@@ -5,8 +5,6 @@ import github.alecsio.mmceaddons.common.registry.internal.EventHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import javax.annotation.Nonnull;
@@ -34,22 +32,10 @@ public class CommonProxy {
             }
         };
 
-        // Register mod event handlers
         MinecraftForge.EVENT_BUS.register(new EventHandler());
 
-        // Register mod items, blocks, machines, and other assets
         ModularMachineryAddonsBlocks.initialise();
-        //RegistryBlocks.initialise();
-        //RegistryItems.initialise();
-        //AddonRequirements.initRequirements();
-
-        // Set up network handling (GUI, packets, etc.)
-        //NetworkRegistry.INSTANCE.registerGuiHandler(ModularMachineryAddons.MODID, new GuiHandler());
     }
-
-    public void init(FMLInitializationEvent event) {}
-
-    public void postInit(FMLPostInitializationEvent event) {}
 
     // Optional methods to register models; these would be overridden on the client side
     public void registerItemModel(net.minecraft.item.Item item) {}

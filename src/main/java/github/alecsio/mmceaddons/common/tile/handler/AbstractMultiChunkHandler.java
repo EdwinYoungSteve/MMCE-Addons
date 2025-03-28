@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.tile.handler;
 
-import github.alecsio.mmceaddons.common.chunks.ChunksReader;
+import github.alecsio.mmceaddons.common.tile.handler.chunks.ChunksReader;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
 import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineComponent;
 import net.minecraft.util.math.BlockPos;
@@ -10,9 +10,6 @@ import java.util.List;
 
 public abstract class AbstractMultiChunkHandler extends TileColorableMachineComponent {
     private final ChunksReader chunksReader = ChunksReader.getInstance();
-
-    public AbstractMultiChunkHandler() {
-    }
 
     public double handle(IMultiChunkRequirement requirement, BlockPos controllerPos, boolean doAction) {
         List<Chunk> chunks = chunksReader.getSurroundingChunks(world, controllerPos, requirement.getChunkRange());

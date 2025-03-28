@@ -6,6 +6,7 @@ import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import javax.annotation.Nullable;
 
 public class ComponentWillMultiChunk extends ComponentType {
+
     @Nullable
     @Override
     public String requiresModid() {

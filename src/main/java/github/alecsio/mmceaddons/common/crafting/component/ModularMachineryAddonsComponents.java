@@ -20,7 +20,6 @@ public class ModularMachineryAddonsComponents {
     public static final ArrayList<ComponentType> COMPONENTS = new ArrayList<>();
 
     public static void initComponents(RegistryEvent.Register<ComponentType> event) {
-        ModularMachineryAddons.logger.info("Registering component: " + KEY_COMPONENT_RADIATION);
         COMPONENT_TYPE_REGISTRY = event.getRegistry();
         if (Mods.NUCLEARCRAFT.isPresent()) {
             registerComponent(new ComponentRadiation(), KEY_COMPONENT_RADIATION);

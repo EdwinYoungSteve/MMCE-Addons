@@ -10,9 +10,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class BlockWillMultiChunkProviderOutput extends BaseBlockMachineComponent {
-    public BlockWillMultiChunkProviderOutput() {
-        super();
-    }
 
     @Nullable
     @Override

@@ -30,7 +30,7 @@ public class BaseBlockMachineComponent extends BlockMachineComponent {
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
+    public EnumBlockRenderType getRenderType(IBlockState ignored) {
         return EnumBlockRenderType.MODEL;
     }
 
@@ -40,7 +40,7 @@ public class BaseBlockMachineComponent extends BlockMachineComponent {
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state) {
+    public boolean hasTileEntity(IBlockState ignored) {
         return true;
     }
 

@@ -10,10 +10,6 @@ import javax.annotation.Nullable;
 
 public class BlockRadiationProviderOutput extends BaseBlockMachineComponent {
 
-    public BlockRadiationProviderOutput() {
-        super();
-    }
-
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {

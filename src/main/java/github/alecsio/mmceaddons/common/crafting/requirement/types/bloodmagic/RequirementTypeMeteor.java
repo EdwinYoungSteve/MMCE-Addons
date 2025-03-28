@@ -3,6 +3,7 @@ package github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic;
 import WayofTime.bloodmagic.meteor.Meteor;
 import WayofTime.bloodmagic.meteor.MeteorRegistry;
 import com.google.gson.JsonObject;
+import github.alecsio.mmceaddons.common.base.Mods;
 import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementMeteor;
 import github.alecsio.mmceaddons.common.exception.ConsistencyException;
 import hellfirepvp.modularmachinery.common.crafting.helper.ComponentRequirement;
@@ -11,6 +12,8 @@ import hellfirepvp.modularmachinery.common.machine.IOType;
 import kport.modularmagic.common.utils.RequirementUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import javax.annotation.Nullable;
 
 public class RequirementTypeMeteor extends RequirementType<Meteor, RequirementMeteor> {
     @Override
@@ -26,5 +29,11 @@ public class RequirementTypeMeteor extends RequirementType<Meteor, RequirementMe
         if (meteor == null) {throw new ConsistencyException(String.format("Failed to find meteor with catalyst: %s", itemStack));}
 
         return new RequirementMeteor(type, meteor);
+    }
+
+    @Nullable
+    @Override
+    public String requiresModid() {
+        return Mods.BLOODMAGIC.modid;
     }
 }

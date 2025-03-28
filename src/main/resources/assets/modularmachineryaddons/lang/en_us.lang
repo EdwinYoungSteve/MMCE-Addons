@@ -1,2 +1,7 @@
-tile.modularmachineryaddons.blockradiationprovideroutput=Radiation Output Hatch
-tile.modularmachineryaddons.blockradiationproviderinput=Radiation Input Hatch
+tile.modularmachineryaddons.blockradiationprovideroutput.name=Radiation Output Hatch
+tile.modularmachineryaddons.blockradiationproviderinput.name=Radiation Input Hatch
+tile.modularmachineryaddons.blockmeessentiainputbus.name=Machinery Essentia Inpus Bus
+tile.modularmachineryaddons.blockmeessentiaoutputbus.name=Machinery Essentia Output Bus
+tile.modularmachineryaddons.blockmeteorprovideroutput.name=Meteor Hatch
+tile.modularmachineryaddons.blockwillmultichunkproviderinput.name=Will Multi-Chunk Input Hatch
+tile.modularmachineryaddons.blockwillmultichunkprovideroutput.name=Will Multi-Chunk Output Hatch

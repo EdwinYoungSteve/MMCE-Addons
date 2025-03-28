@@ -10,10 +10,6 @@ import javax.annotation.Nullable;
 
 public class BlockMeteorProviderOutput extends BaseBlockMachineComponent {
 
-    public BlockMeteorProviderOutput() {
-        super();
-    }
-
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
