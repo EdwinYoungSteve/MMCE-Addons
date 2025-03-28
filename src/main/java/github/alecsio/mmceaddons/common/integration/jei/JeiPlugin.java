@@ -3,11 +3,14 @@ package github.alecsio.mmceaddons.common.integration.jei;
 import WayofTime.bloodmagic.meteor.Meteor;
 import com.google.common.collect.Lists;
 import github.alecsio.mmceaddons.common.base.Mods;
+import github.alecsio.mmceaddons.common.integration.jei.helper.EssentiaHelper;
 import github.alecsio.mmceaddons.common.integration.jei.helper.MeteorHelper;
 import github.alecsio.mmceaddons.common.integration.jei.helper.RadiationHelper;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
+import github.alecsio.mmceaddons.common.integration.jei.render.EssentiaRenderer;
 import github.alecsio.mmceaddons.common.integration.jei.render.MeteorRenderer;
 import github.alecsio.mmceaddons.common.integration.jei.render.RadiationRenderer;
+import github.alecsio.mmceaddons.common.integration.jei.wrapper.AspectListWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -34,6 +37,9 @@ public class JeiPlugin implements IModPlugin {
         if (Mods.BLOODMAGIC.isPresent()) {
             registry.register(Meteor.class, Lists.newArrayList(), new MeteorHelper<>(), new MeteorRenderer());
         }
-    }
 
+        if (Mods.THAUMICENERGISTICS.isPresent()) {
+            registry.register(AspectListWrapper.class, Lists.newArrayList(), new EssentiaHelper<>(), new EssentiaRenderer());
+        }
+    }
 }

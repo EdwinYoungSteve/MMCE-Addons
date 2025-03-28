@@ -2,10 +2,10 @@ package github.alecsio.mmceaddons.common.registry;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.block.*;
+import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaInputBus;
+import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaOutputBus;
 import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
-import github.alecsio.mmceaddons.common.tile.TileMeteorProvider;
-import github.alecsio.mmceaddons.common.tile.TileRadiationProvider;
-import github.alecsio.mmceaddons.common.tile.TileWillMultiChunkProvider;
+import github.alecsio.mmceaddons.common.tile.*;
 import github.kasuminova.mmce.common.block.appeng.BlockMEMachineComponent;
 import hellfirepvp.modularmachinery.common.block.BlockCustomName;
 import hellfirepvp.modularmachinery.common.block.BlockMachineComponent;
@@ -42,11 +42,16 @@ public class RegistryBlocks {
 
         ModularMachineryAddonsBlocks.blockMeteorProviderOutput = prepareRegister(new BlockMeteorProviderOutput());
 
+        ModularMachineryAddonsBlocks.blockMEEssentiaInputBus = prepareRegister(new BlockMEEssentiaInputBus());
+        ModularMachineryAddonsBlocks.blockMEEssentiaOutputBus = prepareRegister(new BlockMEEssentiaOutputBus());
+
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderOutput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockWillMultiChunkProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockWillMultiChunkProviderOutput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockMeteorProviderOutput);
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockMEEssentiaInputBus);
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockMEEssentiaOutputBus);
     }
 
     private static void registerTileEntities() {
@@ -55,6 +60,8 @@ public class RegistryBlocks {
         registerTileEntity(TileWillMultiChunkProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileWillMultiChunkProvider.Input.class)));
         registerTileEntity(TileWillMultiChunkProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileWillMultiChunkProvider.Output.class)));
         registerTileEntity(TileMeteorProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileMeteorProvider.Output.class)));
+        registerTileEntity(MEEssentiaInputBus.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(MEEssentiaInputBus.class)));
+        registerTileEntity(MEEssentiaOutputBus.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(MEEssentiaOutputBus.class)));
     }
 
     /**

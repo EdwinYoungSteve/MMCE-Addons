@@ -4,7 +4,8 @@ import net.minecraftforge.fml.common.Loader;
 
 public enum Mods {
     NUCLEARCRAFT("nuclearcraft"),
-    BLOODMAGIC("bloodmagic");
+    BLOODMAGIC("bloodmagic"),
+    THAUMICENERGISTICS("thaumicenergistics");
 
     public final String modid;
     private final boolean loaded;

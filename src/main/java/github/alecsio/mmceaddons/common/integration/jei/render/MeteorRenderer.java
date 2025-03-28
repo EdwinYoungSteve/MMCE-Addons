@@ -2,10 +2,8 @@ package github.alecsio.mmceaddons.common.integration.jei.render;
 
 import WayofTime.bloodmagic.meteor.Meteor;
 import WayofTime.bloodmagic.meteor.MeteorComponent;
-import WayofTime.bloodmagic.meteor.MeteorRegistry;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import kport.modularmagic.common.integration.JeiPlugin;
-import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableBuilder;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.client.Minecraft;
@@ -13,7 +11,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;

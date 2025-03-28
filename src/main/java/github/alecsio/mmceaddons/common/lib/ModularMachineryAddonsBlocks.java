@@ -2,6 +2,8 @@ package github.alecsio.mmceaddons.common.lib;
 
 
 import github.alecsio.mmceaddons.common.block.*;
+import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaInputBus;
+import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaOutputBus;
 
 public class ModularMachineryAddonsBlocks {
     // Radiation
@@ -15,6 +17,10 @@ public class ModularMachineryAddonsBlocks {
     // Meteor
     public static BlockMeteorProviderOutput blockMeteorProviderOutput;
 
+    // Thaum
+    public static BlockMEEssentiaInputBus blockMEEssentiaInputBus;
+    public static BlockMEEssentiaOutputBus blockMEEssentiaOutputBus;
+
     public static void initialise() {
         blockRadiationProviderInput = new BlockRadiationProviderInput();
         blockRadiationProviderOutput = new BlockRadiationProviderOutput();
@@ -23,5 +29,8 @@ public class ModularMachineryAddonsBlocks {
         blockWillMultiChunkProviderOutput = new BlockWillMultiChunkProviderOutput();
 
         blockMeteorProviderOutput = new BlockMeteorProviderOutput();
+
+        blockMEEssentiaInputBus = new BlockMEEssentiaInputBus();
+        blockMEEssentiaOutputBus = new BlockMEEssentiaOutputBus();
     }
 }

@@ -189,10 +189,12 @@ dependencies {
         isTransitive = false
     }
 
+    implementation("curse.maven:ae2-570458:6302098-sources-6302099")
     implementation(rfg.deobf("curse.maven:ModularMachineryCE-817377:5527355-sources-5527359"))
     implementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+")
     implementation("curse.maven:thaumicEnergistics-223666:2915506")
     implementation("curse.maven:thaum-223628:2629023")
+    implementation("curse.maven:baubles-227083:2518667")
 
     implementation(rfg.deobf("curse.maven:contentTweaker-237065:3331364"))
     implementation(rfg.deobf("curse.maven:contentTweakerDependency-246996:3440963"))
