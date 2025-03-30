@@ -33,24 +33,22 @@ public class RequirementRadiationPerTick extends ComponentRequirement.PerTick<Ra
 
     @Nonnull
     @Override
-    public CraftCheck doIOTick(ProcessingComponent<?> processingComponent, RecipeCraftingContext recipeCraftingContext) {
-        TileRadiationProvider radiationProvider = (TileRadiationProvider) processingComponent.getComponent().getContainerProvider();
-
-        if (!radiationProvider.canHandle(this, recipeCraftingContext.getMachineController().getPos())) {
+    public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
+        if (!getProviderFrom(component).canHandle(this, context.getMachineController().getPos())) {
             return CraftCheck.failure("cannot handle this component"); //todo: fix
         }
-        radiationProvider.handle(this, recipeCraftingContext.getMachineController().getPos(), true);
         return CraftCheck.success();
     }
 
     @Nonnull
     @Override
-    public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        TileRadiationProvider radiationProvider = (TileRadiationProvider) component.getComponent().getContainerProvider();
+    public CraftCheck doIOTick(ProcessingComponent<?> processingComponent, RecipeCraftingContext recipeCraftingContext) {
+        TileRadiationProvider radiationProvider = getProviderFrom(processingComponent);
 
-        if (!radiationProvider.canHandle(this, context.getMachineController().getPos())) {
+        if (!radiationProvider.canHandle(this, recipeCraftingContext.getMachineController().getPos())) {
             return CraftCheck.failure("cannot handle this component"); //todo: fix
         }
+        radiationProvider.handle(this, recipeCraftingContext.getMachineController().getPos(), true);
         return CraftCheck.success();
     }
 
@@ -70,6 +68,10 @@ public class RequirementRadiationPerTick extends ComponentRequirement.PerTick<Ra
     @Override
     public ComponentRequirement<Radiation, RequirementTypeRadiationPerTick> deepCopyModified(List<RecipeModifier> list) {
         return deepCopy();
+    }
+
+    private TileRadiationProvider getProviderFrom(ProcessingComponent<?> component) {
+        return (TileRadiationProvider) component.getComponent().getContainerProvider();
     }
 
     @Nonnull

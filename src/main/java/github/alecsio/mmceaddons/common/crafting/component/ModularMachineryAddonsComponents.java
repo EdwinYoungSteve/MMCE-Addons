@@ -16,6 +16,7 @@ public class ModularMachineryAddonsComponents {
     public static final ResourceLocation KEY_COMPONENT_METEOR = new ResourceLocation(ModularMachineryAddons.MODID, "meteor");
     public static final ResourceLocation KEY_COMPONENT_ESSENTIA = new ResourceLocation(ModularMachineryAddons.MODID, "essentia");
     public static final ResourceLocation KEY_COMPONENT_WILL = new ResourceLocation(ModularMachineryAddons.MODID, "willMultiChunk");
+    public static final ResourceLocation KEY_COMPONENT_FLUX = new ResourceLocation(ModularMachineryAddons.MODID, "flux");
 
     public static final ArrayList<ComponentType> COMPONENTS = new ArrayList<>();
 
@@ -32,6 +33,10 @@ public class ModularMachineryAddonsComponents {
 
         if (Mods.THAUMICENERGISTICS.isPresent()) {
             registerComponent(new ComponentEssentia(), KEY_COMPONENT_ESSENTIA);
+        }
+
+        if (Mods.THAUMCRAFT.isPresent()) {
+            registerComponent(new ComponentFlux(), KEY_COMPONENT_FLUX);
         }
     }
 

@@ -8,6 +8,8 @@ import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProv
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProviderOutput;
 import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderInput;
 import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderOutput;
+import github.alecsio.mmceaddons.common.block.thaumcraft.BlockFluxProviderInput;
+import github.alecsio.mmceaddons.common.block.thaumcraft.BlockFluxProviderOutput;
 
 public class ModularMachineryAddonsBlocks {
     // Radiation
@@ -21,9 +23,13 @@ public class ModularMachineryAddonsBlocks {
     // Meteor
     public static BlockMeteorProviderOutput blockMeteorProviderOutput;
 
-    // Thaum
+    // Thaumic Energistics
     public static BlockMEEssentiaInputBus blockMEEssentiaInputBus;
     public static BlockMEEssentiaOutputBus blockMEEssentiaOutputBus;
+
+    // Thaumcraft
+    public static BlockFluxProviderInput blockFluxProviderInput;
+    public static BlockFluxProviderOutput blockFluxProviderOutput;
 
     public static void initialise() {
         blockRadiationProviderInput = new BlockRadiationProviderInput();
@@ -36,5 +42,8 @@ public class ModularMachineryAddonsBlocks {
 
         blockMEEssentiaInputBus = new BlockMEEssentiaInputBus();
         blockMEEssentiaOutputBus = new BlockMEEssentiaOutputBus();
+
+        blockFluxProviderInput = new BlockFluxProviderInput();
+        blockFluxProviderOutput = new BlockFluxProviderOutput();
     }
 }

@@ -6,6 +6,7 @@ import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.Re
 import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeWillMultiChunk;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeRadiation;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeRadiationPerTick;
+import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumcraft.RequirementTypeFlux;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumicenergistics.RequirementTypeEssentia;
 import hellfirepvp.modularmachinery.common.crafting.requirement.type.RequirementType;
 import net.minecraft.util.ResourceLocation;
@@ -18,6 +19,7 @@ public class ModularMachineryAddonsRequirements {
     public static final ResourceLocation KEY_REQUIREMENT_METEOR = new ResourceLocation(ModularMachineryAddons.MODID, "meteor");
     public static final ResourceLocation KEY_REQUIREMENT_WILL_MULTI_CHUNK = new ResourceLocation(ModularMachineryAddons.MODID, "willMultiChunk");
     public static final ResourceLocation KEY_REQUIREMENT_ESSENTIA = new ResourceLocation(ModularMachineryAddons.MODID, "essentia");
+    public static final ResourceLocation KEY_REQUIREMENT_FLUX = new ResourceLocation(ModularMachineryAddons.MODID, "flux");
     public static final ArrayList<RequirementType<?, ?>> REQUIREMENTS = new ArrayList<>();
 
     public static void initRequirements() {
@@ -36,6 +38,10 @@ public class ModularMachineryAddonsRequirements {
 
         if (Mods.THAUMICENERGISTICS.isPresent()) {
             registerRequirement(new RequirementTypeEssentia(), KEY_REQUIREMENT_ESSENTIA);
+        }
+
+        if (Mods.THAUMCRAFT.isPresent()) {
+            registerRequirement(new RequirementTypeFlux(), KEY_REQUIREMENT_FLUX);
         }
     }
 

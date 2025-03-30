@@ -5,3 +5,5 @@ tile.modularmachineryaddons.blockmeessentiaoutputbus.name=Machinery Essentia Out
 tile.modularmachineryaddons.blockmeteorprovideroutput.name=Meteor Hatch
 tile.modularmachineryaddons.blockwillmultichunkproviderinput.name=Will Multi-Chunk Input Hatch
 tile.modularmachineryaddons.blockwillmultichunkprovideroutput.name=Will Multi-Chunk Output Hatch
+tile.modularmachineryaddons.blockfluxproviderinput.name=Flux Input Hatch
+tile.modularmachineryaddons.blockfluxprovideroutput.name=Flux Output Hatch

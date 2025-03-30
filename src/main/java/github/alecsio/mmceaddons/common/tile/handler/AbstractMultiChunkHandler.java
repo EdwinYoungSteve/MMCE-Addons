@@ -11,9 +11,12 @@ import java.util.List;
 public abstract class AbstractMultiChunkHandler extends TileColorableMachineComponent {
     private final ChunksReader chunksReader = ChunksReader.getInstance();
 
+    public boolean canHandle(IMultiChunkRequirement requirement, BlockPos controllerPos) {
+        return handle(requirement, controllerPos, false) == 0;
+    }
+
     public double handle(IMultiChunkRequirement requirement, BlockPos controllerPos, boolean doAction) {
         List<Chunk> chunks = chunksReader.getSurroundingChunks(world, controllerPos, requirement.getChunkRange());
-        int failedChunks = 0;
 
         double amountToHandle = requirement.getAmount();
         for (Chunk chunk : chunks) {
@@ -23,7 +26,6 @@ public abstract class AbstractMultiChunkHandler extends TileColorableMachineComp
             BlockPos randomBlockPosInCurrentChunk = getBlockInChunk(chunk);
             double amountInChunk = getAmountInChunk(requirement, randomBlockPosInCurrentChunk);
             if (!isValidChunk(amountInChunk, amountToHandle, requirement)) {
-                failedChunks++;
                 continue;
             }
 
@@ -32,35 +34,8 @@ public abstract class AbstractMultiChunkHandler extends TileColorableMachineComp
             amountToHandle = Math.max(0, amountToHandle - amountToHandleInChunk);
 
             if (amountToHandle == 0) break;
-
-            /*
-            if (failedChunks == chunks.size()) {
-                ModularMachineryAddons.logger.error(
-                        String.format(
-                                "Inconsistent state detected in %s. %d out of %d chunks failed to update, please report this on GitHub!",
-                                this.getClass().getSimpleName(),
-                                failedChunks,
-                                chunks.size()
-                        )
-                );
-            } else {
-                ModularMachineryAddons.logger.error(
-                        String.format(
-                                "Inconsistent state detected in %s. Expected to be able to add %f but %f was not added. Please report this on GitHub!",
-                                this.getClass().getSimpleName(),
-                                requirement.getAmount(),
-                                amountToHandle
-                        )
-                );
-            }
-
-             */
         }
         return amountToHandle;
-    }
-
-    public boolean canHandle(IMultiChunkRequirement requirement, BlockPos controllerPos) {
-        return handle(requirement, controllerPos, false) == 0;
     }
 
     public BlockPos getBlockInChunk(Chunk chunk) {

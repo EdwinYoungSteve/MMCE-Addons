@@ -6,7 +6,7 @@ public enum Mods {
     NUCLEARCRAFT("nuclearcraft"),
     BLOODMAGIC("bloodmagic"),
     THAUMICENERGISTICS("thaumicenergistics"),
-    PROJECTE("projecte"),;
+    THAUMCRAFT("thaumcraft"),;
 
     public final String modid;
     private final boolean loaded;

@@ -4,10 +4,13 @@ import WayofTime.bloodmagic.meteor.Meteor;
 import com.google.common.collect.Lists;
 import github.alecsio.mmceaddons.common.base.Mods;
 import github.alecsio.mmceaddons.common.integration.jei.helper.EssentiaHelper;
+import github.alecsio.mmceaddons.common.integration.jei.helper.FluxHelper;
 import github.alecsio.mmceaddons.common.integration.jei.helper.MeteorHelper;
 import github.alecsio.mmceaddons.common.integration.jei.helper.RadiationHelper;
+import github.alecsio.mmceaddons.common.integration.jei.ingredient.Flux;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
 import github.alecsio.mmceaddons.common.integration.jei.render.EssentiaRenderer;
+import github.alecsio.mmceaddons.common.integration.jei.render.FluxRenderer;
 import github.alecsio.mmceaddons.common.integration.jei.render.MeteorRenderer;
 import github.alecsio.mmceaddons.common.integration.jei.render.RadiationRenderer;
 import mezz.jei.api.IGuiHelper;
@@ -40,6 +43,10 @@ public class JeiPlugin implements IModPlugin {
 
         if (Mods.THAUMICENERGISTICS.isPresent()) {
             registry.register(EssentiaStack.class, Lists.newArrayList(), new EssentiaHelper(), new EssentiaRenderer());
+        }
+
+        if (Mods.THAUMCRAFT.isPresent()) {
+            registry.register(Flux.class, Lists.newArrayList(), new FluxHelper(), new FluxRenderer());
         }
     }
 }
