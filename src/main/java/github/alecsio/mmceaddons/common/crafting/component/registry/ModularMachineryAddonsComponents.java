@@ -1,7 +1,8 @@
-package github.alecsio.mmceaddons.common.crafting.component;
+package github.alecsio.mmceaddons.common.crafting.component.registry;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.base.Mods;
+import github.alecsio.mmceaddons.common.crafting.component.*;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;

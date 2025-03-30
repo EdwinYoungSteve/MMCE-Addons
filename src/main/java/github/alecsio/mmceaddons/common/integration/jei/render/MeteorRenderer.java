@@ -1,8 +1,8 @@
 package github.alecsio.mmceaddons.common.integration.jei.render;
 
-import WayofTime.bloodmagic.meteor.Meteor;
 import WayofTime.bloodmagic.meteor.MeteorComponent;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
+import github.alecsio.mmceaddons.common.integration.jei.ingredient.Meteor;
 import github.alecsio.mmceaddons.common.integration.jei.render.base.BaseIngredientRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;

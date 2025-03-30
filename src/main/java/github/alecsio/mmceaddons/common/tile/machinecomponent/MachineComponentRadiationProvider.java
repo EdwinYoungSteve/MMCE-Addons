@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.tile.machinecomponent;
 
-import github.alecsio.mmceaddons.common.crafting.component.ModularMachineryAddonsComponents;
+import github.alecsio.mmceaddons.common.crafting.component.registry.ModularMachineryAddonsComponents;
 import github.alecsio.mmceaddons.common.tile.TileRadiationProvider;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;

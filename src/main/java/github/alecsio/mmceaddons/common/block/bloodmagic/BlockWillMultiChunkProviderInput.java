@@ -15,10 +15,4 @@ public class BlockWillMultiChunkProviderInput extends BaseBlockMachineComponent 
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileWillMultiChunkProvider.Input();
     }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return null;
-    }
 }

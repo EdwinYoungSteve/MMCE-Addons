@@ -16,10 +16,4 @@ public class BlockWillMultiChunkProviderOutput extends BaseBlockMachineComponent
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileWillMultiChunkProvider.Output();
     }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return null;
-    }
 }

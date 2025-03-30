@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.tile.handler;
 
-import github.alecsio.mmceaddons.common.tile.handler.chunks.ChunksReader;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
+import github.alecsio.mmceaddons.common.tile.handler.chunks.ChunksReader;
 import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;

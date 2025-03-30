@@ -1,6 +1,7 @@
 package github.alecsio.mmceaddons.common.integration.jei.helper.base;
 
 import com.google.common.collect.Iterables;
+import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
 import mezz.jei.api.ingredients.IIngredientHelper;
 
@@ -17,5 +18,23 @@ public abstract class BaseIngredientHelper<T extends IRequiresEquals<T>> impleme
             if (ingredient.equalsTo(toMatch)) {return ingredient;};
         }
         return null;
+    }
+
+    @Override
+    @Nonnull
+    public String getWildcardId(@Nonnull T t) {
+        return getUniqueId(t);
+    }
+
+    @Override
+    @Nonnull
+    public String getModId(@Nonnull T t) {
+        return ModularMachineryAddons.MODID;
+    }
+
+    @Override
+    @Nonnull
+    public String getErrorInfo(@Nullable T t) {
+        return "error"; // todo: fix
     }
 }

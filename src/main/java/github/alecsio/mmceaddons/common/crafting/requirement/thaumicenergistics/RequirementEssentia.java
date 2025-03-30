@@ -4,6 +4,7 @@ import github.alecsio.mmceaddons.common.crafting.component.ComponentEssentia;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumicenergistics.RequirementTypeEssentia;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentEssentia;
+import github.alecsio.mmceaddons.common.integration.jei.ingredient.Essentia;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentEssentiaProvider;
 import hellfirepvp.modularmachinery.ModularMachinery;
@@ -18,15 +19,15 @@ import thaumicenergistics.api.EssentiaStack;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class RequirementEssentia extends ComponentRequirement<EssentiaStack, RequirementTypeEssentia> {
-    private final EssentiaStack essentia;
+public class RequirementEssentia extends ComponentRequirement<Essentia, RequirementTypeEssentia> {
+    private final Essentia essentia;
 
-    public RequirementEssentia(EssentiaStack essentia, IOType type) {
+    public RequirementEssentia(Essentia essentia, IOType type) {
         super((RequirementTypeEssentia) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsRequirements.KEY_REQUIREMENT_ESSENTIA), type);
         this.essentia = essentia;
     }
 
-    public EssentiaStack getEssentiaStack() {
+    public Essentia getEssentiaStack() {
         return essentia;
     }
 
@@ -51,12 +52,12 @@ public class RequirementEssentia extends ComponentRequirement<EssentiaStack, Req
     }
 
     @Override
-    public ComponentRequirement<EssentiaStack, RequirementTypeEssentia> deepCopy() {
-        return new RequirementEssentia(new EssentiaStack(essentia.getAspect(), essentia.getAmount()), actionType);
+    public ComponentRequirement<Essentia, RequirementTypeEssentia> deepCopy() {
+        return new RequirementEssentia(new Essentia(essentia.getAspect(), essentia.getAmount()), actionType);
     }
 
     @Override
-    public ComponentRequirement<EssentiaStack, RequirementTypeEssentia> deepCopyModified(List<RecipeModifier> modifiers) {
+    public ComponentRequirement<Essentia, RequirementTypeEssentia> deepCopyModified(List<RecipeModifier> modifiers) {
         return deepCopy();
     }
 
@@ -67,10 +68,11 @@ public class RequirementEssentia extends ComponentRequirement<EssentiaStack, Req
     }
 
     @Override
-    public JEIComponent<EssentiaStack> provideJEIComponent() {
+    public JEIComponent<Essentia> provideJEIComponent() {
         return new JEIComponentEssentia(this);
     }
 
+    @SuppressWarnings("unchecked")
     private IRequirementHandler<EssentiaStack> getEssentiaHandler(ProcessingComponent<?> component) {
         return (IRequirementHandler<EssentiaStack>) component.getComponent().getContainerProvider();
     }

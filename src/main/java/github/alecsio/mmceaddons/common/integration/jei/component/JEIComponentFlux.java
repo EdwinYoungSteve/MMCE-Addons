@@ -8,6 +8,7 @@ import hellfirepvp.modularmachinery.common.integration.recipe.RecipeLayoutPart;
 import java.awt.*;
 
 public class JEIComponentFlux extends JEIComponentBase<Flux> {
+
     public JEIComponentFlux(Flux requirement, Class<Flux> requirementType) {
         super(requirement, requirementType);
     }
