@@ -11,7 +11,6 @@ public class ChunksReader {
 
     private static ChunksReader instance;
 
-
     public static ChunksReader getInstance() {
         if (instance != null) return instance;
 

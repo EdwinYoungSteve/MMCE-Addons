@@ -19,9 +19,9 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = ModularMachineryAddons.MODID)
 public class ClientProxy extends CommonProxy {
+
     private static final List<Item> ITEM_MODELS_TO_REGISTER = new ArrayList<>();
     private static final List<Block> BLOCK_MODELS_TO_REGISTER = new ArrayList<>();
-
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {

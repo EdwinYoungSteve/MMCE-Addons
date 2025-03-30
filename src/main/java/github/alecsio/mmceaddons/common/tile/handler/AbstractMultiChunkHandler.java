@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.List;
+import java.util.Random;
 
 public abstract class AbstractMultiChunkHandler extends TileColorableMachineComponent {
     private final ChunksReader chunksReader = ChunksReader.getInstance();
@@ -17,24 +18,26 @@ public abstract class AbstractMultiChunkHandler extends TileColorableMachineComp
 
     public double handle(IMultiChunkRequirement requirement, BlockPos controllerPos, boolean doAction) {
         List<Chunk> chunks = chunksReader.getSurroundingChunks(world, controllerPos, requirement.getChunkRange());
+        if (chunks.isEmpty()) return requirement.getAmount(); // No chunks, return full amount
 
         double amountToHandle = requirement.getAmount();
-        for (Chunk chunk : chunks) {
-            if (!chunk.isLoaded()) continue;
+        Random rand = new Random();
+        int maxAttempts = chunks.size() * 2; // Prevent infinite loops
 
+        for (int attempts = 0; amountToHandle > 0 && attempts < maxAttempts; attempts++) {
+            Chunk chunk = chunks.get(rand.nextInt(chunks.size())); // Pick a random chunk
+            if (!chunk.isLoaded()) continue; // Skip unloaded chunks
 
-            BlockPos randomBlockPosInCurrentChunk = getBlockInChunk(chunk);
-            double amountInChunk = getAmountInChunk(requirement, randomBlockPosInCurrentChunk);
-            if (!isValidChunk(amountInChunk, amountToHandle, requirement)) {
-                continue;
-            }
+            BlockPos pos = getBlockInChunk(chunk);
+            double amountInChunk = getAmountInChunk(requirement, pos);
+            if (!isValidChunk(amountInChunk, amountToHandle, requirement)) continue;
 
             double amountToHandleInChunk = getAmountToApply(amountInChunk, amountToHandle, requirement);
-            if (doAction) {handleAmount(requirement, randomBlockPosInCurrentChunk, amountToHandleInChunk);}
-            amountToHandle = Math.max(0, amountToHandle - amountToHandleInChunk);
+            if (doAction) handleAmount(requirement, pos, amountToHandleInChunk);
 
-            if (amountToHandle == 0) break;
+            amountToHandle -= amountToHandleInChunk;
         }
+
         return amountToHandle;
     }
 
@@ -43,8 +46,6 @@ public abstract class AbstractMultiChunkHandler extends TileColorableMachineComp
         int chunkStartX = chunk.getPos().x * 16;
         int chunkStartZ = chunk.getPos().z * 16;
 
-        // Choose a block at (0,0) within the chunk (e.g., the chunk's first block). This is necessary because WorldDemonWillHandler expects a blockpos
-        // and then determines the chunk from that
         return new BlockPos(chunkStartX, 0, chunkStartZ);
     }
 

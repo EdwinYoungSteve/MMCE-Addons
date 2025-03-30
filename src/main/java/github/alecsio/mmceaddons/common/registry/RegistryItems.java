@@ -25,7 +25,6 @@ public class RegistryItems {
 
     private static <T extends Item> T register(T item) {
         ITEM_MODEL_REGISTER.add(item);
-        // CommonProxy.registryPrimer.register(item);
         return item;
     }
 

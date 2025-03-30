@@ -12,43 +12,8 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 public class EventHandler {
-    public static class InternalRegistryPrimer {
-        private final Map<Type, List<IForgeRegistryEntry<?>>> primed = new HashMap<>();
-
-        public <V extends IForgeRegistryEntry<V>> V register(V entry) {
-            Class<V> type = entry.getRegistryType();
-            List<IForgeRegistryEntry<?>> entries = primed.computeIfAbsent(type, k -> new LinkedList<>());
-            entries.add(entry);
-            return entry;
-        }
-
-        <T extends IForgeRegistryEntry<T>> List<?> getEntries(Class<T> type) {
-            return primed.get(type);
-        }
-
-        void wipe(Type type) {
-            primed.remove(type);
-        }
-    }
-    private static final InternalRegistryPrimer registry;
-
-    static {
-        registry = new InternalRegistryPrimer();
-    }
-
-    public EventHandler() {
-        //ModularMachineryAddons.logger.info("📌 EventHandler class loaded!");
-
-    }
 
     @SubscribeEvent
     public void onComponentTypeRegister(RegistryEvent.Register<ComponentType> event) {
@@ -57,8 +22,6 @@ public class EventHandler {
             event.getRegistry().register(component);
         }
     }
-
-
 
     @SubscribeEvent
     public void onRequirementTypeRegister(RegistryEvent.Register event) {
@@ -71,7 +34,7 @@ public class EventHandler {
 
         for (RequirementType<?, ?> requirement : ModularMachineryAddonsRequirements.REQUIREMENTS) {
             ResourceLocation name = requirement.getRegistryName();
-            ModularMachineryAddons.logger.info("✅ Registering: " + name);
+            ModularMachineryAddons.logger.info("Registering: " + name);
             event.getRegistry().register(requirement);
         }
     }
