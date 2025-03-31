@@ -3,10 +3,12 @@ package github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic;
 import WayofTime.bloodmagic.soul.EnumDemonWillType;
 import github.alecsio.mmceaddons.common.crafting.component.ComponentWillMultiChunk;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
+import github.alecsio.mmceaddons.common.crafting.requirement.Validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeWillMultiChunk;
+import github.alecsio.mmceaddons.common.exception.ConsistencyException;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentWill;
-import github.alecsio.mmceaddons.common.tile.TileWillMultiChunkProvider;
+import github.alecsio.mmceaddons.common.tile.bloodmagic.TileWillMultiChunkProvider;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
@@ -21,14 +23,31 @@ import java.util.Collections;
 import java.util.List;
 
 public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, RequirementTypeWillMultiChunk> implements IMultiChunkRequirement {
+
+    private static final RequirementValidator requirementValidator = RequirementValidator.getInstance();
+
     public EnumDemonWillType willType;
     private final int chunkRange;
     private final double amount;
     private final double minPerChunk;
     private final double maxPerChunk;
 
+    public static RequirementWillMultiChunk from(IOType ioType, int chunkRange, double amount, double minPerChunk, double maxPerChunk, String willType) {
+        requirementValidator.validateNotNegative(amount, "Amount must be a positive number!");
+        requirementValidator.validateNotNegative(chunkRange, "Chunk range must be a positive number!");
+        requirementValidator.validateNotNegative(minPerChunk, "Minimum per chunk must be a positive number!");
+        requirementValidator.validateNotNegative(maxPerChunk, "Max per chunk must be a positive number!");
 
-    public RequirementWillMultiChunk(IOType actionType, int chunkRange, double amount, double minPerChunk, double maxPerChunk, EnumDemonWillType willType) {
+        EnumDemonWillType will;
+        try {
+            will = EnumDemonWillType.valueOf(willType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new ConsistencyException(e.getMessage());
+        }
+        return new RequirementWillMultiChunk(ioType, chunkRange, amount, minPerChunk, maxPerChunk, will);
+    }
+
+    private RequirementWillMultiChunk(IOType actionType, int chunkRange, double amount, double minPerChunk, double maxPerChunk, EnumDemonWillType willType) {
         super((RequirementTypeWillMultiChunk) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsRequirements.KEY_REQUIREMENT_WILL_MULTI_CHUNK), actionType);
         this.chunkRange = chunkRange;
         this.amount = amount;

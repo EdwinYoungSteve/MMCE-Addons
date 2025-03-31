@@ -2,11 +2,12 @@ package github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft;
 
 import github.alecsio.mmceaddons.common.crafting.component.ComponentRadiation;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
+import github.alecsio.mmceaddons.common.crafting.requirement.Validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
-import github.alecsio.mmceaddons.common.tile.TileRadiationProvider;
+import github.alecsio.mmceaddons.common.tile.nuclearcraft.TileRadiationProvider;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentRadiationProvider;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
@@ -20,12 +21,22 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class RequirementRadiation extends ComponentRequirement<Radiation, RequirementTypeRadiation> implements IMultiChunkRequirement, IRequirementRadiation {
+
+    private static final RequirementValidator requirementValidator = RequirementValidator.getInstance();
+
     private final int chunkRange;
     private final double amount;
     private final double minPerChunk;
     private final double maxPerChunk;
 
-    public RequirementRadiation(IOType actionType, int chunkRange, double amount, double minPerChunk, double maxPerChunk) {
+    public static RequirementRadiation from(IOType actionType, int chunkRange, double amount) {
+        requirementValidator.validateNotNegative(chunkRange, "Chunk range must be a positive number!");
+        requirementValidator.validateNotNegative(amount, "Amount must be a positive number!");
+
+        return new RequirementRadiation(actionType, chunkRange, amount, 0, Double.MAX_VALUE);
+    }
+
+    private RequirementRadiation(IOType actionType, int chunkRange, double amount, double minPerChunk, double maxPerChunk) {
         super((RequirementTypeRadiation) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsRequirements.KEY_REQUIREMENT_RADIATION), actionType);
         this.chunkRange = chunkRange;
         this.amount = amount;
@@ -92,6 +103,11 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
     @Override
     public int getChunkRange() {
         return chunkRange;
+    }
+
+    @Override
+    public boolean isPerTick() {
+        return false;
     }
 
     @Override

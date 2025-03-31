@@ -1,6 +1,5 @@
 package github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic;
 
-import WayofTime.bloodmagic.soul.EnumDemonWillType;
 import com.google.gson.JsonObject;
 import github.alecsio.mmceaddons.common.base.Mods;
 import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementWillMultiChunk;
@@ -18,13 +17,13 @@ public class RequirementTypeWillMultiChunk extends RequirementType<DemonWill, Re
 
     @Override
     public ComponentRequirement<DemonWill, ? extends RequirementType<DemonWill, RequirementWillMultiChunk>> createRequirement(IOType type, JsonObject json) {
-        EnumDemonWillType willType = RequirementUtils.getWillType(json, "will-type", ModularMagicRequirements.KEY_REQUIREMENT_WILL.toString());
+        String willType = RequirementUtils.getRequiredString(json, "will-type", ModularMagicRequirements.KEY_REQUIREMENT_WILL.toString());
         double amount = RequirementUtils.getRequiredDouble(json, "amount", ModularMachineryAddonsRequirements.KEY_REQUIREMENT_WILL_MULTI_CHUNK.toString());
         double min = RequirementUtils.getOptionalDouble(json, "min", 0.0F);
         double max = RequirementUtils.getOptionalDouble(json, "max", 100.0F);
         int chunkRange = RequirementUtils.getOptionalInt(json, "chunkRange", 0); // Only the chunk the machine is in
 
-        return new RequirementWillMultiChunk(type, chunkRange, amount, min, max, willType);
+        return RequirementWillMultiChunk.from(type, chunkRange, amount, min, max, willType);
     }
 
     @Nullable

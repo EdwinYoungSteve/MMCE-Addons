@@ -15,6 +15,6 @@ public class RequirementTypeFlux extends RequirementType<Flux, RequirementFlux> 
         float amount = RequirementUtils.getRequiredFloat(jsonObject, "amount", ModularMachineryAddonsRequirements.KEY_REQUIREMENT_FLUX.toString());
         int chunkRange = RequirementUtils.getOptionalInt(jsonObject, "chunkRange", 0); // Only the chunk the machine is in
 
-        return new RequirementFlux(type, chunkRange, amount);
+        return RequirementFlux.from(type, chunkRange, amount);
     }
 }

@@ -8,17 +8,16 @@ import hellfirepvp.modularmachinery.common.crafting.helper.ComponentRequirement;
 import hellfirepvp.modularmachinery.common.crafting.requirement.type.RequirementType;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import kport.modularmagic.common.utils.RequirementUtils;
-import thaumcraft.api.aspects.Aspect;
 
 import javax.annotation.Nullable;
 
 public class RequirementTypeEssentia extends RequirementType<Essentia, RequirementEssentia> {
     @Override
     public ComponentRequirement<Essentia, ? extends RequirementType<Essentia, RequirementEssentia>> createRequirement(IOType type, JsonObject recipe) {
-        Aspect aspect = RequirementUtils.getAspect(recipe, "aspect", "yolo");
+        String aspect = RequirementUtils.getRequiredString(recipe, "aspect", "yolo");
         int amount = RequirementUtils.getRequiredInt(recipe, "amount", "yolo2");
 
-        return new RequirementEssentia(new Essentia(aspect, amount), type);
+        return RequirementEssentia.from(type, aspect, amount);
     }
 
     @Nullable

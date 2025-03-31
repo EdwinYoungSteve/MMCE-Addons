@@ -6,10 +6,12 @@ import hellfirepvp.modularmachinery.common.machine.IOType;
 public class Radiation implements IRequiresEquals<Radiation> {
     private final double amount;
     private final IOType ioType;
+    private final int chunkRange;
 
-    public Radiation(double amount, IOType ioType) {
+    public Radiation(double amount, IOType ioType, int chunkRange) {
         this.amount = amount;
         this.ioType = ioType;
+        this.chunkRange = chunkRange;
     }
 
     public double getAmount() {
@@ -18,6 +20,10 @@ public class Radiation implements IRequiresEquals<Radiation> {
 
     public IOType getIoType() {
         return ioType;
+    }
+
+    public int getChunkRange() {
+        return chunkRange;
     }
 
     @Override

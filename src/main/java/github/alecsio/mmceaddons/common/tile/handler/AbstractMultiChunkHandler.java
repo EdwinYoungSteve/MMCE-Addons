@@ -2,15 +2,20 @@ package github.alecsio.mmceaddons.common.tile.handler;
 
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.tile.handler.chunks.ChunksReader;
+import github.alecsio.mmceaddons.common.tile.handler.strategy.ChunkSelectionStrategy;
 import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.List;
-import java.util.Random;
 
 public abstract class AbstractMultiChunkHandler extends TileColorableMachineComponent {
     private final ChunksReader chunksReader = ChunksReader.getInstance();
+    private final ChunkSelectionStrategy strategy;
+
+    protected AbstractMultiChunkHandler(ChunkSelectionStrategy strategy) {
+        this.strategy = strategy;
+    }
 
     public boolean canHandle(IMultiChunkRequirement requirement, BlockPos controllerPos) {
         return handle(requirement, controllerPos, false) == 0;
@@ -21,12 +26,11 @@ public abstract class AbstractMultiChunkHandler extends TileColorableMachineComp
         if (chunks.isEmpty()) return requirement.getAmount(); // No chunks, return full amount
 
         double amountToHandle = requirement.getAmount();
-        Random rand = new Random();
         int maxAttempts = chunks.size() * 2; // Prevent infinite loops
 
         for (int attempts = 0; amountToHandle > 0 && attempts < maxAttempts; attempts++) {
-            Chunk chunk = chunks.get(rand.nextInt(chunks.size())); // Pick a random chunk
-            if (!chunk.isLoaded()) continue; // Skip unloaded chunks
+            Chunk chunk = strategy.selectChunk(chunks);
+            if (chunk == null || !chunk.isLoaded()) continue; // Skip unloaded chunks
 
             BlockPos pos = getBlockInChunk(chunk);
             double amountInChunk = getAmountInChunk(requirement, pos);

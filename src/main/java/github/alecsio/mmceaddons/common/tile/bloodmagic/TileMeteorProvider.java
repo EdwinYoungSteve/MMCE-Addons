@@ -1,4 +1,4 @@
-package github.alecsio.mmceaddons.common.tile;
+package github.alecsio.mmceaddons.common.tile.bloodmagic;
 
 import WayofTime.bloodmagic.entity.projectile.EntityMeteor;
 import WayofTime.bloodmagic.meteor.Meteor;

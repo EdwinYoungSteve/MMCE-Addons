@@ -90,6 +90,10 @@ tasks.javadoc.configure {
     actions = Collections.emptyList()
 }
 
+tasks.test {
+    useJUnitPlatform() // Required for Spock 2.x
+}
+
 // Create a new dependency type for runtime-only dependencies that don't get included in the maven publication
 val runtimeOnlyNonPublishable: Configuration by configurations.creating {
     description = "Runtime only dependencies that are not published alongside the jar"
@@ -149,6 +153,7 @@ repositories {
         url = uri("http://jenkins.usrv.eu:8081/nexus/content/groups/public/")
         isAllowInsecureProtocol = true
     }
+    mavenCentral()
 }
 
 dependencies {
@@ -161,14 +166,18 @@ dependencies {
     // allow Jabel to work in tests
     testAnnotationProcessor("com.github.bsideup.jabel:jabel-javac-plugin:1.0.0")
     testImplementation("org.mockito:mockito-core:5.5.0")
-    testImplementation ("org.codehaus.groovy:groovy-all:4.0.15")  // Latest Groovy version
+    testImplementation ("org.codehaus.groovy:groovy-all:3.0.9")  // Latest Groovy version
 
     // Testing dependencies
-    testImplementation("org.mockito:mockito-inline:5.5.0")  // To mock final classes (optional)
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")  // To mock final classes (optional)
+    // Spock test dependencies
+    testImplementation("org.spockframework:spock-core:2.4-M1-groovy-4.0")
+    // Junit dependencies
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.spockframework:spock-core:2.4-M1-groovy-4.0")
 
-    testImplementation("org.spockframework:spock-core:2.4-groovy-4.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
 
     testCompileOnly("com.github.bsideup.jabel:jabel-javac-plugin:1.0.0") {
         isTransitive = false // We only care about the 1 annotation class

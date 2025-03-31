@@ -14,6 +14,7 @@ public class ModularMachineryAddonsComponents {
 
     public static IForgeRegistry<ComponentType> COMPONENT_TYPE_REGISTRY;
     public static final ResourceLocation KEY_COMPONENT_RADIATION = new ResourceLocation(ModularMachineryAddons.MODID, "radiation");
+    public static final ResourceLocation KEY_COMPONENT_SCRUBBER = new ResourceLocation(ModularMachineryAddons.MODID, "scrubber");
     public static final ResourceLocation KEY_COMPONENT_METEOR = new ResourceLocation(ModularMachineryAddons.MODID, "meteor");
     public static final ResourceLocation KEY_COMPONENT_ESSENTIA = new ResourceLocation(ModularMachineryAddons.MODID, "essentia");
     public static final ResourceLocation KEY_COMPONENT_WILL = new ResourceLocation(ModularMachineryAddons.MODID, "willMultiChunk");
@@ -25,6 +26,7 @@ public class ModularMachineryAddonsComponents {
         COMPONENT_TYPE_REGISTRY = event.getRegistry();
         if (Mods.NUCLEARCRAFT.isPresent()) {
             registerComponent(new ComponentRadiation(), KEY_COMPONENT_RADIATION);
+            registerComponent(new ComponentScrubber(), KEY_COMPONENT_SCRUBBER);
         }
 
         if (Mods.BLOODMAGIC.isPresent()) {
