@@ -2,6 +2,7 @@ package github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft;
 
 import github.alecsio.mmceaddons.common.crafting.component.ComponentFlux;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
+import github.alecsio.mmceaddons.common.crafting.requirement.Validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumcraft.RequirementTypeFlux;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentFlux;
@@ -20,10 +21,20 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeFlux> implements IMultiChunkRequirement {
+
+    private static final RequirementValidator requirementValidator = RequirementValidator.getInstance();
+
     private final int chunkRange;
     private final double amount;
 
-    public RequirementFlux(IOType actionType, int chunkRange, double amount) {
+    public static RequirementFlux from(IOType ioType, int chunkRange, float amount) {
+        requirementValidator.validateNotNegative(chunkRange, "chunkRange");
+        requirementValidator.validateNotNegative(amount, "amount");
+
+        return new RequirementFlux(ioType, chunkRange, amount);
+    }
+
+    private RequirementFlux(IOType actionType, int chunkRange, double amount) {
         super((RequirementTypeFlux) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsRequirements.KEY_REQUIREMENT_FLUX), actionType);
         this.chunkRange = chunkRange;
         this.amount = amount;

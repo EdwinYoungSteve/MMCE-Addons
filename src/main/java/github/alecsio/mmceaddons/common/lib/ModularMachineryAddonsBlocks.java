@@ -8,6 +8,7 @@ import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProv
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProviderOutput;
 import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderInput;
 import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderOutput;
+import github.alecsio.mmceaddons.common.block.nuclearcraft.scrubber.BlockScrubberProviderInput;
 import github.alecsio.mmceaddons.common.block.thaumcraft.BlockFluxProviderInput;
 import github.alecsio.mmceaddons.common.block.thaumcraft.BlockFluxProviderOutput;
 import github.alecsio.mmceaddons.common.block.thaumcraft.BlockVisProviderInput;
@@ -17,6 +18,7 @@ public class ModularMachineryAddonsBlocks {
     // Radiation
     public static BlockRadiationProviderInput blockRadiationProviderInput;
     public static BlockRadiationProviderOutput blockRadiationProviderOutput;
+    public static BlockScrubberProviderInput blockScrubberProviderInput;
 
     // Will
     public static BlockWillMultiChunkProviderInput blockWillMultiChunkProviderInput;
@@ -53,5 +55,7 @@ public class ModularMachineryAddonsBlocks {
 
         blockVisProviderInput = new BlockVisProviderInput();
         blockVisProviderOutput = new BlockVisProviderOutput();
+
+        blockScrubberProviderInput = new BlockScrubberProviderInput();
     }
 }

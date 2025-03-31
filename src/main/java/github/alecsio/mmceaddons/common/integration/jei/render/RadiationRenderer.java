@@ -25,6 +25,7 @@ public class RadiationRenderer extends BaseIngredientRenderer<Radiation> {
         } else {
             tooltip.add(String.format("%s: %s", "Radiation", ingredient.getAmount()));
         }
+        tooltip.add(String.format("Chunk Range (centered on the controller): %d", ingredient.getChunkRange()));
 
         return tooltip;
     }

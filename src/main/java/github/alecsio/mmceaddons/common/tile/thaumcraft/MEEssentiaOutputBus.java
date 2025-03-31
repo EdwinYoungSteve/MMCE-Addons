@@ -1,4 +1,4 @@
-package github.alecsio.mmceaddons.common.tile;
+package github.alecsio.mmceaddons.common.tile.thaumcraft;
 
 import appeng.api.config.Actionable;
 import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
@@ -9,27 +9,25 @@ import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import net.minecraft.item.ItemStack;
 import thaumicenergistics.api.EssentiaStack;
-import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.integration.appeng.AEEssentiaStack;
 
 import javax.annotation.Nullable;
 
-public class MEEssentiaInputBus extends MEEssentiaBus {
+public class MEEssentiaOutputBus extends MEEssentiaBus {
 
     @Override
     public ItemStack getVisualItemStack() {
-        return new ItemStack(ModularMachineryAddonsBlocks.blockMEEssentiaInputBus);
+        return new ItemStack(ModularMachineryAddonsBlocks.blockMEEssentiaOutputBus);
     }
 
     @Nullable
     @Override
     public MachineComponent<IRequirementHandler<EssentiaStack>> provideComponent() {
-        return new MachineComponentEssentiaProvider(IOType.INPUT, this);
+        return new MachineComponentEssentiaProvider(IOType.OUTPUT, this);
     }
 
     @Override
     protected boolean canPerformOperation(Actionable actionable, EssentiaStack essentia) {
-        IAEEssentiaStack imported = getStorageInventory().extractItems(AEEssentiaStack.fromEssentiaStack(essentia), actionable, this.source);
-        return imported == null || imported.getStackSize() >= essentia.getAmount();
+        return getStorageInventory().injectItems(AEEssentiaStack.fromEssentiaStack(essentia), actionable, this.source) == null;
     }
 }

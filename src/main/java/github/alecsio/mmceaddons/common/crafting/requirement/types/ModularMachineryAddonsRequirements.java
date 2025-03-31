@@ -5,7 +5,7 @@ import github.alecsio.mmceaddons.common.base.Mods;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeMeteor;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeWillMultiChunk;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeRadiation;
-import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeRadiationPerTick;
+import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeScrubber;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumcraft.RequirementTypeFlux;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumcraft.RequirementTypeVis;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumicenergistics.RequirementTypeEssentia;
@@ -30,7 +30,7 @@ public class ModularMachineryAddonsRequirements {
 
         if (Mods.NUCLEARCRAFT.isPresent()) {
             registerRequirement(new RequirementTypeRadiation(), KEY_REQUIREMENT_RADIATION);
-            registerRequirement(new RequirementTypeRadiationPerTick(), KEY_REQUIREMENT_RADIATION_PER_TICK);
+            registerRequirement(new RequirementTypeScrubber(), KEY_REQUIREMENT_RADIATION_PER_TICK);
         }
 
         if (Mods.BLOODMAGIC.isPresent()) {

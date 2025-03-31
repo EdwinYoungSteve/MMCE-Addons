@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.block.ae2;
 
-import github.alecsio.mmceaddons.common.tile.MEEssentiaOutputBus;
+import github.alecsio.mmceaddons.common.tile.thaumcraft.MEEssentiaOutputBus;
 import github.kasuminova.mmce.common.block.appeng.BlockMEMachineComponent;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

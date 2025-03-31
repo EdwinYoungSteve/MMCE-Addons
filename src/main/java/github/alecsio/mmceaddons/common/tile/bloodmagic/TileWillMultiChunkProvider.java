@@ -1,9 +1,10 @@
-package github.alecsio.mmceaddons.common.tile;
+package github.alecsio.mmceaddons.common.tile.bloodmagic;
 
 import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementWillMultiChunk;
 import github.alecsio.mmceaddons.common.tile.handler.AbstractMultiChunkHandler;
+import github.alecsio.mmceaddons.common.tile.handler.strategy.RandomChunkSelectionStrategy;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentWillMultiChunkProvider;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
@@ -12,6 +13,10 @@ import net.minecraft.util.math.BlockPos;
 import javax.annotation.Nullable;
 
 public abstract class TileWillMultiChunkProvider extends AbstractMultiChunkHandler implements MachineComponentTile {
+
+    public TileWillMultiChunkProvider() {
+        super(new RandomChunkSelectionStrategy());
+    }
 
     @Override
     protected double getAmountInChunk(IMultiChunkRequirement requirement, BlockPos randomBlockPos) {
