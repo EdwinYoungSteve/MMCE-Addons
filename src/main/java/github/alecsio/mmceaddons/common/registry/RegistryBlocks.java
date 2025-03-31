@@ -10,9 +10,12 @@ import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProvide
 import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderOutput;
 import github.alecsio.mmceaddons.common.block.thaumcraft.BlockFluxProviderInput;
 import github.alecsio.mmceaddons.common.block.thaumcraft.BlockFluxProviderOutput;
+import github.alecsio.mmceaddons.common.block.thaumcraft.BlockVisProviderInput;
+import github.alecsio.mmceaddons.common.block.thaumcraft.BlockVisProviderOutput;
 import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
 import github.alecsio.mmceaddons.common.tile.*;
 import github.alecsio.mmceaddons.common.tile.thaumcraft.TileFluxProvider;
+import github.alecsio.mmceaddons.common.tile.thaumcraft.TileVisProvider;
 import github.kasuminova.mmce.common.block.appeng.BlockMEMachineComponent;
 import hellfirepvp.modularmachinery.common.block.BlockCustomName;
 import hellfirepvp.modularmachinery.common.block.BlockMachineComponent;
@@ -25,6 +28,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
@@ -55,6 +59,9 @@ public class RegistryBlocks {
         ModularMachineryAddonsBlocks.blockFluxProviderInput = prepareRegister(new BlockFluxProviderInput());
         ModularMachineryAddonsBlocks.blockFluxProviderOutput = prepareRegister(new BlockFluxProviderOutput());
 
+        ModularMachineryAddonsBlocks.blockVisProviderInput = prepareRegister(new BlockVisProviderInput());
+        ModularMachineryAddonsBlocks.blockVisProviderOutput = prepareRegister(new BlockVisProviderOutput());
+
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderOutput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockWillMultiChunkProviderInput);
@@ -64,6 +71,8 @@ public class RegistryBlocks {
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockMEEssentiaOutputBus);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockFluxProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockFluxProviderOutput);
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockVisProviderInput);
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockVisProviderOutput);
     }
 
     private static void registerTileEntities() {
@@ -76,6 +85,8 @@ public class RegistryBlocks {
         registerTileEntity(MEEssentiaOutputBus.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(MEEssentiaOutputBus.class)));
         registerTileEntity(TileFluxProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileFluxProvider.Input.class)));
         registerTileEntity(TileFluxProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileFluxProvider.Output.class)));
+        registerTileEntity(TileVisProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileVisProvider.Input.class)));
+        registerTileEntity(TileVisProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileVisProvider.Output.class)));
     }
 
     /**

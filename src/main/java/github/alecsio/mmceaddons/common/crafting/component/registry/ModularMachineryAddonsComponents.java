@@ -18,6 +18,7 @@ public class ModularMachineryAddonsComponents {
     public static final ResourceLocation KEY_COMPONENT_ESSENTIA = new ResourceLocation(ModularMachineryAddons.MODID, "essentia");
     public static final ResourceLocation KEY_COMPONENT_WILL = new ResourceLocation(ModularMachineryAddons.MODID, "willMultiChunk");
     public static final ResourceLocation KEY_COMPONENT_FLUX = new ResourceLocation(ModularMachineryAddons.MODID, "flux");
+    public static final ResourceLocation KEY_COMPONENT_VIS = new ResourceLocation(ModularMachineryAddons.MODID, "vis");
 
     public static final ArrayList<ComponentType> COMPONENTS = new ArrayList<>();
 
@@ -38,6 +39,7 @@ public class ModularMachineryAddonsComponents {
 
         if (Mods.THAUMCRAFT.isPresent()) {
             registerComponent(new ComponentFlux(), KEY_COMPONENT_FLUX);
+            registerComponent(new ComponentVis(), KEY_COMPONENT_VIS);
         }
     }
 

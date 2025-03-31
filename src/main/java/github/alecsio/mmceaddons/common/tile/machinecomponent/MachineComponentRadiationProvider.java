@@ -5,9 +5,11 @@ import github.alecsio.mmceaddons.common.tile.TileRadiationProvider;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
+
 public class MachineComponentRadiationProvider extends MachineComponent<TileRadiationProvider> {
 
     private final TileRadiationProvider radiationProvider;
+
     public MachineComponentRadiationProvider(IOType ioType, TileRadiationProvider radiationProvider) {
         super(ioType);
         this.radiationProvider = radiationProvider;

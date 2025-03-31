@@ -10,6 +10,8 @@ import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProvide
 import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderOutput;
 import github.alecsio.mmceaddons.common.block.thaumcraft.BlockFluxProviderInput;
 import github.alecsio.mmceaddons.common.block.thaumcraft.BlockFluxProviderOutput;
+import github.alecsio.mmceaddons.common.block.thaumcraft.BlockVisProviderInput;
+import github.alecsio.mmceaddons.common.block.thaumcraft.BlockVisProviderOutput;
 
 public class ModularMachineryAddonsBlocks {
     // Radiation
@@ -31,6 +33,9 @@ public class ModularMachineryAddonsBlocks {
     public static BlockFluxProviderInput blockFluxProviderInput;
     public static BlockFluxProviderOutput blockFluxProviderOutput;
 
+    public static BlockVisProviderInput blockVisProviderInput;
+    public static BlockVisProviderOutput blockVisProviderOutput;
+
     public static void initialise() {
         blockRadiationProviderInput = new BlockRadiationProviderInput();
         blockRadiationProviderOutput = new BlockRadiationProviderOutput();
@@ -45,5 +50,8 @@ public class ModularMachineryAddonsBlocks {
 
         blockFluxProviderInput = new BlockFluxProviderInput();
         blockFluxProviderOutput = new BlockFluxProviderOutput();
+
+        blockVisProviderInput = new BlockVisProviderInput();
+        blockVisProviderOutput = new BlockVisProviderOutput();
     }
 }
