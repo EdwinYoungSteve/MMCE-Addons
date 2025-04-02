@@ -1,6 +1,8 @@
 package github.alecsio.mmceaddons.common.registry;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
+import github.alecsio.mmceaddons.common.block.BlockBiomeProviderInput;
+import github.alecsio.mmceaddons.common.block.BlockDimensionProviderInput;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaInputBus;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaOutputBus;
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockMeteorProviderOutput;
@@ -14,6 +16,8 @@ import github.alecsio.mmceaddons.common.block.thaumcraft.BlockFluxProviderOutput
 import github.alecsio.mmceaddons.common.block.thaumcraft.BlockVisProviderInput;
 import github.alecsio.mmceaddons.common.block.thaumcraft.BlockVisProviderOutput;
 import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
+import github.alecsio.mmceaddons.common.tile.TileBiomeProvider;
+import github.alecsio.mmceaddons.common.tile.TileDimensionProvider;
 import github.alecsio.mmceaddons.common.tile.bloodmagic.TileMeteorProvider;
 import github.alecsio.mmceaddons.common.tile.bloodmagic.TileWillMultiChunkProvider;
 import github.alecsio.mmceaddons.common.tile.nuclearcraft.TileRadiationProvider;
@@ -34,6 +38,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
@@ -69,6 +74,9 @@ public class RegistryBlocks {
 
         ModularMachineryAddonsBlocks.blockScrubberProviderInput = prepareRegister(new BlockScrubberProviderInput());
 
+        ModularMachineryAddonsBlocks.blockBiomeProviderInput = prepareRegister(new BlockBiomeProviderInput());
+        ModularMachineryAddonsBlocks.blockDimensionProviderInput = prepareRegister(new BlockDimensionProviderInput());
+
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderOutput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockWillMultiChunkProviderInput);
@@ -81,6 +89,8 @@ public class RegistryBlocks {
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockScrubberProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockVisProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockVisProviderOutput);
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockBiomeProviderInput);
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockDimensionProviderInput);
     }
 
     private static void registerTileEntities() {
@@ -96,6 +106,8 @@ public class RegistryBlocks {
         registerTileEntity(TileVisProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileVisProvider.Input.class)));
         registerTileEntity(TileVisProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileVisProvider.Output.class)));
         registerTileEntity(TileScrubberProvider.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileScrubberProvider.class)));
+        registerTileEntity(TileBiomeProvider.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileBiomeProvider.class)));
+        registerTileEntity(TileDimensionProvider.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileDimensionProvider.class)));
     }
 
     /**

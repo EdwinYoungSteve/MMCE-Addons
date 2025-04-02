@@ -20,11 +20,17 @@ public class ModularMachineryAddonsComponents {
     public static final ResourceLocation KEY_COMPONENT_WILL = new ResourceLocation(ModularMachineryAddons.MODID, "willMultiChunk");
     public static final ResourceLocation KEY_COMPONENT_FLUX = new ResourceLocation(ModularMachineryAddons.MODID, "flux");
     public static final ResourceLocation KEY_COMPONENT_VIS = new ResourceLocation(ModularMachineryAddons.MODID, "vis");
+    public static final ResourceLocation KEY_COMPONENT_BIOME = new ResourceLocation(ModularMachineryAddons.MODID, "biome");
+    public static final ResourceLocation KEY_COMPONENT_DIMENSION = new ResourceLocation(ModularMachineryAddons.MODID, "dimension");
 
     public static final ArrayList<ComponentType> COMPONENTS = new ArrayList<>();
 
     public static void initComponents(RegistryEvent.Register<ComponentType> event) {
         COMPONENT_TYPE_REGISTRY = event.getRegistry();
+
+        registerComponent(new ComponentBiome(), KEY_COMPONENT_BIOME);
+        registerComponent(new ComponentDimension(), KEY_COMPONENT_DIMENSION);
+
         if (Mods.NUCLEARCRAFT.isPresent()) {
             registerComponent(new ComponentRadiation(), KEY_COMPONENT_RADIATION);
             registerComponent(new ComponentScrubber(), KEY_COMPONENT_SCRUBBER);

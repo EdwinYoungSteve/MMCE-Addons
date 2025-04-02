@@ -22,11 +22,17 @@ public class ModularMachineryAddonsRequirements {
     public static final ResourceLocation KEY_REQUIREMENT_ESSENTIA = new ResourceLocation(ModularMachineryAddons.MODID, "essentia");
     public static final ResourceLocation KEY_REQUIREMENT_FLUX = new ResourceLocation(ModularMachineryAddons.MODID, "flux");
     public static final ResourceLocation KEY_REQUIREMENT_VIS = new ResourceLocation(ModularMachineryAddons.MODID, "vis");
+    public static final ResourceLocation KEY_REQUIREMENT_BIOME = new ResourceLocation(ModularMachineryAddons.MODID, "biome");
+    public static final ResourceLocation KEY_REQUIREMENT_DIMENSION = new ResourceLocation(ModularMachineryAddons.MODID, "dimension");
+
     public static final ArrayList<RequirementType<?, ?>> REQUIREMENTS = new ArrayList<>();
 
     public static void initRequirements() {
         ModularMachineryAddons.logger.info("Initializing MMCE addons requirements...");
         REQUIREMENTS.clear();
+
+        registerRequirement(new RequirementTypeBiome(), KEY_REQUIREMENT_BIOME);
+        registerRequirement(new RequirementTypeDimension(), KEY_REQUIREMENT_DIMENSION);
 
         if (Mods.NUCLEARCRAFT.isPresent()) {
             registerRequirement(new RequirementTypeRadiation(), KEY_REQUIREMENT_RADIATION);

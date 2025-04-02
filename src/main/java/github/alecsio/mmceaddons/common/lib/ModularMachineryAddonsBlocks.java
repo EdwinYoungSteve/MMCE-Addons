@@ -1,6 +1,8 @@
 package github.alecsio.mmceaddons.common.lib;
 
 
+import github.alecsio.mmceaddons.common.block.BlockBiomeProviderInput;
+import github.alecsio.mmceaddons.common.block.BlockDimensionProviderInput;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaInputBus;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaOutputBus;
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockMeteorProviderOutput;
@@ -15,6 +17,11 @@ import github.alecsio.mmceaddons.common.block.thaumcraft.BlockVisProviderInput;
 import github.alecsio.mmceaddons.common.block.thaumcraft.BlockVisProviderOutput;
 
 public class ModularMachineryAddonsBlocks {
+
+    // Biome / Dimension
+    public static BlockBiomeProviderInput blockBiomeProviderInput;
+    public static BlockDimensionProviderInput blockDimensionProviderInput;
+
     // Radiation
     public static BlockRadiationProviderInput blockRadiationProviderInput;
     public static BlockRadiationProviderOutput blockRadiationProviderOutput;
@@ -57,5 +64,8 @@ public class ModularMachineryAddonsBlocks {
         blockVisProviderOutput = new BlockVisProviderOutput();
 
         blockScrubberProviderInput = new BlockScrubberProviderInput();
+
+        blockBiomeProviderInput = new BlockBiomeProviderInput();
+        blockDimensionProviderInput = new BlockDimensionProviderInput();
     }
 }

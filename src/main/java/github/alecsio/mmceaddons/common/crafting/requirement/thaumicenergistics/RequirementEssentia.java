@@ -22,7 +22,7 @@ import java.util.List;
 
 public class RequirementEssentia extends ComponentRequirement<Essentia, RequirementTypeEssentia> {
 
-    private static RequirementValidator requirementValidator = RequirementValidator.getInstance();
+    private static final RequirementValidator requirementValidator = RequirementValidator.getInstance();
 
     private final Essentia essentia;
 
