@@ -3,13 +3,14 @@ package github.alecsio.mmceaddons.common.tile.handler;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.tile.handler.chunks.ChunksReader;
 import github.alecsio.mmceaddons.common.tile.handler.strategy.ChunkSelectionStrategy;
+import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.List;
 
-public abstract class AbstractMultiChunkHandler extends TileColorableMachineComponent {
+public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement> extends TileColorableMachineComponent implements IRequirementHandler<T> {
     private final ChunksReader chunksReader = ChunksReader.getInstance();
     private final ChunkSelectionStrategy strategy;
 
@@ -17,12 +18,17 @@ public abstract class AbstractMultiChunkHandler extends TileColorableMachineComp
         this.strategy = strategy;
     }
 
-    public boolean canHandle(IMultiChunkRequirement requirement, BlockPos controllerPos) {
-        return handle(requirement, controllerPos, false) == 0;
+    public CraftCheck canHandle(T requirement) {
+        return handle(requirement, false) == 0 ? CraftCheck.success() : CraftCheck.failure("Cannot handle this requirement");
     }
 
-    public double handle(IMultiChunkRequirement requirement, BlockPos controllerPos, boolean doAction) {
-        List<Chunk> chunks = chunksReader.getSurroundingChunks(world, controllerPos, requirement.getChunkRange());
+    @Override
+    public void handle(T requirement) {
+        handle(requirement, true);
+    }
+
+    public double handle(T requirement, boolean doAction) {
+        List<Chunk> chunks = chunksReader.getSurroundingChunks(world, this.pos, requirement.getChunkRange());
         if (chunks.isEmpty()) return requirement.getAmount(); // No chunks, return full amount
 
         double amountToHandle = requirement.getAmount();

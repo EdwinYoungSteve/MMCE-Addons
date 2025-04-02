@@ -3,7 +3,6 @@ package github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft
 import com.google.gson.JsonObject;
 import github.alecsio.mmceaddons.common.base.Mods;
 import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementScrubber;
-import github.alecsio.mmceaddons.common.exception.ConsistencyException;
 import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
 import hellfirepvp.modularmachinery.common.crafting.helper.ComponentRequirement;

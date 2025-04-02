@@ -1,6 +1,7 @@
 package github.alecsio.mmceaddons.common.tile.thaumcraft;
 
 import appeng.api.config.Actionable;
+import github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics.RequirementEssentia;
 import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentEssentiaProvider;
@@ -23,7 +24,7 @@ public class MEEssentiaInputBus extends MEEssentiaBus {
 
     @Nullable
     @Override
-    public MachineComponent<IRequirementHandler<EssentiaStack>> provideComponent() {
+    public MachineComponent<IRequirementHandler<RequirementEssentia>> provideComponent() {
         return new MachineComponentEssentiaProvider(IOType.INPUT, this);
     }
 

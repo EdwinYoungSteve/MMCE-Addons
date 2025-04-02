@@ -1,7 +1,9 @@
 package github.alecsio.mmceaddons.common.tile.thaumcraft;
 
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
+import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.RequirementVis;
 import github.alecsio.mmceaddons.common.tile.handler.AbstractMultiChunkHandler;
+import github.alecsio.mmceaddons.common.tile.handler.strategy.RandomChunkSelectionStrategy;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentVisProvider;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
@@ -10,7 +12,11 @@ import thaumcraft.api.aura.AuraHelper;
 
 import javax.annotation.Nullable;
 
-public abstract class TileVisProvider extends AbstractMultiChunkHandler implements MachineComponentTile {
+public abstract class TileVisProvider extends AbstractMultiChunkHandler<RequirementVis> implements MachineComponentTile {
+
+    protected TileVisProvider() {
+        super(new RandomChunkSelectionStrategy());
+    }
 
     public static class Input extends TileVisProvider {
         @Override

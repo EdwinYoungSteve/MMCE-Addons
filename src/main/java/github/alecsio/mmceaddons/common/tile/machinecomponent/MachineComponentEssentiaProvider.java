@@ -1,16 +1,17 @@
 package github.alecsio.mmceaddons.common.tile.machinecomponent;
 
 import github.alecsio.mmceaddons.common.crafting.component.registry.ModularMachineryAddonsComponents;
+import github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics.RequirementEssentia;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
-import thaumicenergistics.api.EssentiaStack;
 
-public class MachineComponentEssentiaProvider extends MachineComponent<IRequirementHandler<EssentiaStack>> {
-    private final IRequirementHandler<EssentiaStack> essentiaHandler;
+public class MachineComponentEssentiaProvider extends MachineComponent<IRequirementHandler<RequirementEssentia>> {
 
-    public MachineComponentEssentiaProvider(IOType ioType, IRequirementHandler<EssentiaStack> essentiaHandler) {
+    private final IRequirementHandler<RequirementEssentia> essentiaHandler;
+
+    public MachineComponentEssentiaProvider(IOType ioType, IRequirementHandler<RequirementEssentia> essentiaHandler) {
         super(ioType);
         this.essentiaHandler = essentiaHandler;
     }
@@ -21,7 +22,7 @@ public class MachineComponentEssentiaProvider extends MachineComponent<IRequirem
     }
 
     @Override
-    public IRequirementHandler<EssentiaStack> getContainerProvider() {
+    public IRequirementHandler<RequirementEssentia> getContainerProvider() {
         return this.essentiaHandler;
     }
 }

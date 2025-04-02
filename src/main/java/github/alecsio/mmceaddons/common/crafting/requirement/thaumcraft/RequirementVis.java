@@ -6,8 +6,8 @@ import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachin
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumcraft.RequirementTypeVis;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentVis;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Vis;
+import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentVisProvider;
-import github.alecsio.mmceaddons.common.tile.thaumcraft.TileVisProvider;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
@@ -39,12 +39,12 @@ public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis
     @Nonnull
     @Override
     public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        return getVisProviderFrom(component).canHandle(this, context.getMachineController().getPos()) ? CraftCheck.success() : CraftCheck.failure("a");
+        return getVisHandler(component).canHandle(this);
     }
 
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getVisProviderFrom(component).handle(this, context.getMachineController().getPos(), true));
+        ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getVisHandler(component).handle(this));
         return true;
     }
 
@@ -69,8 +69,8 @@ public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis
         return new JEIComponentVis(this.vis);
     }
 
-    private TileVisProvider getVisProviderFrom(ProcessingComponent<?> component) {
-        return (TileVisProvider) component.getComponent().getContainerProvider();
+    private IRequirementHandler<RequirementVis> getVisHandler(ProcessingComponent<?> component) {
+        return (IRequirementHandler<RequirementVis>) component.getComponent().getContainerProvider();
     }
 
     @Override

@@ -1,16 +1,17 @@
 package github.alecsio.mmceaddons.common.tile.machinecomponent;
 
 import github.alecsio.mmceaddons.common.crafting.component.registry.ModularMachineryAddonsComponents;
-import github.alecsio.mmceaddons.common.tile.nuclearcraft.TileRadiationProvider;
+import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementRadiation;
+import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 
-public class MachineComponentRadiationProvider extends MachineComponent<TileRadiationProvider> {
+public class MachineComponentRadiationProvider extends MachineComponent<IRequirementHandler<RequirementRadiation>> {
 
-    private final TileRadiationProvider radiationProvider;
+    private final IRequirementHandler<RequirementRadiation> radiationProvider;
 
-    public MachineComponentRadiationProvider(IOType ioType, TileRadiationProvider radiationProvider) {
+    public MachineComponentRadiationProvider(IOType ioType, IRequirementHandler<RequirementRadiation> radiationProvider) {
         super(ioType);
         this.radiationProvider = radiationProvider;
     }
@@ -21,7 +22,7 @@ public class MachineComponentRadiationProvider extends MachineComponent<TileRadi
     }
 
     @Override
-    public TileRadiationProvider getContainerProvider() {
+    public IRequirementHandler<RequirementRadiation> getContainerProvider() {
         return radiationProvider;
     }
 }

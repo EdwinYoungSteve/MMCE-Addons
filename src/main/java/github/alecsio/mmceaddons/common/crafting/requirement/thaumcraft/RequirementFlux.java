@@ -7,8 +7,8 @@ import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachin
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumcraft.RequirementTypeFlux;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentFlux;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Flux;
+import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentFluxProvider;
-import github.alecsio.mmceaddons.common.tile.thaumcraft.TileFluxProvider;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
@@ -71,12 +71,12 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
     @Nonnull
     @Override
     public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        return getFluxProviderFrom(component).canHandle(this, context.getMachineController().getPos()) ? CraftCheck.success() : CraftCheck.failure("a");
+        return getFluxHandler(component).canHandle(this);
     }
 
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> this.getFluxProviderFrom(component).handle(this, context.getMachineController().getPos(), true));
+        ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getFluxHandler(component).handle(this));
         return true;
     }
 
@@ -101,7 +101,7 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
         return new JEIComponentFlux(new Flux((float) this.amount), Flux.class); // todo: fix this mess
     }
 
-    private TileFluxProvider getFluxProviderFrom(ProcessingComponent<?> component) {
-        return (TileFluxProvider) component.getComponent().getContainerProvider();
+    private IRequirementHandler<RequirementFlux> getFluxHandler(ProcessingComponent<?> component) {
+        return (IRequirementHandler<RequirementFlux>) component.getComponent().getContainerProvider();
     }
 }

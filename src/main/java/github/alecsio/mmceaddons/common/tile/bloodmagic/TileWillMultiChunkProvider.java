@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
-public abstract class TileWillMultiChunkProvider extends AbstractMultiChunkHandler implements MachineComponentTile {
+public abstract class TileWillMultiChunkProvider extends AbstractMultiChunkHandler<RequirementWillMultiChunk> implements MachineComponentTile {
 
     public TileWillMultiChunkProvider() {
         super(new RandomChunkSelectionStrategy());

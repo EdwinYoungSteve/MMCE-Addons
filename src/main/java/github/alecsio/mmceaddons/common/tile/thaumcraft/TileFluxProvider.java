@@ -1,18 +1,21 @@
 package github.alecsio.mmceaddons.common.tile.thaumcraft;
 
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
+import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.RequirementFlux;
 import github.alecsio.mmceaddons.common.exception.ConsistencyException;
 import github.alecsio.mmceaddons.common.tile.handler.AbstractMultiChunkHandler;
+import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.handler.strategy.RandomChunkSelectionStrategy;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentFluxProvider;
 import hellfirepvp.modularmachinery.common.machine.IOType;
+import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
 import net.minecraft.util.math.BlockPos;
 import thaumcraft.api.aura.AuraHelper;
 
 import javax.annotation.Nullable;
 
-public abstract class TileFluxProvider extends AbstractMultiChunkHandler implements MachineComponentTile {
+public abstract class TileFluxProvider extends AbstractMultiChunkHandler<RequirementFlux> implements MachineComponentTile {
 
     public TileFluxProvider() {
         super(new RandomChunkSelectionStrategy());
@@ -33,7 +36,7 @@ public abstract class TileFluxProvider extends AbstractMultiChunkHandler impleme
     public static class Input extends TileFluxProvider {
         @Nullable
         @Override
-        public MachineComponentFluxProvider provideComponent() {
+        public MachineComponent<IRequirementHandler<RequirementFlux>> provideComponent() {
             return new MachineComponentFluxProvider(this, IOType.INPUT);
         }
 

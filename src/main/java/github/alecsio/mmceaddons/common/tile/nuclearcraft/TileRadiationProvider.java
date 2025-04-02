@@ -1,10 +1,14 @@
 package github.alecsio.mmceaddons.common.tile.nuclearcraft;
 
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
+import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementRadiation;
 import github.alecsio.mmceaddons.common.tile.handler.AbstractMultiChunkHandler;
+import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.handler.strategy.RandomChunkSelectionStrategy;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentRadiationProvider;
+import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
+import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
 import nc.capability.radiation.source.IRadiationSource;
 import nc.radiation.RadiationHelper;
@@ -12,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
-public abstract class TileRadiationProvider extends AbstractMultiChunkHandler implements MachineComponentTile {
+public abstract class TileRadiationProvider extends AbstractMultiChunkHandler<RequirementRadiation> implements MachineComponentTile {
 
     public TileRadiationProvider() {
         super(new RandomChunkSelectionStrategy());
@@ -30,13 +34,13 @@ public abstract class TileRadiationProvider extends AbstractMultiChunkHandler im
     public static class Input extends TileRadiationProvider {
         @Nullable
         @Override
-        public MachineComponentRadiationProvider provideComponent() {
+        public MachineComponent<IRequirementHandler<RequirementRadiation>> provideComponent() {
             return new MachineComponentRadiationProvider(IOType.INPUT, this);
         }
 
         @Override
-        public boolean canHandle(IMultiChunkRequirement requirement, BlockPos controllerPos) {
-            return true;
+        public CraftCheck canHandle(RequirementRadiation requirement) {
+            return CraftCheck.success();
         }
 
         @Override
@@ -60,7 +64,7 @@ public abstract class TileRadiationProvider extends AbstractMultiChunkHandler im
     public static class Output extends TileRadiationProvider {
         @Nullable
         @Override
-        public MachineComponentRadiationProvider provideComponent() {
+        public MachineComponent<IRequirementHandler<RequirementRadiation>> provideComponent() {
             return new MachineComponentRadiationProvider(IOType.OUTPUT, this);
         }
 

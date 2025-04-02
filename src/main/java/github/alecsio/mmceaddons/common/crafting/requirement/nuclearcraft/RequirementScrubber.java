@@ -1,15 +1,18 @@
 package github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft;
 
-import github.alecsio.mmceaddons.common.crafting.component.ComponentRadiation;
+import github.alecsio.mmceaddons.common.crafting.component.ComponentScrubber;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.crafting.requirement.Validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeScrubber;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
-import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentRadiationProvider;
-import github.alecsio.mmceaddons.common.tile.nuclearcraft.TileScrubberProvider;
-import hellfirepvp.modularmachinery.common.crafting.helper.*;
+import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentScrubberProvider;
+import hellfirepvp.modularmachinery.common.crafting.helper.ComponentRequirement;
+import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
+import hellfirepvp.modularmachinery.common.crafting.helper.ProcessingComponent;
+import hellfirepvp.modularmachinery.common.crafting.helper.RecipeCraftingContext;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
@@ -44,20 +47,18 @@ public class RequirementScrubber extends ComponentRequirement.PerTick<Radiation,
     @Nonnull
     @Override
     public CraftCheck doIOTick(ProcessingComponent<?> processingComponent, RecipeCraftingContext recipeCraftingContext) {
-        TileScrubberProvider scrubberProvider = getProviderFrom(processingComponent);
+        IRequirementHandler<RequirementScrubber> scrubberHandler = getRadiationHandler(processingComponent);
 
-        if (!scrubberProvider.canHandle(this, recipeCraftingContext.getMachineController().getPos())) {
-            return CraftCheck.failure("cannot handle this component"); //todo: fix
-        }
-        scrubberProvider.handle(this, recipeCraftingContext.getMachineController().getPos(), true);
+        scrubberHandler.handle(this);
+
         return CraftCheck.success();
     }
 
     @Override
     public boolean isValidComponent(ProcessingComponent<?> processingComponent, RecipeCraftingContext recipeCraftingContext) {
         MachineComponent<?> cmp = processingComponent.getComponent();
-        return cmp.getComponentType() instanceof ComponentRadiation &&
-                cmp instanceof MachineComponentRadiationProvider &&
+        return cmp.getComponentType() instanceof ComponentScrubber &&
+                cmp instanceof MachineComponentScrubberProvider &&
                 cmp.ioType == getActionType();
     }
 
@@ -71,8 +72,8 @@ public class RequirementScrubber extends ComponentRequirement.PerTick<Radiation,
         return deepCopy();
     }
 
-    private TileScrubberProvider getProviderFrom(ProcessingComponent<?> component) {
-        return (TileScrubberProvider) component.getComponent().getContainerProvider();
+    private IRequirementHandler<RequirementScrubber> getRadiationHandler(ProcessingComponent<?> component) {
+        return (IRequirementHandler<RequirementScrubber> ) component.getComponent().getContainerProvider();
     }
 
     @Nonnull
@@ -99,11 +100,6 @@ public class RequirementScrubber extends ComponentRequirement.PerTick<Radiation,
     @Override
     public IOType getType() {
         return actionType;
-    }
-
-    @Override
-    public boolean isPerTick() {
-        return true;
     }
 
     @Override

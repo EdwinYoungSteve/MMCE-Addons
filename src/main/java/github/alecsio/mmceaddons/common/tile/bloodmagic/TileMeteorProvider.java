@@ -2,6 +2,7 @@ package github.alecsio.mmceaddons.common.tile.bloodmagic;
 
 import WayofTime.bloodmagic.entity.projectile.EntityMeteor;
 import WayofTime.bloodmagic.meteor.Meteor;
+import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementMeteor;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentMeteorProvider;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
@@ -13,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
-public abstract class TileMeteorProvider extends TileColorableMachineComponent implements MachineComponentTile, IRequirementHandler<Meteor> {
+public abstract class TileMeteorProvider extends TileColorableMachineComponent implements MachineComponentTile, IRequirementHandler<RequirementMeteor> {
 
     public static class Output extends TileMeteorProvider {
 
@@ -26,7 +27,8 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
         }
 
         @Override
-        public CraftCheck canHandle(Meteor meteor) {
+        public CraftCheck canHandle(RequirementMeteor requirement) {
+            Meteor meteor = requirement.getMeteor();
             if (currentMeteor != null && !currentMeteor.isDead) {return CraftCheck.failure("Meteor is still alive");}
             int radius = (int) (double) meteor.getRadius();
             double floatingRadius = meteor.getRadius();
@@ -52,7 +54,8 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
         }
 
         @Override
-        public void handle(Meteor meteor) {
+        public void handle(RequirementMeteor requirement) {
+            Meteor meteor = requirement.getMeteor();
             this.currentMeteor = new EntityMeteor(world, pos.getX(), 260, pos.getZ(), 0, -0.1, 0, 1, 0, 0.2);
             this.currentMeteor.setMeteorStack(meteor.getCatalystStack());
             world.spawnEntity(this.currentMeteor);

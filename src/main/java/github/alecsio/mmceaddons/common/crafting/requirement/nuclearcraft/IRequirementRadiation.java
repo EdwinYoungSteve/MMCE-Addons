@@ -6,5 +6,4 @@ public interface IRequirementRadiation {
     double getAmount();
     IOType getType();
     int getChunkRange();
-    boolean isPerTick();
 }

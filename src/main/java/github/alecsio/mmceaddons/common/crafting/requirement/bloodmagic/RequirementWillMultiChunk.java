@@ -9,6 +9,7 @@ import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.Re
 import github.alecsio.mmceaddons.common.exception.ConsistencyException;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentWill;
 import github.alecsio.mmceaddons.common.tile.bloodmagic.TileWillMultiChunkProvider;
+import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
@@ -69,8 +70,7 @@ public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, R
         if (!canStartCrafting(component, context, Collections.emptyList()).isSuccess()) return false;
 
         if (getActionType() == IOType.INPUT) {
-            TileWillMultiChunkProvider willProvider = getProviderFromComponent(component);
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> willProvider.handle(this, context.getMachineController().getPos(), true));
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getWillHandler(component).handle(this));
         }
         return true;
     }
@@ -79,8 +79,7 @@ public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, R
     @Override
     public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.OUTPUT) {
-            TileWillMultiChunkProvider willProvider = getProviderFromComponent(component);
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> willProvider.handle(this, context.getMachineController().getPos(), true));
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getWillHandler(component).handle(this));
         }
         return CraftCheck.success();
     }
@@ -88,12 +87,7 @@ public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, R
     @Nonnull
     @Override
     public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        TileWillMultiChunkProvider willProvider = getProviderFromComponent(component);
-
-        if (!willProvider.canHandle(this, context.getMachineController().getPos())) {
-            return CraftCheck.failure("cannot handle this component"); // todo fix:
-        }
-        return CraftCheck.success();
+        return getWillHandler(component).canHandle(this);
     }
 
     @Override
@@ -117,8 +111,8 @@ public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, R
         return new JEIComponentWill(this);
     }
 
-    private TileWillMultiChunkProvider getProviderFromComponent(ProcessingComponent<?> component) {
-        return (TileWillMultiChunkProvider) component.getComponent().getContainerProvider();
+    private IRequirementHandler<RequirementWillMultiChunk> getWillHandler(ProcessingComponent<?> component) {
+        return (IRequirementHandler<RequirementWillMultiChunk>) component.getComponent().getContainerProvider();
     }
 
     @Override

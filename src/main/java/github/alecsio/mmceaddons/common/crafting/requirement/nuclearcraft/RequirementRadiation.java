@@ -7,7 +7,7 @@ import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachin
 import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
-import github.alecsio.mmceaddons.common.tile.nuclearcraft.TileRadiationProvider;
+import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentRadiationProvider;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
@@ -55,16 +55,13 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
     @Nonnull
     @Override
     public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        if (!getRadiationProvider(component).canHandle(this, context.getMachineController().getPos())) {
-            return CraftCheck.failure("cannot handle this component"); // todo fix:
-        }
-        return CraftCheck.success();
+        return getRadiationHandler(component).canHandle(this);
     }
 
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.INPUT) {
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getRadiationProvider(component).handle(this, context.getMachineController().getPos(), true));
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getRadiationHandler(component).handle(this));
         }
         return true;
     }
@@ -73,7 +70,7 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
     @Override
     public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.OUTPUT) {
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getRadiationProvider(component).handle(this, context.getMachineController().getPos(), true));
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getRadiationHandler(component).handle(this));
         }
 
         return CraftCheck.success();
@@ -106,11 +103,6 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
     }
 
     @Override
-    public boolean isPerTick() {
-        return false;
-    }
-
-    @Override
     public double getAmount() {
         return amount;
     }
@@ -130,7 +122,7 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
         return maxPerChunk;
     }
 
-    private TileRadiationProvider getRadiationProvider(ProcessingComponent<?> component) {
-        return (TileRadiationProvider) component.getComponent().getContainerProvider();
+    private IRequirementHandler<RequirementRadiation> getRadiationHandler(ProcessingComponent<?> component) {
+        return (IRequirementHandler<RequirementRadiation>) component.getComponent().getContainerProvider();
     }
 }

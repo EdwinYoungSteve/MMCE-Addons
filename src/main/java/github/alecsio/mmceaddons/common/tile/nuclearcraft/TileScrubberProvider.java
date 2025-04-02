@@ -1,6 +1,7 @@
 package github.alecsio.mmceaddons.common.tile.nuclearcraft;
 
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
+import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementScrubber;
 import github.alecsio.mmceaddons.common.tile.handler.AbstractMultiChunkHandler;
 import github.alecsio.mmceaddons.common.tile.handler.strategy.SequentialChunkSelectionStrategy;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentScrubberProvider;
@@ -12,9 +13,9 @@ import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
-public class TileScrubberProvider extends AbstractMultiChunkHandler implements MachineComponentTile {
+public class TileScrubberProvider extends AbstractMultiChunkHandler<RequirementScrubber> implements MachineComponentTile {
 
-    protected TileScrubberProvider() {
+    public TileScrubberProvider() {
         super(new SequentialChunkSelectionStrategy());
     }
 

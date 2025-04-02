@@ -1,15 +1,17 @@
 package github.alecsio.mmceaddons.common.tile.machinecomponent;
 
 import github.alecsio.mmceaddons.common.crafting.component.registry.ModularMachineryAddonsComponents;
-import github.alecsio.mmceaddons.common.tile.bloodmagic.TileMeteorProvider;
+import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementMeteor;
+import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 
-public class MachineComponentMeteorProvider extends MachineComponent<TileMeteorProvider> {
-    private final TileMeteorProvider tileMeteorProvider;
+public class MachineComponentMeteorProvider extends MachineComponent<IRequirementHandler<RequirementMeteor>> {
 
-    public MachineComponentMeteorProvider(IOType ioType, TileMeteorProvider tileMeteorProvider) {
+    private final IRequirementHandler<RequirementMeteor> tileMeteorProvider;
+
+    public MachineComponentMeteorProvider(IOType ioType, IRequirementHandler<RequirementMeteor> tileMeteorProvider) {
         super(ioType);
         this.tileMeteorProvider = tileMeteorProvider;
     }
@@ -20,7 +22,7 @@ public class MachineComponentMeteorProvider extends MachineComponent<TileMeteorP
     }
 
     @Override
-    public TileMeteorProvider getContainerProvider() {
+    public IRequirementHandler<RequirementMeteor> getContainerProvider() {
         return tileMeteorProvider;
     }
 }

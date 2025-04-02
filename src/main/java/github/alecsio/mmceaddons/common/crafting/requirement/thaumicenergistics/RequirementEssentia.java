@@ -16,7 +16,6 @@ import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
 import hellfirepvp.modularmachinery.common.util.ResultChance;
 import thaumcraft.api.aspects.Aspect;
-import thaumicenergistics.api.EssentiaStack;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -55,12 +54,12 @@ public class RequirementEssentia extends ComponentRequirement<Essentia, Requirem
     @Nonnull
     @Override
     public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        return getEssentiaHandler(component).canHandle(this.essentia);
+        return getEssentiaHandler(component).canHandle(this);
     }
 
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getEssentiaHandler(component).handle(this.essentia));
+        ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getEssentiaHandler(component).handle(this));
         return true;
     }
 
@@ -86,7 +85,7 @@ public class RequirementEssentia extends ComponentRequirement<Essentia, Requirem
     }
 
     @SuppressWarnings("unchecked")
-    private IRequirementHandler<EssentiaStack> getEssentiaHandler(ProcessingComponent<?> component) {
-        return (IRequirementHandler<EssentiaStack>) component.getComponent().getContainerProvider();
+    private IRequirementHandler<RequirementEssentia> getEssentiaHandler(ProcessingComponent<?> component) {
+        return (IRequirementHandler<RequirementEssentia>) component.getComponent().getContainerProvider();
     }
 }

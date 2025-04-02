@@ -8,6 +8,7 @@ import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.Re
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentMeteor;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Meteor;
 import github.alecsio.mmceaddons.common.tile.bloodmagic.TileMeteorProvider;
+import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
@@ -55,16 +56,14 @@ public class RequirementMeteor extends ComponentRequirement<Meteor, RequirementT
     @Nonnull
     @Override
     public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        TileMeteorProvider tileMeteorProvider = (TileMeteorProvider) component.getComponent().getContainerProvider();
-        return tileMeteorProvider.canHandle(meteor);
+        return getMeteorHandler(component).canHandle(this);
     }
 
     @Nonnull
     @Override
     public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.OUTPUT) {
-            TileMeteorProvider tileMeteorProvider = (TileMeteorProvider) component.getComponent().getContainerProvider();
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> tileMeteorProvider.handle(this.meteor));
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getMeteorHandler(component).handle(this));
         }
 
         return CraftCheck.success();
@@ -90,5 +89,13 @@ public class RequirementMeteor extends ComponentRequirement<Meteor, RequirementT
     @Override
     public JEIComponent<Meteor> provideJEIComponent() {
         return new JEIComponentMeteor(this.meteor);
+    }
+
+    public Meteor getMeteor() {
+        return meteor;
+    }
+
+    private IRequirementHandler<RequirementMeteor> getMeteorHandler(ProcessingComponent<?> component) {
+        return (IRequirementHandler<RequirementMeteor>) component.getComponent().getContainerProvider();
     }
 }
