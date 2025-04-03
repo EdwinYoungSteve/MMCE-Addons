@@ -2,18 +2,11 @@ package github.alecsio.mmceaddons.common.integration.jei;
 
 import com.google.common.collect.Lists;
 import github.alecsio.mmceaddons.common.base.Mods;
-import github.alecsio.mmceaddons.common.integration.jei.helper.EssentiaHelper;
-import github.alecsio.mmceaddons.common.integration.jei.helper.FluxHelper;
-import github.alecsio.mmceaddons.common.integration.jei.helper.MeteorHelper;
-import github.alecsio.mmceaddons.common.integration.jei.helper.RadiationHelper;
-import github.alecsio.mmceaddons.common.integration.jei.ingredient.Essentia;
-import github.alecsio.mmceaddons.common.integration.jei.ingredient.Flux;
-import github.alecsio.mmceaddons.common.integration.jei.ingredient.Meteor;
-import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
-import github.alecsio.mmceaddons.common.integration.jei.render.EssentiaRenderer;
-import github.alecsio.mmceaddons.common.integration.jei.render.FluxRenderer;
-import github.alecsio.mmceaddons.common.integration.jei.render.MeteorRenderer;
-import github.alecsio.mmceaddons.common.integration.jei.render.RadiationRenderer;
+import github.alecsio.mmceaddons.common.integration.jei.helper.*;
+import github.alecsio.mmceaddons.common.integration.jei.helper.base.BaseIngredientHelper;
+import github.alecsio.mmceaddons.common.integration.jei.ingredient.*;
+import github.alecsio.mmceaddons.common.integration.jei.render.*;
+import github.alecsio.mmceaddons.common.integration.jei.render.base.BaseIngredientRenderer;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -33,6 +26,10 @@ public class JeiPlugin implements IModPlugin {
 
     @Override
     public void registerIngredients(@NotNull IModIngredientRegistration registry) {
+
+        registry.register(Dimension.class, Lists.newArrayList(), new DimensionHelper(), new DimensionRenderer());
+        registry.register(Biome.class, Lists.newArrayList(), new BiomeHelper(), new BiomeRenderer());
+
         if (Mods.NUCLEARCRAFT.isPresent()) {
             registry.register(Radiation.class, Lists.newArrayList(), new RadiationHelper(), new RadiationRenderer());
         }
