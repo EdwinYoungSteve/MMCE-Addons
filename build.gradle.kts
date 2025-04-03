@@ -205,6 +205,7 @@ dependencies {
     implementation("curse.maven:thaum-223628:2629023")
     implementation("curse.maven:baubles-227083:2518667")
     implementation("curse.maven:projecte-226410:2702991")
+    implementation(rfg.deobf("curse.maven:spark-361579:3542217"))
 
     implementation(rfg.deobf("curse.maven:contentTweaker-237065:3331364"))
     implementation(rfg.deobf("curse.maven:contentTweakerDependency-246996:3440963"))

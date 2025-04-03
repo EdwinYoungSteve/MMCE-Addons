@@ -9,20 +9,15 @@ import java.util.UUID;
 public class EssentiaHelper extends BaseIngredientHelper<Essentia> {
 
     @Override
-    public String getResourceId(@Nonnull Essentia t) {
-        return t.getAspect().getImage().getPath();
-    }
-
-    @Override
-    @Nonnull
-    public String getDisplayName(@Nonnull Essentia essentiaStack) {
-        return essentiaStack.getAspect().getName();
-    }
-
-    @Override
     @Nonnull
     public String getUniqueId(@Nonnull Essentia essentiaStack) {
-        return essentiaStack.getAspect().getTag() + UUID.randomUUID();
+        return essentiaStack.getAspect().getTag();
+    }
+
+    @Override
+    @Nonnull
+    public String getResourceId(@Nonnull Essentia t) {
+        return getUniqueId(t);
     }
 
     @Override

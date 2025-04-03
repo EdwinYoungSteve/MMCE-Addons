@@ -3,7 +3,7 @@ package github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic;
 import WayofTime.bloodmagic.soul.EnumDemonWillType;
 import github.alecsio.mmceaddons.common.crafting.component.ComponentWillMultiChunk;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
-import github.alecsio.mmceaddons.common.crafting.requirement.Validator.RequirementValidator;
+import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeWillMultiChunk;
 import github.alecsio.mmceaddons.common.exception.ConsistencyException;

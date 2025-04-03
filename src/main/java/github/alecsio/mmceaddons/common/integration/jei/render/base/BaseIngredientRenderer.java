@@ -1,20 +1,26 @@
 package github.alecsio.mmceaddons.common.integration.jei.render.base;
 
+import com.google.common.collect.Lists;
 import github.alecsio.mmceaddons.common.integration.jei.JeiPlugin;
+import github.alecsio.mmceaddons.common.integration.jei.ingredient.Biome;
+import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.ITooltippable;
 import mezz.jei.api.gui.IDrawableBuilder;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
-public abstract class BaseIngredientRenderer<T> implements IIngredientRenderer<T> {
+public abstract class BaseIngredientRenderer<T extends ITooltippable> implements IIngredientRenderer<T> {
     protected IDrawableBuilder builder;
 
     @Override
-    public void render(Minecraft minecraft, int x, int y, @Nullable T toRender) {
+    public void render(@Nonnull Minecraft minecraft, int x, int y, @Nullable T toRender) {
         if (toRender == null) {return;}
 
         GlStateManager.pushMatrix();
@@ -32,6 +38,12 @@ public abstract class BaseIngredientRenderer<T> implements IIngredientRenderer<T
         GlStateManager.popMatrix();
         GlStateManager.disableBlend();
         RenderHelper.disableStandardItemLighting();
+    }
+
+    @Override
+    @Nonnull
+    public List<String> getTooltip(@Nonnull Minecraft minecraft, @Nonnull T ingredient, @Nonnull ITooltipFlag tooltipFlag) {
+        return ingredient.getTooltip();
     }
 
     public abstract ResourceLocation getTexture(T ingredient);

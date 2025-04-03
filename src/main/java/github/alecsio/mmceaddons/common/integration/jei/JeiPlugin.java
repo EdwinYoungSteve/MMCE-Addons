@@ -9,39 +9,54 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.ingredients.IIngredientHelper;
+import mezz.jei.api.ingredients.IIngredientRenderer;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
-import stanhebben.zenscript.annotations.NotNull;
+import mezz.jei.api.recipe.IIngredientType;
+
+import javax.annotation.Nonnull;
 
 @JEIPlugin
 public class JeiPlugin implements IModPlugin {
 
+    private static final int DEFAULT_AMOUNT_UNUSED = 0;
     public static IGuiHelper GUI_HELPER;
 
+    private IModIngredientRegistration registry;
+
     @Override
-    public void register(IModRegistry registry) {
+    public void register(@Nonnull IModRegistry registry) {
         GUI_HELPER = registry.getJeiHelpers().getGuiHelper();
     }
 
     @Override
-    public void registerIngredients(@NotNull IModIngredientRegistration registry) {
+    public void registerIngredients(@Nonnull IModIngredientRegistration registry) {
+        this.registry = registry; // Storing it temporarily so I can avoid passing it 1000 times to registerIngredient :)
 
-        registry.register(Dimension.class, Lists.newArrayList(), new DimensionHelper(), new DimensionRenderer());
-        registry.register(Biome.class, Lists.newArrayList(), new BiomeHelper(), new BiomeRenderer());
+        registerIngredient(new Biome(), new BiomeHelper(), new BiomeRenderer());
+        registerIngredient(new Dimension(), new DimensionHelper(), new DimensionRenderer());
 
         if (Mods.NUCLEARCRAFT.isPresent()) {
-            registry.register(Radiation.class, Lists.newArrayList(), new RadiationHelper(), new RadiationRenderer());
+            registerIngredient(new Radiation(), new RadiationHelper(), new RadiationRenderer());
         }
 
         if (Mods.BLOODMAGIC.isPresent()) {
-            registry.register(Meteor.class, Lists.newArrayList(), new MeteorHelper(), new MeteorRenderer());
+            registerIngredient(new Meteor(), new MeteorHelper(), new MeteorRenderer());
         }
 
         if (Mods.THAUMICENERGISTICS.isPresent()) {
-            registry.register(Essentia.class, Lists.newArrayList(), new EssentiaHelper(), new EssentiaRenderer());
+            registerIngredient(new Essentia(), new EssentiaHelper(), new EssentiaRenderer());
         }
 
         if (Mods.THAUMCRAFT.isPresent()) {
-            registry.register(Flux.class, Lists.newArrayList(), new FluxHelper(), new FluxRenderer());
+            registerIngredient(new Flux(DEFAULT_AMOUNT_UNUSED, DEFAULT_AMOUNT_UNUSED), new FluxHelper(), new FluxRenderer());
+            registerIngredient(new Vis(), new VisHelper(), new VisRenderer());
         }
+
+        this.registry = null;
+    }
+
+    private <T> void registerIngredient(IIngredientType<T> ingredientType, IIngredientHelper<T> ingredientHelper, IIngredientRenderer<T> ingredientRenderer) {
+        registry.register(ingredientType, Lists.newArrayList(), ingredientHelper, ingredientRenderer);
     }
 }

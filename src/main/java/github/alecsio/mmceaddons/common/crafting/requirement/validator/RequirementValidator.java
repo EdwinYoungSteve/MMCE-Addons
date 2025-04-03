@@ -1,4 +1,4 @@
-package github.alecsio.mmceaddons.common.crafting.requirement.Validator;
+package github.alecsio.mmceaddons.common.crafting.requirement.validator;
 
 import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
 

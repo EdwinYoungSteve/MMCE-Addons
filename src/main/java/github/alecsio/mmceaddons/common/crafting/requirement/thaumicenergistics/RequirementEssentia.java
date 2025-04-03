@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics;
 
 import github.alecsio.mmceaddons.common.crafting.component.ComponentEssentia;
-import github.alecsio.mmceaddons.common.crafting.requirement.Validator.RequirementValidator;
+import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumicenergistics.RequirementTypeEssentia;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentEssentia;

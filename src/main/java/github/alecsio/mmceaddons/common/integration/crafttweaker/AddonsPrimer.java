@@ -19,6 +19,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenRegister
 @ZenExpansion("mods.modularmachinery.RecipePrimer")
 public class AddonsPrimer {
+
     @FunctionalInterface
     private interface RequirementSupplier<T extends ComponentRequirement<?, ?>> {
         T get() throws ConsistencyException;

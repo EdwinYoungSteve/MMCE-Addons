@@ -3,25 +3,25 @@ package github.alecsio.mmceaddons.common.integration.jei.helper;
 import github.alecsio.mmceaddons.common.integration.jei.helper.base.BaseIngredientHelper;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
 
+import javax.annotation.Nonnull;
+
 public class RadiationHelper extends BaseIngredientHelper<Radiation> {
 
     @Override
-    public String getDisplayName(Radiation t) {
+    @Nonnull
+    public String getUniqueId(@Nonnull Radiation t) {
         return "Radiation";
     }
 
     @Override
-    public String getUniqueId(Radiation t) {
-        return "Radiation";
+    @Nonnull
+    public String getResourceId(@Nonnull Radiation t) {
+        return getUniqueId(t);
     }
 
     @Override
-    public String getResourceId(Radiation t) {
-        return null;
-    }
-
-    @Override
-    public Radiation copyIngredient(Radiation t) {
-        return t;
+    @Nonnull
+    public Radiation copyIngredient(@Nonnull Radiation t) {
+        return new Radiation(t.getAmount(), t.getChunkRange(), t.isScrubber());
     }
 }

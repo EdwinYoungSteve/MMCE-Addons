@@ -3,6 +3,7 @@ package github.alecsio.mmceaddons.common.integration.jei.helper.base;
 import com.google.common.collect.Iterables;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
+import github.alecsio.mmceaddons.common.integration.jei.ingredient.Biome;
 import mezz.jei.api.ingredients.IIngredientHelper;
 
 import javax.annotation.Nonnull;
@@ -18,6 +19,12 @@ public abstract class BaseIngredientHelper<T extends IRequiresEquals<T>> impleme
             if (ingredient.equalsTo(toMatch)) {return ingredient;};
         }
         return null;
+    }
+
+    @Override
+    @Nonnull
+    public String getDisplayName(@Nonnull T ingredient) {
+        return ingredient.getClass().getSimpleName();
     }
 
     @Override

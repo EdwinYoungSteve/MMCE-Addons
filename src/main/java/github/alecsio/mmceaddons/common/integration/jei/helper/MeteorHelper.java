@@ -3,25 +3,26 @@ package github.alecsio.mmceaddons.common.integration.jei.helper;
 import github.alecsio.mmceaddons.common.integration.jei.helper.base.BaseIngredientHelper;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Meteor;
 
+import javax.annotation.Nonnull;
+
 public class MeteorHelper extends BaseIngredientHelper<Meteor> {
 
     @Override
-    public String getDisplayName(Meteor t) {
+    @Nonnull
+    public String getUniqueId(@Nonnull Meteor meteor) {
         return "Meteor";
     }
 
     @Override
-    public String getUniqueId(Meteor t) {
-        return "Meteor";
+    @Nonnull
+    public String getResourceId(@Nonnull Meteor meteor) {
+        return getUniqueId(meteor);
     }
 
     @Override
-    public String getResourceId(Meteor t) {
-        return null;
-    }
-
-    @Override
-    public Meteor copyIngredient(Meteor t) {
-        return t;
+    @Nonnull
+    public Meteor copyIngredient(@Nonnull Meteor meteor) {
+        // Yes, I know, the components and so on...
+        return new Meteor(meteor.getCatalystStack(), meteor.getComponents(), meteor.getExplosionStrength(), meteor.getRadius());
     }
 }

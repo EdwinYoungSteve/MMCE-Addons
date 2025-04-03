@@ -10,8 +10,8 @@ import java.awt.*;
 
 public class JEIComponentRadiation extends JEIComponentBase<Radiation> {
 
-    public JEIComponentRadiation(IRequirementRadiation requirementRadiation) {
-        super(new Radiation(requirementRadiation.getAmount(), requirementRadiation.getType(), requirementRadiation.getChunkRange()), Radiation.class);
+    public JEIComponentRadiation(IRequirementRadiation requirementRadiation, boolean scrubber) {
+        super(new Radiation(requirementRadiation.getAmount(), requirementRadiation.getChunkRange(), scrubber), Radiation.class);
     }
 
     @Override

@@ -2,7 +2,7 @@ package github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft;
 
 import github.alecsio.mmceaddons.common.crafting.component.ComponentFlux;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
-import github.alecsio.mmceaddons.common.crafting.requirement.Validator.RequirementValidator;
+import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumcraft.RequirementTypeFlux;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentFlux;
@@ -98,7 +98,7 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
 
     @Override
     public JEIComponent<Flux> provideJEIComponent() {
-        return new JEIComponentFlux(new Flux((float) this.amount), Flux.class); // todo: fix this mess
+        return new JEIComponentFlux(new Flux((float) this.amount, chunkRange), Flux.class); // todo: fix this mess
     }
 
     @SuppressWarnings("unchecked")

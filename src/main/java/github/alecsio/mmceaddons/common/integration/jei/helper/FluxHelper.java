@@ -3,27 +3,26 @@ package github.alecsio.mmceaddons.common.integration.jei.helper;
 import github.alecsio.mmceaddons.common.integration.jei.helper.base.BaseIngredientHelper;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Flux;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 public class FluxHelper extends BaseIngredientHelper<Flux> {
 
     @Override
-    public String getDisplayName(Flux flux) {
-        return "Flux";
+    @Nonnull
+    public String getUniqueId(@Nonnull Flux flux) {
+        return getDisplayName(flux);
     }
 
     @Override
-    public String getUniqueId(Flux flux) {
-        return UUID.randomUUID().toString();
+    @Nonnull
+    public String getResourceId(@Nonnull Flux flux) {
+        return getUniqueId(flux);
     }
 
     @Override
-    public String getResourceId(Flux flux) {
-        return null;
-    }
-
-    @Override
-    public Flux copyIngredient(Flux flux) {
-        return new Flux(flux.amount());
+    @Nonnull
+    public Flux copyIngredient(@Nonnull Flux flux) {
+        return new Flux(flux.amount(), flux.chunkRange());
     }
 }
