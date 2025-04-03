@@ -14,7 +14,7 @@ public class TileBiomeProvider extends TileColorableMachineComponent implements 
 
     @Override
     public CraftCheck canHandle(RequirementBiome requirement) {
-        return this.world.getBiome(this.pos).getRegistryName().getPath().equalsIgnoreCase(requirement.getBiome().getRegistryName()) ? CraftCheck.success() : CraftCheck.failure("lmfao") ;
+        return this.world.getBiome(this.getPos()).getRegistryName().toString().equalsIgnoreCase(requirement.getBiome().getRegistryName()) ? CraftCheck.success() : CraftCheck.failure("lmfao") ;
     }
 
     @Override
