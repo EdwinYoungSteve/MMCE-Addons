@@ -23,16 +23,11 @@ public class RegistryItems {
         ITEM_BLOCKS.forEach(RegistryItems::register);
     }
 
-    private static <T extends Item> T register(T item) {
+    private static <T extends Item> void register(T item) {
         ITEM_MODEL_REGISTER.add(item);
-        return item;
     }
 
     private static void registerItemModels() {
-        ITEM_MODEL_REGISTER.forEach(ModularMachineryAddons.proxy::registerItemModel);
-    }
-
-    private static void registerItemBlockModels() {
         ITEM_MODEL_REGISTER.forEach(ModularMachineryAddons.proxy::registerItemModel);
     }
 }

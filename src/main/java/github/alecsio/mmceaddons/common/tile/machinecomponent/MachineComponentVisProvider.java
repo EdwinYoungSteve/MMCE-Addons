@@ -5,24 +5,15 @@ import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.Requirem
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;
-import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 
-public class MachineComponentVisProvider extends MachineComponent<IRequirementHandler<RequirementVis>> {
+public class MachineComponentVisProvider extends BaseMachineComponent<RequirementVis> {
 
-    private final IRequirementHandler<RequirementVis> tileVisProvider;
-
-    public MachineComponentVisProvider(IOType ioType, IRequirementHandler<RequirementVis> tileVisProvider) {
-        super(ioType);
-        this.tileVisProvider = tileVisProvider;
+    public MachineComponentVisProvider(IOType ioType, IRequirementHandler<RequirementVis> visHandler) {
+        super(ioType, visHandler);
     }
 
     @Override
     public ComponentType getComponentType() {
         return ModularMachineryAddonsComponents.COMPONENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsComponents.KEY_COMPONENT_VIS);
-    }
-
-    @Override
-    public IRequirementHandler<RequirementVis> getContainerProvider() {
-        return this.tileVisProvider;
     }
 }

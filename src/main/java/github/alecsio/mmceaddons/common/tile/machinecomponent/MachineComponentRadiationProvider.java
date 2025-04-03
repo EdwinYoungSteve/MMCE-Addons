@@ -5,24 +5,15 @@ import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.Requir
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;
-import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 
-public class MachineComponentRadiationProvider extends MachineComponent<IRequirementHandler<RequirementRadiation>> {
+public class MachineComponentRadiationProvider extends BaseMachineComponent<RequirementRadiation> {
 
-    private final IRequirementHandler<RequirementRadiation> radiationProvider;
-
-    public MachineComponentRadiationProvider(IOType ioType, IRequirementHandler<RequirementRadiation> radiationProvider) {
-        super(ioType);
-        this.radiationProvider = radiationProvider;
+    public MachineComponentRadiationProvider(IOType ioType, IRequirementHandler<RequirementRadiation> radiationHandler) {
+        super(ioType, radiationHandler);
     }
 
     @Override
     public ComponentType getComponentType() {
         return ModularMachineryAddonsComponents.COMPONENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsComponents.KEY_COMPONENT_RADIATION);
-    }
-
-    @Override
-    public IRequirementHandler<RequirementRadiation> getContainerProvider() {
-        return radiationProvider;
     }
 }

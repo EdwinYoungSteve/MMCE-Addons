@@ -1,7 +1,6 @@
 package github.alecsio.mmceaddons.common.crafting.requirement;
 
 import github.alecsio.mmceaddons.common.crafting.component.ComponentDimension;
-import github.alecsio.mmceaddons.common.crafting.requirement.Validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.RequirementTypeDimension;
 import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
@@ -60,7 +59,7 @@ public class RequirementDimension extends ComponentRequirement<Dimension, Requir
     @Nonnull
     @Override
     public String getMissingComponentErrorMessage(IOType ioType) {
-        return "";
+        return "error.modularmachineryaddons.component.invalid.dimension";
     }
 
     @Override
@@ -72,6 +71,7 @@ public class RequirementDimension extends ComponentRequirement<Dimension, Requir
         return dimension;
     }
 
+    @SuppressWarnings("unchecked")
     private IRequirementHandler<RequirementDimension> getDimensionHandler(ProcessingComponent<?> component) {
         return (IRequirementHandler<RequirementDimension>) component.getComponent().getContainerProvider();
     }

@@ -9,12 +9,13 @@ import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
 import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineComponent;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class TileBiomeProvider extends TileColorableMachineComponent implements MachineComponentTile, IRequirementHandler<RequirementBiome> {
 
     @Override
     public CraftCheck canHandle(RequirementBiome requirement) {
-        return this.world.getBiome(this.getPos()).getRegistryName().toString().equalsIgnoreCase(requirement.getBiome().getRegistryName()) ? CraftCheck.success() : CraftCheck.failure("lmfao") ;
+        return Objects.requireNonNull(this.world.getBiome(this.getPos()).getRegistryName()).toString().equalsIgnoreCase(requirement.getBiome().getRegistryName()) ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.biome") ;
     }
 
     @Override

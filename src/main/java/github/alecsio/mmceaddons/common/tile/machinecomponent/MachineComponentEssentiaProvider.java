@@ -5,24 +5,15 @@ import github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics.
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;
-import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 
-public class MachineComponentEssentiaProvider extends MachineComponent<IRequirementHandler<RequirementEssentia>> {
-
-    private final IRequirementHandler<RequirementEssentia> essentiaHandler;
+public class MachineComponentEssentiaProvider extends BaseMachineComponent<RequirementEssentia> {
 
     public MachineComponentEssentiaProvider(IOType ioType, IRequirementHandler<RequirementEssentia> essentiaHandler) {
-        super(ioType);
-        this.essentiaHandler = essentiaHandler;
+        super(ioType, essentiaHandler);
     }
 
     @Override
     public ComponentType getComponentType() {
         return ModularMachineryAddonsComponents.COMPONENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsComponents.KEY_COMPONENT_ESSENTIA);
-    }
-
-    @Override
-    public IRequirementHandler<RequirementEssentia> getContainerProvider() {
-        return this.essentiaHandler;
     }
 }

@@ -61,7 +61,7 @@ public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis
     @Nonnull
     @Override
     public String getMissingComponentErrorMessage(IOType ioType) {
-        return "";
+        return "error.modularmachineryaddons.component.invalid.vis";
     }
 
     @Override
@@ -69,6 +69,7 @@ public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis
         return new JEIComponentVis(this.vis);
     }
 
+    @SuppressWarnings("unchecked")
     private IRequirementHandler<RequirementVis> getVisHandler(ProcessingComponent<?> component) {
         return (IRequirementHandler<RequirementVis>) component.getComponent().getContainerProvider();
     }

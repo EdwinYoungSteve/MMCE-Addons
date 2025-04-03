@@ -72,6 +72,7 @@ public class RequirementScrubber extends ComponentRequirement.PerTick<Radiation,
         return deepCopy();
     }
 
+    @SuppressWarnings("unchecked")
     private IRequirementHandler<RequirementScrubber> getRadiationHandler(ProcessingComponent<?> component) {
         return (IRequirementHandler<RequirementScrubber> ) component.getComponent().getContainerProvider();
     }
@@ -79,7 +80,7 @@ public class RequirementScrubber extends ComponentRequirement.PerTick<Radiation,
     @Nonnull
     @Override
     public String getMissingComponentErrorMessage(IOType ioType) {
-        return "";
+        return "error.modularmachineryaddons.component.invalid.scrubber";
     }
 
     @Override

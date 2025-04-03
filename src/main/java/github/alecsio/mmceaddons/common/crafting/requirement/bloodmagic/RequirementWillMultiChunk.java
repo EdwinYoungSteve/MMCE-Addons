@@ -103,7 +103,7 @@ public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, R
     @Nonnull
     @Override
     public String getMissingComponentErrorMessage(IOType ioType) {
-        return "";
+        return "error.modularmachineryaddons.component.invalid.will";
     }
 
     @Override
@@ -111,6 +111,7 @@ public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, R
         return new JEIComponentWill(this);
     }
 
+    @SuppressWarnings("unchecked")
     private IRequirementHandler<RequirementWillMultiChunk> getWillHandler(ProcessingComponent<?> component) {
         return (IRequirementHandler<RequirementWillMultiChunk>) component.getComponent().getContainerProvider();
     }

@@ -12,3 +12,22 @@ tile.modularmachineryaddons.blockvisprovideroutput.name=Vis Output Hatch
 tile.modularmachineryaddons.blockscrubberproviderinput.name=Scrubber Hatch
 tile.modularmachineryaddons.blockbiomeproviderinput.name=Biome Hatch
 tile.modularmachineryaddons.blockdimensionproviderinput.name=Dimension Hatch
+
+# errors
+error.modularmachineryaddons.component.invalid.biome=No biome hatch found
+error.modularmachineryaddons.component.invalid.dimension=No dimension hatch found
+error.modularmachineryaddons.component.invalid.essentia=No essentia hatch found
+error.modularmachineryaddons.component.invalid.vis=No vis hatch found
+error.modularmachineryaddons.component.invalid.flux=No flux hatch found
+error.modularmachineryaddons.component.invalid.scrubber=No scrubber hatch found
+error.modularmachineryaddons.component.invalid.radiation=No radiation hatch found
+error.modularmachineryaddons.component.invalid.will=No will hatch found
+error.modularmachineryaddons.component.invalid.meteor=No meteor hatch found
+
+# requirement check fails
+error.modularmachineryaddons.requirement.missing.multichunk=Requirement %s not satisfied
+error.modularmachineryaddons.requirement.missing.essentia=Essentia requirement not satisfied
+error.modularmachineryaddons.requirement.missing.biome=Biome requirement not satisfied
+error.modularmachineryaddons.requirement.missing.dimension=Dimension requirement not satisfied
+error.modularmachineryaddons.requirement.missing.meteor.alive=Meteor is still alive
+error.modularmachineryaddons.requirement.missing.meteor=Found non-air & non-obsidian blocks in range

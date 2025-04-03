@@ -83,7 +83,7 @@ public class RequirementMeteor extends ComponentRequirement<Meteor, RequirementT
     @Nonnull
     @Override
     public String getMissingComponentErrorMessage(IOType ioType) {
-        return "";
+        return "error.modularmachineryaddons.component.invalid.meteor";
     }
 
     @Override
@@ -95,6 +95,7 @@ public class RequirementMeteor extends ComponentRequirement<Meteor, RequirementT
         return meteor;
     }
 
+    @SuppressWarnings("unchecked")
     private IRequirementHandler<RequirementMeteor> getMeteorHandler(ProcessingComponent<?> component) {
         return (IRequirementHandler<RequirementMeteor>) component.getComponent().getContainerProvider();
     }

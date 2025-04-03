@@ -5,6 +5,7 @@ import github.alecsio.mmceaddons.common.tile.handler.chunks.ChunksReader;
 import github.alecsio.mmceaddons.common.tile.handler.strategy.ChunkSelectionStrategy;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineComponent;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 
@@ -19,7 +20,7 @@ public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement
     }
 
     public CraftCheck canHandle(T requirement) {
-        return handle(requirement, false) == 0 ? CraftCheck.success() : CraftCheck.failure("Cannot handle this requirement");
+        return handle(requirement, false) == 0 ? CraftCheck.success() : CraftCheck.failure(I18n.format("error.modularmachineryaddons.requirement.missing.multichunk", requirement.getClass().getSimpleName().replace("Requirement", "")));
     }
 
     @Override

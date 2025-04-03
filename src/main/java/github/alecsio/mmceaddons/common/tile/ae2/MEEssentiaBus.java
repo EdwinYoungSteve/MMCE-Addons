@@ -1,4 +1,4 @@
-package github.alecsio.mmceaddons.common.tile.machinecomponent.ae2;
+package github.alecsio.mmceaddons.common.tile.ae2;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -18,11 +18,12 @@ import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public abstract class MEEssentiaBus extends MEMachineComponent implements IGridTickable, IRequirementHandler<RequirementEssentia> {
 
     protected IMEInventory<IAEEssentiaStack> getStorageInventory() {
-        IStorageGrid storage = this.getGridNode(AEPartLocation.UP).getGrid().getCache(IStorageGrid.class);
+        IStorageGrid storage = Objects.requireNonNull(this.getGridNode(AEPartLocation.UP)).getGrid().getCache(IStorageGrid.class);
         return storage.getInventory(getChannel());
     }
 
@@ -46,7 +47,7 @@ public abstract class MEEssentiaBus extends MEMachineComponent implements IGridT
 
     @Override
     public CraftCheck canHandle(RequirementEssentia essentia) {
-        return canPerformOperation(Actionable.SIMULATE, essentia.getEssentiaStack()) ? CraftCheck.success() : CraftCheck.failure(":(");
+        return canPerformOperation(Actionable.SIMULATE, essentia.getEssentiaStack()) ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.essentia");
     }
 
     @Override

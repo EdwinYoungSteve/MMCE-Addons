@@ -64,7 +64,7 @@ public class RequirementBiome extends ComponentRequirement<Biome, RequirementTyp
     @Nonnull
     @Override
     public String getMissingComponentErrorMessage(IOType ioType) {
-        return "";
+        return "error.modularmachineryaddons.component.invalid.biome";
     }
 
     @Override
@@ -76,6 +76,7 @@ public class RequirementBiome extends ComponentRequirement<Biome, RequirementTyp
         return biome;
     }
 
+    @SuppressWarnings("unchecked")
     private IRequirementHandler<RequirementBiome> getBiomeHandler(ProcessingComponent<?> component) {
         return (IRequirementHandler<RequirementBiome>) component.getComponent().getContainerProvider();
     }

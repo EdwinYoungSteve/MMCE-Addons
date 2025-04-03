@@ -28,7 +28,7 @@ public class RequirementEssentia extends ComponentRequirement<Essentia, Requirem
 
     public static RequirementEssentia from(IOType ioType, String aspect, int amount) {
         requirementValidator.validateNotNegative(amount, "Amount must be a positive number!");
-        Aspect essentia = Aspect.getAspect(aspect);;
+        Aspect essentia = Aspect.getAspect(aspect);
         requirementValidator.validateNotNull(essentia, "Unknown aspect " + aspect);
 
         return new RequirementEssentia(new Essentia(essentia, amount), ioType);
@@ -76,7 +76,7 @@ public class RequirementEssentia extends ComponentRequirement<Essentia, Requirem
     @Nonnull
     @Override
     public String getMissingComponentErrorMessage(IOType ioType) {
-        return "";
+        return "error.modularmachineryaddons.component.invalid.essentia";
     }
 
     @Override

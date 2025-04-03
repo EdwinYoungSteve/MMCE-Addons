@@ -5,24 +5,15 @@ import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.Requirem
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;
-import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 
-public class MachineComponentWillMultiChunkProvider extends MachineComponent<IRequirementHandler<RequirementWillMultiChunk>> {
+public class MachineComponentWillMultiChunkProvider extends BaseMachineComponent<RequirementWillMultiChunk> {
 
-    private final IRequirementHandler<RequirementWillMultiChunk> tileWillMultiChunkProvider;
-
-    public MachineComponentWillMultiChunkProvider(IOType ioType, IRequirementHandler<RequirementWillMultiChunk> tileWillMultiChunkProvider) {
-        super(ioType);
-        this.tileWillMultiChunkProvider = tileWillMultiChunkProvider;
+    public MachineComponentWillMultiChunkProvider(IOType ioType, IRequirementHandler<RequirementWillMultiChunk> willHandler) {
+        super(ioType, willHandler);
     }
 
     @Override
     public ComponentType getComponentType() {
         return ModularMachineryAddonsComponents.COMPONENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsComponents.KEY_COMPONENT_WILL);
-    }
-
-    @Override
-    public IRequirementHandler<RequirementWillMultiChunk> getContainerProvider() {
-        return tileWillMultiChunkProvider;
     }
 }

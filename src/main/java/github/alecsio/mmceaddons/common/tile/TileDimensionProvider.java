@@ -14,7 +14,7 @@ public class TileDimensionProvider extends TileColorableMachineComponent impleme
 
     @Override
     public CraftCheck canHandle(RequirementDimension requirement) {
-        return this.world.provider.getDimension() == requirement.getDimension().getId() ? CraftCheck.success() : CraftCheck.failure("Dimension does not match");
+        return this.world.provider.getDimension() == requirement.getDimension().getId() ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.dimension");
     }
 
     @Override

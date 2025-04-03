@@ -33,12 +33,10 @@ import hellfirepvp.modularmachinery.common.item.ItemBlockCustomName;
 import hellfirepvp.modularmachinery.common.item.ItemBlockMEMachineComponent;
 import hellfirepvp.modularmachinery.common.item.ItemBlockMachineComponent;
 import hellfirepvp.modularmachinery.common.item.ItemBlockMachineComponentCustomName;
-import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
@@ -94,20 +92,20 @@ public class RegistryBlocks {
     }
 
     private static void registerTileEntities() {
-        registerTileEntity(TileRadiationProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileRadiationProvider.Input.class)));
-        registerTileEntity(TileRadiationProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileRadiationProvider.Output.class)));
-        registerTileEntity(TileWillMultiChunkProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileWillMultiChunkProvider.Input.class)));
-        registerTileEntity(TileWillMultiChunkProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileWillMultiChunkProvider.Output.class)));
-        registerTileEntity(TileMeteorProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileMeteorProvider.Output.class)));
-        registerTileEntity(MEEssentiaInputBus.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(MEEssentiaInputBus.class)));
-        registerTileEntity(MEEssentiaOutputBus.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(MEEssentiaOutputBus.class)));
-        registerTileEntity(TileFluxProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileFluxProvider.Input.class)));
-        registerTileEntity(TileFluxProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileFluxProvider.Output.class)));
-        registerTileEntity(TileVisProvider.Input.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileVisProvider.Input.class)));
-        registerTileEntity(TileVisProvider.Output.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileVisProvider.Output.class)));
-        registerTileEntity(TileScrubberProvider.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileScrubberProvider.class)));
-        registerTileEntity(TileBiomeProvider.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileBiomeProvider.class)));
-        registerTileEntity(TileDimensionProvider.class, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(TileDimensionProvider.class)));
+        registerTileEntity(TileRadiationProvider.Input.class);
+        registerTileEntity(TileRadiationProvider.Output.class);
+        registerTileEntity(TileWillMultiChunkProvider.Input.class);
+        registerTileEntity(TileWillMultiChunkProvider.Output.class);
+        registerTileEntity(TileMeteorProvider.Output.class);
+        registerTileEntity(MEEssentiaInputBus.class);
+        registerTileEntity(MEEssentiaOutputBus.class);
+        registerTileEntity(TileFluxProvider.Input.class);
+        registerTileEntity(TileFluxProvider.Output.class);
+        registerTileEntity(TileVisProvider.Input.class);
+        registerTileEntity(TileVisProvider.Output.class);
+        registerTileEntity(TileScrubberProvider.class);
+        registerTileEntity(TileBiomeProvider.class);
+        registerTileEntity(TileDimensionProvider.class);
     }
 
     /**
@@ -118,13 +116,13 @@ public class RegistryBlocks {
      *  canonical name: {packageName}.TileRadiationProvider$Input
      *  output: tileradiationproviderinput
      */
-    private static String buildPathForClass(Class<? extends MachineComponentTile> clazz) {
+    private static String buildPathForClass(Class<? extends TileEntity> clazz) {
         return clazz.getCanonicalName().replace(clazz.getPackage().getName(), "").replace(".", "").toLowerCase();
     }
 
-    private static void registerTileEntity(Class<? extends TileEntity> entityClass, ResourceLocation name) {
+    private static void registerTileEntity(Class<? extends TileEntity> entityClass) {
         ModularMachineryAddons.logger.info("Registering TileEntity: " + entityClass);
-        GameRegistry.registerTileEntity(entityClass, name);
+        GameRegistry.registerTileEntity(entityClass, new ResourceLocation(ModularMachineryAddons.MODID, buildPathForClass(entityClass)));
     }
 
     private static void registerBlockModels() {
@@ -133,30 +131,29 @@ public class RegistryBlocks {
         }
     }
 
-    private static ItemBlock prepareItemBlockRegister(Block block) {
+    private static void prepareItemBlockRegister(Block block) {
         if (block instanceof BlockMachineComponent) {
             if (block instanceof BlockMEMachineComponent) {
-                return prepareItemBlockRegister(new ItemBlockMEMachineComponent(block));
+                prepareItemBlockRegister(new ItemBlockMEMachineComponent(block));
             } else if (block instanceof BlockCustomName) {
-                return prepareItemBlockRegister(new ItemBlockMachineComponentCustomName(block));
+                prepareItemBlockRegister(new ItemBlockMachineComponentCustomName(block));
             } else {
-                return prepareItemBlockRegister(new ItemBlockMachineComponent(block));
+                prepareItemBlockRegister(new ItemBlockMachineComponent(block));
             }
         } else {
             if (block instanceof BlockCustomName) {
-                return prepareItemBlockRegister(new ItemBlockCustomName(block));
+                prepareItemBlockRegister(new ItemBlockCustomName(block));
             } else {
-                return prepareItemBlockRegister(new ItemBlock(block));
+                prepareItemBlockRegister(new ItemBlock(block));
             }
         }
     }
 
-    private static <T extends ItemBlock> T prepareItemBlockRegister(T item) {
+    private static <T extends ItemBlock> void prepareItemBlockRegister(T item) {
         String name = item.getBlock().getClass().getSimpleName().toLowerCase();
         item.setRegistryName(ModularMachineryAddons.MODID, name).setTranslationKey(ModularMachineryAddons.MODID + '.' + name);
 
         ModularMachineryAddons.REGISTRY_ITEMS.registerItemBlock(item);
-        return item;
     }
 
     private static <T extends Block> T prepareRegister(T block) {
@@ -169,8 +166,6 @@ public class RegistryBlocks {
 
     private static <T extends Block> T prepareRegisterWithCustomName(T block) {
         blockModelRegister.add(block);
-        //CommonProxy.registryPrimer.register(block);
-
         return block;
     }
 

@@ -89,7 +89,7 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
     @Nonnull
     @Override
     public String getMissingComponentErrorMessage(IOType ioType) {
-        return "Couldn't find component for requirement";
+        return "error.modularmachineryaddons.component.invalid.radiation";
     }
 
     @Override
@@ -122,6 +122,7 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
         return maxPerChunk;
     }
 
+    @SuppressWarnings("unchecked")
     private IRequirementHandler<RequirementRadiation> getRadiationHandler(ProcessingComponent<?> component) {
         return (IRequirementHandler<RequirementRadiation>) component.getComponent().getContainerProvider();
     }

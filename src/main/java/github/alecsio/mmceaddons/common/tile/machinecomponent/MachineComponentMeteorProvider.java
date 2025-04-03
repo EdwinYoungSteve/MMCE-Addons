@@ -5,24 +5,15 @@ import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.Requirem
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;
-import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 
-public class MachineComponentMeteorProvider extends MachineComponent<IRequirementHandler<RequirementMeteor>> {
+public class MachineComponentMeteorProvider extends BaseMachineComponent<RequirementMeteor> {
 
-    private final IRequirementHandler<RequirementMeteor> tileMeteorProvider;
-
-    public MachineComponentMeteorProvider(IOType ioType, IRequirementHandler<RequirementMeteor> tileMeteorProvider) {
-        super(ioType);
-        this.tileMeteorProvider = tileMeteorProvider;
+    public MachineComponentMeteorProvider(IOType ioType, IRequirementHandler<RequirementMeteor> meteorHandler) {
+        super(ioType, meteorHandler);
     }
 
     @Override
     public ComponentType getComponentType() {
         return ModularMachineryAddonsComponents.COMPONENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsComponents.KEY_COMPONENT_METEOR);
-    }
-
-    @Override
-    public IRequirementHandler<RequirementMeteor> getContainerProvider() {
-        return tileMeteorProvider;
     }
 }

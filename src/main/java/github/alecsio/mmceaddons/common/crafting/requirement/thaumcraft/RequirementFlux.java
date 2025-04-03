@@ -93,7 +93,7 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
     @Nonnull
     @Override
     public String getMissingComponentErrorMessage(IOType ioType) {
-        return "";
+        return "error.modularmachineryaddons.component.invalid.flux";
     }
 
     @Override
@@ -101,6 +101,7 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
         return new JEIComponentFlux(new Flux((float) this.amount), Flux.class); // todo: fix this mess
     }
 
+    @SuppressWarnings("unchecked")
     private IRequirementHandler<RequirementFlux> getFluxHandler(ProcessingComponent<?> component) {
         return (IRequirementHandler<RequirementFlux>) component.getComponent().getContainerProvider();
     }

@@ -29,7 +29,7 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
         @Override
         public CraftCheck canHandle(RequirementMeteor requirement) {
             Meteor meteor = requirement.getMeteor();
-            if (currentMeteor != null && !currentMeteor.isDead) {return CraftCheck.failure("Meteor is still alive");}
+            if (currentMeteor != null && !currentMeteor.isDead) {return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor.alive");}
             int radius = (int) (double) meteor.getRadius();
             double floatingRadius = meteor.getRadius();
             BlockPos startingPos = pos.add(0, meteor.getRadius() + 1, 0);
@@ -45,7 +45,7 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
 
                         // Check if the block is not air
                         if (!world.isAirBlock(newPos) && !world.getBlockState(newPos).getBlock().equals(Blocks.OBSIDIAN)) {
-                            return CraftCheck.failure("lol"); // Found a non-air block, sphere is not empty
+                            return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor"); // Found a non-air block, sphere is not empty
                         }
                     }
                 }
