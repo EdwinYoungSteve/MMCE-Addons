@@ -20,6 +20,6 @@ public class RequirementTypeVis extends BaseRequirementType<Vis, RequirementVis>
         float amount = RequirementUtils.getRequiredFloat(jsonObject, "amount", ModularMachineryAddonsRequirements.KEY_REQUIREMENT_VIS.toString());
         int chunkRange = RequirementUtils.getOptionalInt(jsonObject, "chunkRange", 0); // Only the chunk the machine is in
 
-        return new RequirementVis(type, chunkRange, amount);
+        return RequirementVis.from(type, chunkRange, amount);
     }
 }

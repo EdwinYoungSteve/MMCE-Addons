@@ -4,6 +4,7 @@ import github.alecsio.mmceaddons.common.crafting.component.ComponentVis;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumcraft.RequirementTypeVis;
+import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentVis;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Vis;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
@@ -21,9 +22,18 @@ import java.util.List;
 
 public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis> implements IMultiChunkRequirement {
 
+    private static final RequirementValidator requirementValidator = RequirementValidator.getInstance();
+
     private final Vis vis;
 
-    public RequirementVis(IOType actionType, int chunkRange, double amount) {
+    public static RequirementVis from(IOType ioType, int chunkRange, float amount) {
+        requirementValidator.validateNotNegative(chunkRange, "chunkRange");
+        requirementValidator.validateNotNegative(amount, "amount");
+
+        return new RequirementVis(ioType, chunkRange, amount);
+    }
+
+    private RequirementVis(IOType actionType, int chunkRange, double amount) {
         super((RequirementTypeVis) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsRequirements.KEY_REQUIREMENT_VIS), actionType);
         this.vis = new Vis((float) amount, chunkRange);
     }

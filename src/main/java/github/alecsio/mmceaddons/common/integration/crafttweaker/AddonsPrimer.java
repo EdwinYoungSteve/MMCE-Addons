@@ -2,11 +2,14 @@ package github.alecsio.mmceaddons.common.integration.crafttweaker;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ZenRegister;
+import github.alecsio.mmceaddons.common.crafting.requirement.RequirementBiome;
+import github.alecsio.mmceaddons.common.crafting.requirement.RequirementDimension;
 import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementMeteor;
 import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementWillMultiChunk;
 import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementRadiation;
 import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementScrubber;
 import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.RequirementFlux;
+import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.RequirementVis;
 import github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics.RequirementEssentia;
 import github.alecsio.mmceaddons.common.exception.ConsistencyException;
 import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
@@ -18,6 +21,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenRegister
 @ZenExpansion("mods.modularmachinery.RecipePrimer")
+@SuppressWarnings("unused")
 public class AddonsPrimer {
 
     @FunctionalInterface
@@ -101,7 +105,27 @@ public class AddonsPrimer {
 
     @ZenMethod
     public static RecipePrimer addFluxOutput(RecipePrimer primer, float amount) {
-        return addRequirement(primer, () -> RequirementFlux.from(IOType.OUTPUT, 0, amount));
+        return addFluxOutput(primer, amount, 0);
+    }
+
+    @ZenMethod
+    public static RecipePrimer addVisInput(RecipePrimer primer, float amount, int chunkRange) {
+        return addRequirement(primer, () -> RequirementVis.from(IOType.INPUT, chunkRange, amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addVisInput(RecipePrimer primer, float amount) {
+        return addVisInput(primer, amount, 0);
+    }
+
+    @ZenMethod
+    public static RecipePrimer addVisOutput(RecipePrimer primer, float amount, int chunkRange) {
+        return addRequirement(primer, () -> RequirementVis.from(IOType.OUTPUT, chunkRange, amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addVisOutput(RecipePrimer primer, float amount) {
+        return addVisOutput(primer, amount, 0);
     }
 
     @ZenMethod
@@ -112,5 +136,15 @@ public class AddonsPrimer {
     @ZenMethod
     public static RecipePrimer addEssentiaOutput(RecipePrimer primer, String aspect, int amount) {
         return addRequirement(primer, () -> RequirementEssentia.from(IOType.OUTPUT, aspect, amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addBiomeInput(RecipePrimer primer, String biomeRegistryName) {
+        return addRequirement(primer, () -> RequirementBiome.from(IOType.INPUT, biomeRegistryName));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addDimensionInput(RecipePrimer primer, int id) {
+        return addRequirement(primer, () -> RequirementDimension.from(IOType.INPUT, id));
     }
 }
