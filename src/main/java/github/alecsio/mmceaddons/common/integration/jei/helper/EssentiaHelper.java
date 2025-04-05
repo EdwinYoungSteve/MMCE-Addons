@@ -4,7 +4,6 @@ import github.alecsio.mmceaddons.common.integration.jei.helper.base.BaseIngredie
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Essentia;
 
 import javax.annotation.Nonnull;
-import java.util.UUID;
 
 public class EssentiaHelper extends BaseIngredientHelper<Essentia> {
 

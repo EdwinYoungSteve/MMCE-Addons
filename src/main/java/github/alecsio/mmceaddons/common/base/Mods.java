@@ -8,6 +8,11 @@ public enum Mods {
     THAUMICENERGISTICS("thaumicenergistics"),
     THAUMCRAFT("thaumcraft"),;
 
+    public static final String NUCLEARCRAFT_ID = "nuclearcraft";
+    public static final String BLOODMAGIC_ID = "bloodmagic";
+    public static final String THAUMICENERGISTICS_ID = "thaumicenergistics";
+    public static final String THAUMCRAFT_ID = "thaumcraft";
+
     public final String modid;
     private final boolean loaded;
 

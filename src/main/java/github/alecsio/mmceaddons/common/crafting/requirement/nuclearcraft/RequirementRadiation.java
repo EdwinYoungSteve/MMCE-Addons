@@ -2,9 +2,9 @@ package github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft;
 
 import github.alecsio.mmceaddons.common.crafting.component.ComponentRadiation;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
-import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeRadiation;
+import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;

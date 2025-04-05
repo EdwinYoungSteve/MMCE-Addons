@@ -1,14 +1,5 @@
 package github.alecsio.mmceaddons.common.crafting.component;
 
-import hellfirepvp.modularmachinery.common.crafting.ComponentType;
+import github.alecsio.mmceaddons.common.crafting.component.base.BaseComponent;
 
-import javax.annotation.Nullable;
-
-public class ComponentBiome extends ComponentType {
-
-    @Nullable
-    @Override
-    public String requiresModid() {
-        return null;
-    }
-}
+public class ComponentBiome extends BaseComponent {}

@@ -1,14 +1,8 @@
 package github.alecsio.mmceaddons.common.crafting.component;
 
 import github.alecsio.mmceaddons.common.base.Mods;
-import hellfirepvp.modularmachinery.common.crafting.ComponentType;
+import github.alecsio.mmceaddons.common.crafting.component.base.BaseComponent;
+import github.alecsio.mmceaddons.common.crafting.component.base.RequiresMod;
 
-import javax.annotation.Nullable;
-
-public class ComponentScrubber extends ComponentType {
-    @Nullable
-    @Override
-    public String requiresModid() {
-        return Mods.NUCLEARCRAFT.modid;
-    }
-}
+@RequiresMod(Mods.NUCLEARCRAFT_ID)
+public class ComponentScrubber extends BaseComponent {}

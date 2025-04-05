@@ -2,9 +2,9 @@ package github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft;
 
 import github.alecsio.mmceaddons.common.crafting.component.ComponentFlux;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
-import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumcraft.RequirementTypeFlux;
+import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentFlux;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Flux;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;

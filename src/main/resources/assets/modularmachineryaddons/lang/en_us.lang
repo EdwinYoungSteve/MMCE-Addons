@@ -30,4 +30,4 @@ error.modularmachineryaddons.requirement.missing.essentia=Essentia requirement n
 error.modularmachineryaddons.requirement.missing.biome=Biome requirement not satisfied
 error.modularmachineryaddons.requirement.missing.dimension=Dimension requirement not satisfied
 error.modularmachineryaddons.requirement.missing.meteor.alive=Meteor is still alive
-error.modularmachineryaddons.requirement.missing.meteor=Found non-air & non-obsidian blocks in range
+error.modularmachineryaddons.requirement.missing.meteor=Line of sight is obstructed (max 1 block allowed)

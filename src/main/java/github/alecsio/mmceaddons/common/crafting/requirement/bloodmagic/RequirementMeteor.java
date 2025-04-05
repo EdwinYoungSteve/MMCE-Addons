@@ -2,9 +2,9 @@ package github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic;
 
 import WayofTime.bloodmagic.meteor.MeteorRegistry;
 import github.alecsio.mmceaddons.common.crafting.component.ComponentMeteor;
-import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeMeteor;
+import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentMeteor;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Meteor;
 import github.alecsio.mmceaddons.common.tile.bloodmagic.TileMeteorProvider;

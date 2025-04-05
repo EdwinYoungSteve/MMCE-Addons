@@ -1,9 +1,9 @@
 package github.alecsio.mmceaddons.common.crafting.requirement;
 
 import github.alecsio.mmceaddons.common.crafting.component.ComponentBiome;
-import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.RequirementTypeBiome;
+import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentBiome;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Biome;

@@ -1,8 +1,6 @@
 package github.alecsio.mmceaddons.common.integration.jei.render.base;
 
-import com.google.common.collect.Lists;
 import github.alecsio.mmceaddons.common.integration.jei.JeiPlugin;
-import github.alecsio.mmceaddons.common.integration.jei.ingredient.Biome;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.ITooltippable;
 import mezz.jei.api.gui.IDrawableBuilder;
 import mezz.jei.api.ingredients.IIngredientRenderer;
