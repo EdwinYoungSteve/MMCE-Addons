@@ -31,3 +31,12 @@ error.modularmachineryaddons.requirement.missing.biome=Biome requirement not sat
 error.modularmachineryaddons.requirement.missing.dimension=Dimension requirement not satisfied
 error.modularmachineryaddons.requirement.missing.meteor.alive=Meteor is still alive
 error.modularmachineryaddons.requirement.missing.meteor=Line of sight is obstructed (max 1 block allowed)
+error.modularmachineryaddons.requirement.missing.meteor.reserved=Hatch is already occupied by one meteor requirement
+
+# items
+item.modularmachineryaddons.advancedconstructtool.tooltip=Select two corners and click on a machine controller to extract the entire multiblock definition. Shift-right click to clear the selection.
+
+# messages
+message.modularmachineryaddons.advancedconstructtool.cleared=Cleared tool selection
+message.modularmachineryaddons.advancedconstructtool.invalid.selection=Please select two corners!
+message.modularmachineryaddons.advancedconstructtool.selection=Successfully selected corner

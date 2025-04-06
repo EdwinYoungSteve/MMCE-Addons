@@ -59,14 +59,10 @@ public class RequirementMeteor extends ComponentRequirement<Meteor, RequirementT
         return getMeteorHandler(component).canHandle(this);
     }
 
-    @Nonnull
     @Override
-    public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (getActionType() == IOType.OUTPUT) {
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getMeteorHandler(component).handle(this));
-        }
-
-        return CraftCheck.success();
+    public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
+        ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getMeteorHandler(component).handle(this));
+        return true;
     }
 
     @Override

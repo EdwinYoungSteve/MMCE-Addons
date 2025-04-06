@@ -46,26 +46,5 @@ public class ModularMachineryAddonsBlocks {
     public static BlockVisProviderOutput blockVisProviderOutput;
 
     public static void initialise() {
-        blockRadiationProviderInput = new BlockRadiationProviderInput();
-        blockRadiationProviderOutput = new BlockRadiationProviderOutput();
-
-        blockWillMultiChunkProviderInput = new BlockWillMultiChunkProviderInput();
-        blockWillMultiChunkProviderOutput = new BlockWillMultiChunkProviderOutput();
-
-        blockMeteorProviderOutput = new BlockMeteorProviderOutput();
-
-        blockMEEssentiaInputBus = new BlockMEEssentiaInputBus();
-        blockMEEssentiaOutputBus = new BlockMEEssentiaOutputBus();
-
-        blockFluxProviderInput = new BlockFluxProviderInput();
-        blockFluxProviderOutput = new BlockFluxProviderOutput();
-
-        blockVisProviderInput = new BlockVisProviderInput();
-        blockVisProviderOutput = new BlockVisProviderOutput();
-
-        blockScrubberProviderInput = new BlockScrubberProviderInput();
-
-        blockBiomeProviderInput = new BlockBiomeProviderInput();
-        blockDimensionProviderInput = new BlockDimensionProviderInput();
     }
 }

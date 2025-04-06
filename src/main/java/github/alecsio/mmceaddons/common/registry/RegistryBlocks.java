@@ -1,6 +1,7 @@
 package github.alecsio.mmceaddons.common.registry;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
+import github.alecsio.mmceaddons.common.base.Mods;
 import github.alecsio.mmceaddons.common.block.BlockBiomeProviderInput;
 import github.alecsio.mmceaddons.common.block.BlockDimensionProviderInput;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaInputBus;
@@ -54,56 +55,85 @@ public class RegistryBlocks {
     }
 
     private static void registerBlocks() {
-        ModularMachineryAddonsBlocks.blockRadiationProviderInput = prepareRegister(new BlockRadiationProviderInput());
-        ModularMachineryAddonsBlocks.blockRadiationProviderOutput = prepareRegister(new BlockRadiationProviderOutput());
-        ModularMachineryAddonsBlocks.blockWillMultiChunkProviderInput = prepareRegister(new BlockWillMultiChunkProviderInput());
-        ModularMachineryAddonsBlocks.blockWillMultiChunkProviderOutput = prepareRegister(new BlockWillMultiChunkProviderOutput());
-
-        ModularMachineryAddonsBlocks.blockMeteorProviderOutput = prepareRegister(new BlockMeteorProviderOutput());
-
-        ModularMachineryAddonsBlocks.blockMEEssentiaInputBus = prepareRegister(new BlockMEEssentiaInputBus());
-        ModularMachineryAddonsBlocks.blockMEEssentiaOutputBus = prepareRegister(new BlockMEEssentiaOutputBus());
-
-        ModularMachineryAddonsBlocks.blockFluxProviderInput = prepareRegister(new BlockFluxProviderInput());
-        ModularMachineryAddonsBlocks.blockFluxProviderOutput = prepareRegister(new BlockFluxProviderOutput());
-
-        ModularMachineryAddonsBlocks.blockVisProviderInput = prepareRegister(new BlockVisProviderInput());
-        ModularMachineryAddonsBlocks.blockVisProviderOutput = prepareRegister(new BlockVisProviderOutput());
-
-        ModularMachineryAddonsBlocks.blockScrubberProviderInput = prepareRegister(new BlockScrubberProviderInput());
-
+        // Biome and Dimension: always registered
         ModularMachineryAddonsBlocks.blockBiomeProviderInput = prepareRegister(new BlockBiomeProviderInput());
         ModularMachineryAddonsBlocks.blockDimensionProviderInput = prepareRegister(new BlockDimensionProviderInput());
 
-        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderInput);
-        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderOutput);
-        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockWillMultiChunkProviderInput);
-        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockWillMultiChunkProviderOutput);
-        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockMeteorProviderOutput);
-        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockMEEssentiaInputBus);
-        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockMEEssentiaOutputBus);
-        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockFluxProviderInput);
-        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockFluxProviderOutput);
-        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockScrubberProviderInput);
-        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockVisProviderInput);
-        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockVisProviderOutput);
+        // NuclearCraft-related blocks
+        if (Mods.NUCLEARCRAFT.isPresent()) {
+            ModularMachineryAddonsBlocks.blockRadiationProviderInput = prepareRegister(new BlockRadiationProviderInput());
+            ModularMachineryAddonsBlocks.blockRadiationProviderOutput = prepareRegister(new BlockRadiationProviderOutput());
+            ModularMachineryAddonsBlocks.blockScrubberProviderInput = prepareRegister(new BlockScrubberProviderInput());
+
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderInput);
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockRadiationProviderOutput);
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockScrubberProviderInput);
+        }
+
+        // Blood Magic (Will)
+        if (Mods.BLOODMAGIC.isPresent()) {
+            ModularMachineryAddonsBlocks.blockWillMultiChunkProviderInput = prepareRegister(new BlockWillMultiChunkProviderInput());
+            ModularMachineryAddonsBlocks.blockWillMultiChunkProviderOutput = prepareRegister(new BlockWillMultiChunkProviderOutput());
+            ModularMachineryAddonsBlocks.blockMeteorProviderOutput = prepareRegister(new BlockMeteorProviderOutput());
+
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockWillMultiChunkProviderInput);
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockWillMultiChunkProviderOutput);
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockMeteorProviderOutput);
+        }
+
+        // Thaumic Energistics (ME Essentia)
+        if (Mods.THAUMICENERGISTICS.isPresent()) {
+            ModularMachineryAddonsBlocks.blockMEEssentiaInputBus = prepareRegister(new BlockMEEssentiaInputBus());
+            ModularMachineryAddonsBlocks.blockMEEssentiaOutputBus = prepareRegister(new BlockMEEssentiaOutputBus());
+
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockMEEssentiaInputBus);
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockMEEssentiaOutputBus);
+        }
+
+        // Thaumcraft (Flux & Vis)
+        if (Mods.THAUMCRAFT.isPresent()) {
+            ModularMachineryAddonsBlocks.blockFluxProviderInput = prepareRegister(new BlockFluxProviderInput());
+            ModularMachineryAddonsBlocks.blockFluxProviderOutput = prepareRegister(new BlockFluxProviderOutput());
+            ModularMachineryAddonsBlocks.blockVisProviderInput = prepareRegister(new BlockVisProviderInput());
+            ModularMachineryAddonsBlocks.blockVisProviderOutput = prepareRegister(new BlockVisProviderOutput());
+
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockFluxProviderInput);
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockFluxProviderOutput);
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockVisProviderInput);
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockVisProviderOutput);
+        }
+
+        // Always register
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockBiomeProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockDimensionProviderInput);
     }
 
     private static void registerTileEntities() {
-        registerTileEntity(TileRadiationProvider.Input.class);
-        registerTileEntity(TileRadiationProvider.Output.class);
-        registerTileEntity(TileWillMultiChunkProvider.Input.class);
-        registerTileEntity(TileWillMultiChunkProvider.Output.class);
-        registerTileEntity(TileMeteorProvider.Output.class);
-        registerTileEntity(MEEssentiaInputBus.class);
-        registerTileEntity(MEEssentiaOutputBus.class);
-        registerTileEntity(TileFluxProvider.Input.class);
-        registerTileEntity(TileFluxProvider.Output.class);
-        registerTileEntity(TileVisProvider.Input.class);
-        registerTileEntity(TileVisProvider.Output.class);
-        registerTileEntity(TileScrubberProvider.class);
+        if (Mods.NUCLEARCRAFT.isPresent()) {
+            registerTileEntity(TileRadiationProvider.Input.class);
+            registerTileEntity(TileRadiationProvider.Output.class);
+            registerTileEntity(TileScrubberProvider.class);
+        }
+
+        if (Mods.BLOODMAGIC.isPresent()) {
+            registerTileEntity(TileWillMultiChunkProvider.Input.class);
+            registerTileEntity(TileWillMultiChunkProvider.Output.class);
+            registerTileEntity(TileMeteorProvider.Output.class);
+        }
+
+        if (Mods.THAUMICENERGISTICS.isPresent()) {
+            registerTileEntity(MEEssentiaInputBus.class);
+            registerTileEntity(MEEssentiaOutputBus.class);
+        }
+
+        if (Mods.THAUMCRAFT.isPresent()) {
+            registerTileEntity(TileFluxProvider.Input.class);
+            registerTileEntity(TileFluxProvider.Output.class);
+            registerTileEntity(TileVisProvider.Input.class);
+            registerTileEntity(TileVisProvider.Output.class);
+        }
+
+        // Always present
         registerTileEntity(TileBiomeProvider.class);
         registerTileEntity(TileDimensionProvider.class);
     }

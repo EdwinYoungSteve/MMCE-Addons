@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
                 + "after:jei@[4.13.1.222,);"
         ,
         acceptedMinecraftVersions = "[1.12]",
-        acceptableRemoteVersions = "[1.0.0)"
+        acceptableRemoteVersions = "[1.0.0]"
 )
 public class ModularMachineryAddons {
 
