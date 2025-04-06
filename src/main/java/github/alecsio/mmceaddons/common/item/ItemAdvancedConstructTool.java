@@ -5,6 +5,7 @@ import hellfirepvp.modularmachinery.common.block.BlockController;
 import hellfirepvp.modularmachinery.common.selection.PlayerStructureSelectionHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -37,7 +38,7 @@ public class ItemAdvancedConstructTool extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
-        tooltip.add("item.modularmachineryaddons.advancedconstructtool.tooltip");
+        tooltip.add(I18n.format("item.modularmachineryaddons.advancedconstructtool.tooltip"));
     }
 
     @Override

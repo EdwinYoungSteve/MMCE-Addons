@@ -13,6 +13,8 @@ tile.modularmachineryaddons.blockscrubberproviderinput.name=Scrubber Hatch
 tile.modularmachineryaddons.blockbiomeproviderinput.name=Biome Hatch
 tile.modularmachineryaddons.blockdimensionproviderinput.name=Dimension Hatch
 
+item.modularmachineryaddons.itemadvancedconstructtool.name=Advanced Wrench
+
 # errors
 error.modularmachineryaddons.component.invalid.biome=No biome hatch found
 error.modularmachineryaddons.component.invalid.dimension=No dimension hatch found
