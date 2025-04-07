@@ -1,4 +1,4 @@
-package github.alecsio.mmceaddons.common.tile.machinecomponent;
+package github.alecsio.mmceaddons.common.tile.machinecomponent.base;
 
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.machine.IOType;

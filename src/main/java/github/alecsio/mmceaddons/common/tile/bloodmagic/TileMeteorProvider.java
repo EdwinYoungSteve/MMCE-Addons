@@ -12,6 +12,9 @@ import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineCompon
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public abstract class TileMeteorProvider extends TileColorableMachineComponent implements MachineComponentTile, IRequirementHandler<RequirementMeteor> {
 
@@ -21,6 +24,9 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
     public static class Output extends TileMeteorProvider {
 
         private EntityMeteor currentMeteor;
+        private final ReadWriteLock lock = new ReentrantReadWriteLock();
+
+        public AtomicBoolean reserved = new AtomicBoolean(false);
 
         @Nullable
         @Override
@@ -30,8 +36,13 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
 
         @Override
         public CraftCheck canHandle(RequirementMeteor requirement) {
-            if (currentMeteor != null && !currentMeteor.isDead) {
-                return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor.alive");
+            lock.readLock().lock();
+            try {
+                if (currentMeteor != null && !currentMeteor.isDead) {
+                    return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor.alive");
+                }
+            } finally {
+                lock.readLock().unlock();
             }
 
             BlockPos pos = this.getPos();
@@ -47,15 +58,23 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
                 }
             }
 
+            reserved.set(true);
+
             return CraftCheck.success();
         }
 
         @Override
         public void handle(RequirementMeteor requirement) {
-            Meteor meteor = requirement.getMeteor();
-            this.currentMeteor = new EntityMeteor(world, pos.getX(), 260, pos.getZ(), 0, -0.1, 0, 1, 0, 0.2);
-            this.currentMeteor.setMeteorStack(meteor.getCatalystStack());
-            world.spawnEntity(this.currentMeteor);
+            lock.writeLock().lock();
+            try {
+                Meteor meteor = requirement.getMeteor();
+                this.currentMeteor = new EntityMeteor(world, pos.getX(), 260, pos.getZ(), 0, -0.1, 0, 1, 0, 0.2);
+                this.currentMeteor.setMeteorStack(meteor.getCatalystStack());
+                world.spawnEntity(this.currentMeteor);
+                reserved.set(false);
+            } finally {
+                lock.writeLock().unlock();
+            }
         }
     }
 }
