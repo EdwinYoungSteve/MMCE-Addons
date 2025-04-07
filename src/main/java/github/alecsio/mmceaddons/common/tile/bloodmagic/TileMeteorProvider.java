@@ -41,26 +41,25 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
                 if (currentMeteor != null && !currentMeteor.isDead) {
                     return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor.alive");
                 }
-            } finally {
-                lock.readLock().unlock();
-            }
 
-            BlockPos pos = this.getPos();
-            if (!world.canSeeSky(pos)) {
-                int obstructedBlocks = 0;
-                for (int y = pos.getY() + 1; y <= MAX_HEIGHT; y++) {
-                    if (!world.isAirBlock(pos.up(y - pos.getY()))) {
-                        obstructedBlocks++;
-                        if (obstructedBlocks > MAX_ALLOWED_BLOCKS_BETWEEN_TILE_AND_SKY) {
-                            return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor");
+
+                BlockPos pos = this.getPos();
+                if (!world.canSeeSky(pos)) {
+                    int obstructedBlocks = 0;
+                    for (int y = pos.getY() + 1; y <= MAX_HEIGHT; y++) {
+                        if (!world.isAirBlock(pos.up(y - pos.getY()))) {
+                            obstructedBlocks++;
+                            if (obstructedBlocks > MAX_ALLOWED_BLOCKS_BETWEEN_TILE_AND_SKY) {
+                                return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor");
+                            }
                         }
                     }
                 }
+
+                return CraftCheck.success();
+            } finally {
+                lock.readLock().unlock();
             }
-
-            reserved.set(true);
-
-            return CraftCheck.success();
         }
 
         @Override
@@ -71,7 +70,7 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
                 this.currentMeteor = new EntityMeteor(world, pos.getX(), 260, pos.getZ(), 0, -0.1, 0, 1, 0, 0.2);
                 this.currentMeteor.setMeteorStack(meteor.getCatalystStack());
                 world.spawnEntity(this.currentMeteor);
-                reserved.set(false);
+                markNoUpdateSync();
             } finally {
                 lock.writeLock().unlock();
             }

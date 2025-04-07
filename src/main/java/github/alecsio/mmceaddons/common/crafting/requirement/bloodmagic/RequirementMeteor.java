@@ -9,27 +9,21 @@ import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.Re
 import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentMeteor;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Meteor;
-import github.alecsio.mmceaddons.common.tile.bloodmagic.TileMeteorProvider;
-import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentMeteorProvider;
-import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
 import hellfirepvp.modularmachinery.common.util.ResultChance;
-import kport.modularmagic.common.crafting.helper.LifeEssenceProviderCopy;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import thaumicenergistics.container.ActionType;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class RequirementMeteor extends ComponentRequirement.MultiCompParallelizable<Meteor, RequirementTypeMeteor> {
+public class RequirementMeteor extends ComponentRequirement.MultiComponentRequirement<Meteor, RequirementTypeMeteor> {
 
     private static final RequirementValidator requirementValidator = RequirementValidator.getInstance();
 
@@ -106,50 +100,29 @@ public class RequirementMeteor extends ComponentRequirement.MultiCompParalleliza
 
     @Nonnull
     @Override
-    public synchronized CraftCheck canStartCrafting(List<ProcessingComponent<?>> components, RecipeCraftingContext context) {
-        List<ComponentRequirement<?, ?>> requirements = context.getRequirementBy(this.requirementType, IOType.OUTPUT);
+    public CraftCheck canStartCrafting(List<ProcessingComponent<?>> components, RecipeCraftingContext context) {
         List<MeteorProviderCopy> copiedComponents = convertToMeteorProviderCopyList(components);
 
-        // todo: iterate over the requirements instead
-        for (int i = 0; i < requirements.size(); i++) {
-            MeteorProviderCopy component = copiedComponents.get(i);
-            ComponentRequirement<?, ?> requirement = requirements.get(i);
+        for (MeteorProviderCopy component : copiedComponents) {
+            CraftCheck check = component.canHandle(this);
 
-            CraftCheck check = component.canHandle((RequirementMeteor) requirement);
-
-            if (!check.isSuccess()) {
+            if (check.isSuccess()) {
                 return check;
             }
         }
 
-        return CraftCheck.success();
+        return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor.missing");
     }
 
     @Override
-    public synchronized void startCrafting(List<ProcessingComponent<?>> components, RecipeCraftingContext context, ResultChance chance) {
-        List<ComponentRequirement<?, ?>> requirements = context.getRequirementBy(this.requirementType, IOType.OUTPUT);
+    public void startCrafting(List<ProcessingComponent<?>> components, RecipeCraftingContext context, ResultChance chance) {
         List<MeteorProviderCopy> copiedComponents = convertToMeteorProviderCopyList(components);
 
-
-        for (int i = 0; i < requirements.size(); i++) {
-            MeteorProviderCopy component = copiedComponents.get(i);
-            ComponentRequirement<?, ?> requirement = requirements.get(i);
-
-            component.handle((RequirementMeteor) requirement);
+        for (MeteorProviderCopy component : copiedComponents) {
+            if (component.canHandle(this).isSuccess()) {
+                component.handle(this);
+                return;
+            }
         }
-    }
-
-    @Override
-    public void finishCrafting(List<ProcessingComponent<?>> components, RecipeCraftingContext context, ResultChance chance) {
-
-    }
-
-    @Override
-    public int getMaxParallelism(List<ProcessingComponent<?>> components, RecipeCraftingContext context, int maxParallelism) {
-        if (ignoreOutputCheck && actionType == IOType.OUTPUT) {
-            return maxParallelism;
-        }
-
-
     }
 }

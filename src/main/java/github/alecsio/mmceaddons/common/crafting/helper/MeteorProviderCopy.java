@@ -11,7 +11,7 @@ public class MeteorProviderCopy extends BaseProviderCopy<RequirementMeteor> impl
 
     public MeteorProviderCopy(IRequirementHandler<RequirementMeteor> original) {
         super(original);
-        this.reserved = ((TileMeteorProvider.Output) original).reserved.get();
+        this.reserved = false;
     }
 
     public boolean isReserved() {
@@ -24,7 +24,9 @@ public class MeteorProviderCopy extends BaseProviderCopy<RequirementMeteor> impl
 
     @Override
     public CraftCheck canHandle(RequirementMeteor requirement) {
-        CraftCheck check = isReserved() ? CraftCheck.failure(":(") : CraftCheck.success();
+        if (isReserved()) {return CraftCheck.failure(":(");};
+
+        CraftCheck check = original.canHandle(requirement);
 
         if (check.isSuccess()) {
             reserve();
