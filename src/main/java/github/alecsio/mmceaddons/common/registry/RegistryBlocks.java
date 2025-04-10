@@ -70,7 +70,7 @@ public class RegistryBlocks {
             prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockScrubberProviderInput);
         }
 
-        // Blood Magic (Will)
+        // Blood Magic (Will & meteor)
         if (Mods.BLOODMAGIC.isPresent()) {
             ModularMachineryAddonsBlocks.blockWillMultiChunkProviderInput = prepareRegister(new BlockWillMultiChunkProviderInput());
             ModularMachineryAddonsBlocks.blockWillMultiChunkProviderOutput = prepareRegister(new BlockWillMultiChunkProviderOutput());
@@ -161,6 +161,7 @@ public class RegistryBlocks {
         }
     }
 
+    // Copied from the MMCE code, credits to the original authors
     private static void prepareItemBlockRegister(Block block) {
         if (block instanceof BlockMachineComponent) {
             if (block instanceof BlockMEMachineComponent) {
@@ -179,6 +180,7 @@ public class RegistryBlocks {
         }
     }
 
+    // Copied from the MMCE code, credits to the original authors
     private static <T extends ItemBlock> void prepareItemBlockRegister(T item) {
         String name = item.getBlock().getClass().getSimpleName().toLowerCase();
         item.setRegistryName(ModularMachineryAddons.MODID, name).setTranslationKey(ModularMachineryAddons.MODID + '.' + name);
@@ -186,6 +188,7 @@ public class RegistryBlocks {
         ModularMachineryAddons.REGISTRY_ITEMS.registerItemBlock(item);
     }
 
+    // Copied from the MMCE code, credits to the original authors
     private static <T extends Block> T prepareRegister(T block) {
         String name = block.getClass().getSimpleName().toLowerCase();
         block.setRegistryName(ModularMachineryAddons.MODID, name).setTranslationKey(ModularMachineryAddons.MODID + '.' + name);
@@ -194,6 +197,7 @@ public class RegistryBlocks {
         return prepareRegisterWithCustomName(block);
     }
 
+    // Copied from the MMCE code, credits to the original authors
     private static <T extends Block> T prepareRegisterWithCustomName(T block) {
         blockModelRegister.add(block);
         return block;

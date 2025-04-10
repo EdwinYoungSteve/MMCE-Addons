@@ -6,7 +6,7 @@ import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirem
 import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeWillMultiChunk;
 import github.alecsio.mmceaddons.common.crafting.requirement.validator.RequirementValidator;
-import github.alecsio.mmceaddons.common.exception.ConsistencyException;
+import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentWill;
 import github.alecsio.mmceaddons.common.tile.bloodmagic.TileWillMultiChunkProvider;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
@@ -43,7 +43,7 @@ public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, R
         try {
             will = EnumDemonWillType.valueOf(willType.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new ConsistencyException(e.getMessage());
+            throw new RequirementPrerequisiteFailedException(e.getMessage());
         }
         return new RequirementWillMultiChunk(ioType, chunkRange, amount, minPerChunk, maxPerChunk, will);
     }

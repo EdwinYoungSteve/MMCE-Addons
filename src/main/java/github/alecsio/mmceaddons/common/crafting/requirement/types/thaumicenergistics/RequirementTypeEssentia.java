@@ -16,8 +16,8 @@ public class RequirementTypeEssentia extends BaseRequirementType<Essentia, Requi
 
     @Override
     public ComponentRequirement<Essentia, ? extends RequirementType<Essentia, RequirementEssentia>> createRequirement(IOType type, JsonObject recipe) {
-        String aspect = RequirementUtils.getRequiredString(recipe, "aspect", "yolo");
-        int amount = RequirementUtils.getRequiredInt(recipe, "amount", "yolo2");
+        String aspect = RequirementUtils.getRequiredString(recipe, "aspect", "aspect");
+        int amount = RequirementUtils.getRequiredInt(recipe, "amount", "amount");
 
         return RequirementEssentia.from(type, aspect, amount);
     }

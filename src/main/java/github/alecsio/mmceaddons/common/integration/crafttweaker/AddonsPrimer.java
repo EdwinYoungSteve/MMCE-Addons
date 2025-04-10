@@ -11,7 +11,6 @@ import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.Requir
 import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.RequirementFlux;
 import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.RequirementVis;
 import github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics.RequirementEssentia;
-import github.alecsio.mmceaddons.common.exception.ConsistencyException;
 import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
 import hellfirepvp.modularmachinery.common.crafting.helper.ComponentRequirement;
 import hellfirepvp.modularmachinery.common.integration.crafttweaker.RecipePrimer;
@@ -26,7 +25,7 @@ public class AddonsPrimer {
 
     @FunctionalInterface
     private interface RequirementSupplier<T extends ComponentRequirement<?, ?>> {
-        T get() throws ConsistencyException;
+        T get() throws RequirementPrerequisiteFailedException;
     }
 
     private static <T extends ComponentRequirement<?, ?>> RecipePrimer addRequirement(RecipePrimer primer, RequirementSupplier<T> supplier) {

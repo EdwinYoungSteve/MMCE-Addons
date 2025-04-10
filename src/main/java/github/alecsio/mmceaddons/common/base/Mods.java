@@ -8,6 +8,7 @@ public enum Mods {
     THAUMICENERGISTICS("thaumicenergistics"),
     THAUMCRAFT("thaumcraft"),;
 
+    // Used in annotations, which require compile-time constants. Yes, it's redundant. But it stil reduces boilerplate code
     public static final String NUCLEARCRAFT_ID = "nuclearcraft";
     public static final String BLOODMAGIC_ID = "bloodmagic";
     public static final String THAUMICENERGISTICS_ID = "thaumicenergistics";

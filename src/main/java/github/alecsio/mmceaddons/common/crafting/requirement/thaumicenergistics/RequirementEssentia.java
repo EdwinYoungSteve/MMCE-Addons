@@ -59,7 +59,7 @@ public class RequirementEssentia extends ComponentRequirement<Essentia, Requirem
 
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getEssentiaHandler(component).handle(this));
+        ModularMachinery.EXECUTE_MANAGER.addTask(() -> getEssentiaHandler(component).handle(this));
         return true;
     }
 
