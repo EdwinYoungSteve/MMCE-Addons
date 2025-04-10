@@ -2,9 +2,6 @@ package github.alecsio.mmceaddons.common.registry;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.item.ItemAdvancedConstructTool;
-import hellfirepvp.modularmachinery.ModularMachinery;
-import hellfirepvp.modularmachinery.common.CommonProxy;
-import hellfirepvp.modularmachinery.common.item.ItemDynamicColor;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;

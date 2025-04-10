@@ -17,8 +17,7 @@ public class RequirementTypeMeteor extends BaseRequirementType<Meteor, Requireme
     @Override
     public ComponentRequirement<Meteor, ? extends RequirementType<Meteor, RequirementMeteor>> createRequirement(IOType type, JsonObject jsonObject) {
         String itemString = RequirementUtils.getRequiredString(jsonObject, "item", RequirementMeteor.class.getSimpleName());
-        int amount = RequirementUtils.getRequiredInt(jsonObject, "amount", "amount");
 
-        return RequirementMeteor.from(itemString, amount);
+        return RequirementMeteor.from(itemString);
     }
 }

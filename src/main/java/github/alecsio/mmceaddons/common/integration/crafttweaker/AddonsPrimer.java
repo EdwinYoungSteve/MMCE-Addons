@@ -54,8 +54,8 @@ public class AddonsPrimer {
     }
 
     @ZenMethod
-    public static RecipePrimer addMeteor(RecipePrimer primer, String item, int amount) {
-        return addRequirement(primer, () -> RequirementMeteor.from(item, amount));
+    public static RecipePrimer addMeteor(RecipePrimer primer, String item) {
+        return addRequirement(primer, () -> RequirementMeteor.from(item));
     }
 
     @ZenMethod

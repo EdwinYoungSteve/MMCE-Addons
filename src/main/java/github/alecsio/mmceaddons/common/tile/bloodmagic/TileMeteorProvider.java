@@ -12,7 +12,6 @@ import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineCompon
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -25,8 +24,6 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
 
         private EntityMeteor currentMeteor;
         private final ReadWriteLock lock = new ReentrantReadWriteLock();
-
-        public AtomicBoolean reserved = new AtomicBoolean(false);
 
         @Nullable
         @Override

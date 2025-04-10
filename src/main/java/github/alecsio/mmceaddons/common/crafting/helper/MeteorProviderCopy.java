@@ -1,7 +1,6 @@
 package github.alecsio.mmceaddons.common.crafting.helper;
 
 import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementMeteor;
-import github.alecsio.mmceaddons.common.tile.bloodmagic.TileMeteorProvider;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 
@@ -24,7 +23,7 @@ public class MeteorProviderCopy extends BaseProviderCopy<RequirementMeteor> impl
 
     @Override
     public CraftCheck canHandle(RequirementMeteor requirement) {
-        if (isReserved()) {return CraftCheck.failure(":(");};
+        if (isReserved()) {return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor.missing");}
 
         CraftCheck check = original.canHandle(requirement);
 

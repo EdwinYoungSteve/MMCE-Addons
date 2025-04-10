@@ -14,8 +14,12 @@ import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.integration.appeng.AEEssentiaStack;
 
 import javax.annotation.Nullable;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MEEssentiaInputBus extends MEEssentiaBus {
+
+    private static final Lock lock = new ReentrantLock();
 
     @Override
     public ItemStack getVisualItemStack() {
@@ -30,7 +34,12 @@ public class MEEssentiaInputBus extends MEEssentiaBus {
 
     @Override
     protected boolean canPerformOperation(Actionable actionable, EssentiaStack essentia) {
-        IAEEssentiaStack imported = getStorageInventory().extractItems(AEEssentiaStack.fromEssentiaStack(essentia), actionable, this.source);
-        return imported == null || imported.getStackSize() >= essentia.getAmount();
+        lock.lock();
+        try {
+            IAEEssentiaStack imported = getStorageInventory().extractItems(AEEssentiaStack.fromEssentiaStack(essentia), actionable, this.source);
+            return imported != null && imported.getStackSize() >= essentia.getAmount();
+        } finally {
+            lock.unlock();
+        }
     }
 }

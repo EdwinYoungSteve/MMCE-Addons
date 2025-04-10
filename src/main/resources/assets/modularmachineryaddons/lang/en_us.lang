@@ -1,3 +1,5 @@
+itemGroup.modularmachineryaddons=Modular Machinery Addons
+
 tile.modularmachineryaddons.blockradiationprovideroutput.name=Radiation Output Hatch
 tile.modularmachineryaddons.blockradiationproviderinput.name=Radiation Input Hatch
 tile.modularmachineryaddons.blockmeessentiainputbus.name=Machinery Essentia Inpus Bus
@@ -36,7 +38,7 @@ error.modularmachineryaddons.requirement.missing.meteor=Line of sight is obstruc
 error.modularmachineryaddons.requirement.missing.meteor.missing=Could not find a hatch to handle this meteor
 
 # items
-item.modularmachineryaddons.advancedconstructtool.tooltip=Select two corners and click on a machine controller to extract the entire multiblock definition. Shift-right click to clear the selection.
+item.modularmachineryaddons.advancedconstructtool.tooltip=Select two corners and click on a machine controller to extract the entire multiblock definition. Selecting a third block will clear the selection.
 
 # messages
 message.modularmachineryaddons.advancedconstructtool.cleared=Cleared tool selection

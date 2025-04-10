@@ -10,7 +10,10 @@ import github.alecsio.mmceaddons.common.crafting.requirement.validator.Requireme
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentMeteor;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Meteor;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentMeteorProvider;
-import hellfirepvp.modularmachinery.common.crafting.helper.*;
+import hellfirepvp.modularmachinery.common.crafting.helper.ComponentRequirement;
+import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
+import hellfirepvp.modularmachinery.common.crafting.helper.ProcessingComponent;
+import hellfirepvp.modularmachinery.common.crafting.helper.RecipeCraftingContext;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
@@ -29,19 +32,18 @@ public class RequirementMeteor extends ComponentRequirement.MultiComponentRequir
 
     private final Meteor meteor;
 
-    public static RequirementMeteor from(String catalystItem, int amount) {
+    public static RequirementMeteor from(String catalystItem) {
         Item item = Item.getByNameOrId(catalystItem);
         requirementValidator.validateNotNull(item, String.format("Failed to load recipe for %s. Item %s doesn't exist!", RequirementMeteor.class, catalystItem));
-        requirementValidator.validateNotNegative(amount, "Amount must be a positive number!");
 
-        var catalystStack = new ItemStack(item, amount);
+        var catalystStack = new ItemStack(item);
         var meteor = MeteorRegistry.getMeteorForItem(catalystStack);
         requirementValidator.validateNotNull(meteor, String.format("Failed to find meteor with catalyst: %s", item.getRegistryName()));
 
         return new RequirementMeteor(IOType.OUTPUT, new Meteor(catalystStack, meteor.getComponents(), meteor.getExplosionStrength(), meteor.getRadius()));
     }
 
-    public RequirementMeteor(IOType actionType, Meteor meteor) {
+    private RequirementMeteor(IOType actionType, Meteor meteor) {
         super((RequirementTypeMeteor) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsRequirements.KEY_REQUIREMENT_METEOR), actionType);
         this.meteor = meteor;
     }
@@ -76,10 +78,6 @@ public class RequirementMeteor extends ComponentRequirement.MultiComponentRequir
         return new JEIComponentMeteor(this.meteor);
     }
 
-    public Meteor getMeteor() {
-        return meteor;
-    }
-
     @Nonnull
     @Override
     public List<ProcessingComponent<?>> copyComponents(List<ProcessingComponent<?>> toCopy) {
@@ -87,15 +85,10 @@ public class RequirementMeteor extends ComponentRequirement.MultiComponentRequir
 
         toCopy.forEach(component -> {
             MeteorProviderCopy meteorProvider = new MeteorProviderCopy(((MeteorProviderCopy) component.getProvidedComponent()).getOriginal());
-
             copy.add(new ProcessingComponent<>((MachineComponent<Object>) component.getComponent() , meteorProvider, component.getTag()));
         });
 
         return copy;
-    }
-
-    private static List<MeteorProviderCopy> convertToMeteorProviderCopyList(List<ProcessingComponent<?>> components) {
-        return Lists.transform(components, component -> component != null ? ((MeteorProviderCopy) component.getProvidedComponent()) : null);
     }
 
     @Nonnull
@@ -124,5 +117,13 @@ public class RequirementMeteor extends ComponentRequirement.MultiComponentRequir
                 return;
             }
         }
+    }
+
+    public Meteor getMeteor() {
+        return meteor;
+    }
+
+    private static List<MeteorProviderCopy> convertToMeteorProviderCopyList(List<ProcessingComponent<?>> components) {
+        return Lists.transform(components, component -> component != null ? ((MeteorProviderCopy) component.getProvidedComponent()) : null);
     }
 }

@@ -5,25 +5,20 @@ import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.Requirem
 import github.alecsio.mmceaddons.common.exception.ConsistencyException;
 import github.alecsio.mmceaddons.common.tile.handler.AbstractMultiChunkHandler;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
-import github.alecsio.mmceaddons.common.tile.handler.strategy.RandomChunkSelectionStrategy;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentFluxProvider;
+import github.alecsio.mmceaddons.common.tile.wrapper.AuraHelperWrapper;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
 import net.minecraft.util.math.BlockPos;
-import thaumcraft.api.aura.AuraHelper;
 
 import javax.annotation.Nullable;
 
 public abstract class TileFluxProvider extends AbstractMultiChunkHandler<RequirementFlux> implements MachineComponentTile {
 
-    public TileFluxProvider() {
-        super(new RandomChunkSelectionStrategy());
-    }
-
     @Override
     protected double getAmountInChunk(IMultiChunkRequirement requirement, BlockPos blockPosInChunk) {
-        return AuraHelper.getFlux(this.world, blockPosInChunk);
+        return AuraHelperWrapper.Flux.getFlux(this.world, blockPosInChunk);
     }
 
     protected float castWithSafeguard(double amount) {
@@ -41,18 +36,13 @@ public abstract class TileFluxProvider extends AbstractMultiChunkHandler<Require
         }
 
         @Override
-        protected boolean isValidChunk(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
+        protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
             return currentAmount - amountToModify >= 0;
         }
 
         @Override
-        protected double getAmountToApply(double amountInChunk, double amountToHandle, IMultiChunkRequirement requirement) {
-            return Math.min(amountToHandle, amountInChunk);
-        }
-
-        @Override
         protected void handleAmount(IMultiChunkRequirement requirement, BlockPos blockPosInChunk, double amountToHandle) {
-            AuraHelper.drainFlux(this.world, blockPosInChunk, castWithSafeguard(amountToHandle), false);
+            AuraHelperWrapper.Flux.drainFlux(this.world, pos, castWithSafeguard(amountToHandle));
         }
     }
 
@@ -64,18 +54,13 @@ public abstract class TileFluxProvider extends AbstractMultiChunkHandler<Require
         }
 
         @Override
-        protected boolean isValidChunk(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
+        protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
             return currentAmount + amountToModify <= Float.MAX_VALUE;
         }
 
         @Override
-        protected double getAmountToApply(double amountInChunk, double amountToHandle, IMultiChunkRequirement requirement) {
-            return amountToHandle;
-        }
-
-        @Override
         protected void handleAmount(IMultiChunkRequirement requirement, BlockPos blockPosInChunk, double amountToHandle) {
-            AuraHelper.polluteAura(this.world, blockPosInChunk, castWithSafeguard(amountToHandle), false);
+            AuraHelperWrapper.Flux.addFlux(this.world, pos, castWithSafeguard(amountToHandle));
         }
     }
 }

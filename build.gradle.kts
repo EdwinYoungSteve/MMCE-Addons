@@ -195,7 +195,7 @@ dependencies {
 
      */
 
-    implementation("curse.maven:ae2-570458:6302098-sources-6302099")
+    implementation(rfg.deobf("curse.maven:ae2-570458:6302098"))
     implementation(rfg.deobf("curse.maven:ModularMachineryCE-817377:5527355-sources-5527359"))
     implementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+")
     implementation("curse.maven:thaumicEnergistics-223666:2915506")

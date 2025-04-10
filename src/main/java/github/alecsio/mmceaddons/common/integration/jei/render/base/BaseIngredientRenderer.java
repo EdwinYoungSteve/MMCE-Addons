@@ -6,9 +6,9 @@ import mezz.jei.api.gui.IDrawableBuilder;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -23,8 +23,9 @@ public abstract class BaseIngredientRenderer<T extends ITooltippable> implements
 
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        RenderHelper.enableStandardItemLighting();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
         if (builder == null) {
             builder = JeiPlugin.GUI_HELPER.drawableBuilder(getTexture(toRender), 0, 0, 16, 16);
@@ -35,7 +36,6 @@ public abstract class BaseIngredientRenderer<T extends ITooltippable> implements
 
         GlStateManager.popMatrix();
         GlStateManager.disableBlend();
-        RenderHelper.disableStandardItemLighting();
     }
 
     @Override
