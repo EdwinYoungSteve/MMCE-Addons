@@ -13,6 +13,7 @@ import github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics.
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.kasuminova.mmce.common.tile.base.MEMachineComponent;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
+import net.minecraft.client.resources.I18n;
 import thaumicenergistics.api.EssentiaStack;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
@@ -47,7 +48,7 @@ public abstract class MEEssentiaBus extends MEMachineComponent implements IGridT
 
     @Override
     public CraftCheck canHandle(RequirementEssentia essentia) {
-        return canPerformOperation(Actionable.SIMULATE, essentia.getEssentiaStack()) ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.essentia");
+        return canPerformOperation(Actionable.SIMULATE, essentia.getEssentiaStack()) ? CraftCheck.success() : CraftCheck.failure(I18n.format("error.modularmachineryaddons.requirement.missing.essentia", essentia.getActionType(), essentia.getEssentiaStack().getAspectTag(), essentia.getEssentiaStack().getAmount()));
     }
 
     @Override

@@ -98,6 +98,11 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
     }
 
     @Override
+    public IOType getIOType() {
+        return actionType;
+    }
+
+    @Override
     public int getChunkRange() {
         return chunkRange;
     }

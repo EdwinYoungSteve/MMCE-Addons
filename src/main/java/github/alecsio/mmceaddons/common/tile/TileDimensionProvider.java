@@ -7,6 +7,7 @@ import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
 import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineComponent;
+import net.minecraft.client.resources.I18n;
 
 import javax.annotation.Nullable;
 
@@ -14,7 +15,7 @@ public class TileDimensionProvider extends TileColorableMachineComponent impleme
 
     @Override
     public CraftCheck canHandle(RequirementDimension requirement) {
-        return this.world.provider.getDimension() == requirement.getDimension().getId() ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.dimension");
+        return this.world.provider.getDimension() == requirement.getDimension().getId() ? CraftCheck.success() : CraftCheck.failure(I18n.format("error.modularmachineryaddons.requirement.missing.dimension", requirement.getDimension().getId()));
     }
 
     @Override

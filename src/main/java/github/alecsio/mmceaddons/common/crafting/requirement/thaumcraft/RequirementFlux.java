@@ -41,6 +41,11 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
     }
 
     @Override
+    public IOType getIOType() {
+        return actionType;
+    }
+
+    @Override
     public int getChunkRange() {
         return this.chunkRange;
     }

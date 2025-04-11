@@ -29,13 +29,14 @@ error.modularmachineryaddons.component.invalid.will=No will hatch found
 error.modularmachineryaddons.component.invalid.meteor=No meteor hatch found
 
 # requirement check fails
-error.modularmachineryaddons.requirement.missing.multichunk=Requirement %s not satisfied
-error.modularmachineryaddons.requirement.missing.essentia=Essentia requirement not satisfied
-error.modularmachineryaddons.requirement.missing.biome=Biome requirement not satisfied
-error.modularmachineryaddons.requirement.missing.dimension=Dimension requirement not satisfied
+error.modularmachineryaddons.requirement.missing.multichunk=Could not %s requirement %s from/to all chunks in range %d
+error.modularmachineryaddons.requirement.missing.essentia=Could not %s aspect: %s amount: %d
+error.modularmachineryaddons.requirement.missing.biome=Hatch must be in biome: %s
+error.modularmachineryaddons.requirement.missing.dimension=Hatch must be in dimension: %d
 error.modularmachineryaddons.requirement.missing.meteor.alive=Meteor is still alive
 error.modularmachineryaddons.requirement.missing.meteor=Line of sight is obstructed (max 1 block allowed)
-error.modularmachineryaddons.requirement.missing.meteor.missing=Could not find a hatch to handle this meteor
+error.modularmachineryaddons.requirement.missing.meteor.missing=Meteor hatch could not handle meteor. You should never see this message
+
 
 # items
 item.modularmachineryaddons.advancedconstructtool.tooltip=Select two corners and click on a machine controller to extract the entire multiblock definition. Selecting a third block will clear the selection.

@@ -96,15 +96,16 @@ public class RequirementMeteor extends ComponentRequirement.MultiComponentRequir
     public CraftCheck canStartCrafting(List<ProcessingComponent<?>> components, RecipeCraftingContext context) {
         List<MeteorProviderCopy> copiedComponents = convertToMeteorProviderCopyList(components);
 
+        CraftCheck check = CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor.missing");
         for (MeteorProviderCopy component : copiedComponents) {
-            CraftCheck check = component.canHandle(this);
+            check = component.canHandle(this);
 
             if (check.isSuccess()) {
                 return check;
             }
         }
 
-        return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor.missing");
+        return check;
     }
 
     @Override

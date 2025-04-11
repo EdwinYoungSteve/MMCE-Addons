@@ -89,6 +89,11 @@ public class RequirementScrubber extends ComponentRequirement.PerTick<Radiation,
     }
 
     @Override
+    public IOType getIOType() {
+        return actionType;
+    }
+
+    @Override
     public int getChunkRange() {
         return chunkRange;
     }

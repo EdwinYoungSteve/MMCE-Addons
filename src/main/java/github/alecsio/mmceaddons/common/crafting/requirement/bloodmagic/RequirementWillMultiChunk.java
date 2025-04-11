@@ -117,6 +117,11 @@ public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, R
     }
 
     @Override
+    public IOType getIOType() {
+        return actionType;
+    }
+
+    @Override
     public int getChunkRange() {
         return this.chunkRange;
     }

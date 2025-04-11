@@ -22,7 +22,7 @@ public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement
         List<Chunk> chunks = chunksReader.getSurroundingChunks(world, this.pos, requirement.getChunkRange());
         int totalChunksBeforeValidations = chunks.size();
         chunks = validateNotNullAndLoaded(chunks);
-        if (chunks.isEmpty() || chunks.size() != totalChunksBeforeValidations) return CraftCheck.failure(I18n.format("error.modularmachineryaddons.requirement.missing.multichunk", getRequirementName(requirement)));
+        if (chunks.isEmpty() || chunks.size() != totalChunksBeforeValidations) return CraftCheck.failure(I18n.format("error.modularmachineryaddons.requirement.missing.multichunk", requirement.getIOType().toString().toLowerCase(), getRequirementName(requirement), requirement.getChunkRange()));
 
         double totalAmount = requirement.getAmount();
         double amountPerChunk = totalAmount / chunks.size();
@@ -37,7 +37,7 @@ public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement
             totalHandled += amountPerChunk;
         }
 
-        return clampWithEpsilon(totalAmount - totalHandled, 0.0, 1.0, 1e-6) == 0 ? CraftCheck.success() : CraftCheck.failure(I18n.format("error.modularmachineryaddons.requirement.missing.multichunk", getRequirementName(requirement)));
+        return clampWithEpsilon(totalAmount - totalHandled, 0.0, 1.0, 1e-6) == 0 ? CraftCheck.success() : CraftCheck.failure(I18n.format("error.modularmachineryaddons.requirement.missing.multichunk", requirement.getIOType().toString().toLowerCase(), getRequirementName(requirement), requirement.getChunkRange()));
     }
 
     @Override

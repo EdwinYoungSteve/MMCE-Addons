@@ -85,6 +85,11 @@ public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis
     }
 
     @Override
+    public IOType getIOType() {
+        return actionType;
+    }
+
+    @Override
     public int getChunkRange() {
         return this.vis.getChunkRange();
     }
