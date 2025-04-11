@@ -9,6 +9,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static net.minecraft.util.math.MathHelper.clamp;
 
@@ -17,40 +19,50 @@ public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement
     private final ChunksReader chunksReader = ChunksReader.getInstance();
 
     public CraftCheck canHandle(T requirement) {
-        return handle(requirement, false) == 0 ? CraftCheck.success() : CraftCheck.failure(I18n.format("error.modularmachineryaddons.requirement.missing.multichunk", requirement.getClass().getSimpleName().replace("Requirement", "")));
-    }
-
-    @Override
-    public void handle(T requirement) {
-        handle(requirement, true);
-    }
-
-    public double handle(T requirement, boolean doAction) {
         List<Chunk> chunks = chunksReader.getSurroundingChunks(world, this.pos, requirement.getChunkRange());
-        if (chunks.isEmpty()) return requirement.getAmount(); // No chunks, return full amount
+        int totalChunksBeforeValidations = chunks.size();
+        chunks = validateNotNullAndLoaded(chunks);
+        if (chunks.isEmpty() || chunks.size() != totalChunksBeforeValidations) return CraftCheck.failure(I18n.format("error.modularmachineryaddons.requirement.missing.multichunk", getRequirementName(requirement)));
 
         double totalAmount = requirement.getAmount();
         double amountPerChunk = totalAmount / chunks.size();
         double totalHandled = 0;
 
         for (Chunk chunk : chunks) {
-            if (chunk == null || !chunk.isLoaded()) break;
-
             BlockPos pos = getBlockInChunk(chunk);
             double amountInChunk = getAmountInChunk(requirement, pos);
 
-            if (!canChunkHandle(amountInChunk, totalAmount - totalHandled, requirement) && !doAction) break;
-
-            if (doAction) {
-                handleAmount(requirement, pos, amountPerChunk);
-            }
+            if (!canChunkHandle(amountInChunk, totalAmount - totalHandled, requirement)) break;
 
             totalHandled += amountPerChunk;
         }
 
+        return clampWithEpsilon(totalAmount - totalHandled, 0.0, 1.0, 1e-6) == 0 ? CraftCheck.success() : CraftCheck.failure(I18n.format("error.modularmachineryaddons.requirement.missing.multichunk", getRequirementName(requirement)));
+    }
 
+    @Override
+    public void handle(T requirement) {
+        List<Chunk> chunks = validateNotNullAndLoaded(chunksReader.getSurroundingChunks(world, this.pos, requirement.getChunkRange()));
+        if (chunks.isEmpty()) return;
 
-        return clampWithEpsilon(totalAmount - totalHandled, 0.0, 1.0, 1e-6);
+        double totalAmount = requirement.getAmount();
+        double amountPerChunk = totalAmount / chunks.size();
+
+        chunks.forEach(chunk -> {
+            BlockPos pos = getBlockInChunk(chunk);
+            handleAmount(requirement, pos, amountPerChunk);
+        });
+    }
+
+    private static List<Chunk> validateNotNullAndLoaded(List<Chunk> chunks) {
+        return chunks.stream()
+                .filter(Objects::nonNull)
+                .filter(Chunk::isLoaded)
+                .collect(Collectors.toList());
+    }
+
+    private String getRequirementName(T requirement) {
+        return requirement.getClass().getSimpleName().replace("Requirement", "");
     }
 
     public static double clampWithEpsilon(double value, double min, double max, double epsilon) {
