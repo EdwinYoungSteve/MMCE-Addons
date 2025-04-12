@@ -1,16 +1,16 @@
 [
-{
-  "modid": "template_mod",
-  "name": "Forge Template Mod",
-  "description": "Example forge mod.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
-}
+  {
+    "modid": "modularmachineryaddons",
+    "name": "Modular Machinery Addons",
+    "description": "Integration between Modular Machinery Community Edition and other mods.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://curseforge.com/minecraft/mc-mods/modular-machinery-community-edition-addons",
+    "updateUrl": "",
+    "authorList": ["Alecsio"],
+    "credits": "Thanks to the authors of Modular Machinery, MMCE, Blood Magic, Thaumic Energistics, and others for inspiration and resources.",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
 ]
