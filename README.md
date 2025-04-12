@@ -28,25 +28,15 @@ More detailed documentation and examples can be found on the [Wiki](https://gith
 
 ## 🐛 Issues & Feature Requests
 
-If you encounter a bug or want to suggest a feature, please [open an issue](https://github.com/your-repo/issues). PRs are welcome!
+If you encounter a bug or want to suggest a feature, please [open an issue](https://github.com/Alecsioo/MMCE-Addons/issues). PRs are welcome!
 
 ---
 
 ## 📦 Installation
 
-1. Download the mod from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modular-machinery-addons).
+1. Download the mod from [CurseForge](https://legacy.curseforge.com/minecraft/mc-mods/modular-machinery-community-edition-addons).
 2. Place the `.jar` file in your `mods` folder.
 3. Make sure **Modular Machinery: CE** is installed.
-
----
-
-## 🧩 Mod Compatibility
-
-This mod optionally integrates with the following:
-- [Blood Magic](https://www.curseforge.com/minecraft/mc-mods/blood-magic)
-- [Thaumcraft](https://www.curseforge.com/minecraft/mc-mods/thaumcraft)
-- [Thaumic Energistics](https://www.curseforge.com/minecraft/mc-mods/thaumic-energistics)
-- [NuclearCraft](https://www.curseforge.com/minecraft/mc-mods/nuclearcraft)
 
 ---
 
