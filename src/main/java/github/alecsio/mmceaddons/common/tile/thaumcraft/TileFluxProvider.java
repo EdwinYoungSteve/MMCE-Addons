@@ -42,7 +42,7 @@ public abstract class TileFluxProvider extends AbstractMultiChunkHandler<Require
 
         @Override
         protected void handleAmount(IMultiChunkRequirement requirement, BlockPos blockPosInChunk, double amountToHandle) {
-            AuraHelperWrapper.Flux.drainFlux(this.world, pos, castWithSafeguard(amountToHandle));
+            AuraHelperWrapper.Flux.drainFlux(this.world, blockPosInChunk, castWithSafeguard(amountToHandle));
         }
     }
 
@@ -60,7 +60,7 @@ public abstract class TileFluxProvider extends AbstractMultiChunkHandler<Require
 
         @Override
         protected void handleAmount(IMultiChunkRequirement requirement, BlockPos blockPosInChunk, double amountToHandle) {
-            AuraHelperWrapper.Flux.addFlux(this.world, pos, castWithSafeguard(amountToHandle));
+            AuraHelperWrapper.Flux.addFlux(this.world, blockPosInChunk, castWithSafeguard(amountToHandle));
         }
     }
 }

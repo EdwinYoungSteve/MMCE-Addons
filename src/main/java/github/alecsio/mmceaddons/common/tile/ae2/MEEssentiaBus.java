@@ -21,6 +21,7 @@ import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
+// Code was somehow adapted from a mix of whatever is being done in Thaumic Enenrgistics and in other ME hatches in MMCE
 public abstract class MEEssentiaBus extends MEMachineComponent implements IGridTickable, IRequirementHandler<RequirementEssentia> {
 
     protected IMEInventory<IAEEssentiaStack> getStorageInventory() {
@@ -37,13 +38,13 @@ public abstract class MEEssentiaBus extends MEMachineComponent implements IGridT
     @Nonnull
     @Override
     public TickingRequest getTickingRequest(@Nonnull IGridNode iGridNode) {
-        return new TickingRequest(5, 40, false, true) {}; // Magic numbers
+        return new TickingRequest(5, 40, true, true) {}; // Magic numbers
     }
 
     @Nonnull
     @Override
     public TickRateModulation tickingRequest(@Nonnull IGridNode iGridNode, int i) {
-        return TickRateModulation.SLOWER;
+        return TickRateModulation.SLEEP;
     }
 
     @Override

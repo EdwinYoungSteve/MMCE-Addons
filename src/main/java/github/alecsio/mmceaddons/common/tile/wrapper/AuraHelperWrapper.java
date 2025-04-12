@@ -9,6 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static github.alecsio.mmceaddons.common.tile.wrapper.BaseHelperWrapper.withLock;
 
+// An attempt to make helper classes thread-safe by wrapping the calls to the original in locked blocks
 public class AuraHelperWrapper {
 
     public static class Flux {

@@ -26,8 +26,8 @@ public abstract class TileVisProvider extends AbstractMultiChunkHandler<Requirem
         }
 
         @Override
-        protected void handleAmount(IMultiChunkRequirement requirement, BlockPos controllerPos, double amountToHandle) {
-            AuraHelperWrapper.Vis.drainVis(this.world, pos, (float) amountToHandle);
+        protected void handleAmount(IMultiChunkRequirement requirement, BlockPos blockPosInChunk, double amountToHandle) {
+            AuraHelperWrapper.Vis.drainVis(this.world, blockPosInChunk, (float) amountToHandle);
         }
 
         @Nullable

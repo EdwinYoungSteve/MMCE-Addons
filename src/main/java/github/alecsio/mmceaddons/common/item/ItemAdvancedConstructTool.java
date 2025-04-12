@@ -26,9 +26,10 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+// This item was adapted from a similar item in MMCE
 public class ItemAdvancedConstructTool extends Item {
 
-    private final List<BlockPos> selection = new ArrayList<BlockPos>();
+    private final List<BlockPos> selection = new ArrayList<>();
 
     public ItemAdvancedConstructTool() {
         setMaxStackSize(1);

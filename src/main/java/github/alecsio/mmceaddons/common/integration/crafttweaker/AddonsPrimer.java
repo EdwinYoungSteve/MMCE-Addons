@@ -4,7 +4,6 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ZenRegister;
 import github.alecsio.mmceaddons.common.crafting.requirement.RequirementBiome;
 import github.alecsio.mmceaddons.common.crafting.requirement.RequirementDimension;
-import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementMeteor;
 import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementWillMultiChunk;
 import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementRadiation;
 import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementScrubber;
@@ -50,11 +49,6 @@ public class AddonsPrimer {
     @ZenMethod
     public static RecipePrimer addRadiationOutput(RecipePrimer primer, int chunkRange, int amount) {
         return addRequirement(primer, () -> RequirementRadiation.from(IOType.OUTPUT, chunkRange, amount));
-    }
-
-    @ZenMethod
-    public static RecipePrimer addMeteor(RecipePrimer primer, String item) {
-        return addRequirement(primer, () -> RequirementMeteor.from(item));
     }
 
     @ZenMethod

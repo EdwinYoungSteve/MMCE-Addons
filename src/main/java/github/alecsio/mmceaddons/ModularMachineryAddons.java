@@ -15,6 +15,10 @@ import org.apache.logging.log4j.Logger;
         dependencies = "required-after:forge@[14.21.0.2371,);"
                 + "required-after:modularmachinery@[1.11.1,);"
                 + "after:jei@[4.13.1.222,);"
+                + "after:bloodmagic@[0.0.0,);"
+                + "after:thaumcraft@[0.0.0,);"
+                + "after:thaumicenergistics@[0.0.0,);"
+                + "after:nuclearcraft@[0.0.0,);"
         ,
         acceptedMinecraftVersions = "[1.12]",
         acceptableRemoteVersions = "[1.0.0]"
@@ -32,6 +36,7 @@ public class ModularMachineryAddons {
 
     @Mod.Instance(MODID)
     public static ModularMachineryAddons instance;
+
     public static Logger logger;
 
     @SidedProxy(clientSide = CLIENT_PROXY, serverSide = COMMON_PROXY)

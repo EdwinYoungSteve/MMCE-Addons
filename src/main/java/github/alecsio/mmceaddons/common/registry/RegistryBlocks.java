@@ -43,6 +43,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import java.util.ArrayList;
 import java.util.List;
 
+// This class was adapted from a similar class in MMCE
 public class RegistryBlocks {
     private static final List<Block> blockModelRegister = new ArrayList<>();
 

@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import java.util.ArrayList;
 import java.util.List;
 
+// This class was adapted from a similar class in MMCE
 public class RegistryItems {
     public static final List<Item> ITEM_BLOCKS = new ArrayList<>();
     protected static final List<Item> ITEM_MODEL_REGISTER = new ArrayList<>();

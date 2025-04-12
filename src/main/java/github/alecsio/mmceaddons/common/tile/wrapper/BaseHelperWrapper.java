@@ -2,6 +2,7 @@ package github.alecsio.mmceaddons.common.tile.wrapper;
 
 import java.util.concurrent.locks.Lock;
 
+// An attempt to make helper classes thread-safe by wrapping the calls to the original in locked blocks
 public class BaseHelperWrapper {
 
     // Calls this callable under the provided lock
