@@ -47,6 +47,9 @@ public abstract class TileFluxProvider extends AbstractMultiChunkHandler<Require
     }
 
     public static class Output extends TileFluxProvider {
+
+        public static final float MAXIMUM_AMOUNT_IN_CHUNK = 32766.0F; // This is a magic number imposed by the TC API
+
         @Nullable
         @Override
         public MachineComponentFluxProvider provideComponent() {
@@ -55,7 +58,7 @@ public abstract class TileFluxProvider extends AbstractMultiChunkHandler<Require
 
         @Override
         protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-            return currentAmount + amountToModify <= Float.MAX_VALUE;
+            return currentAmount + amountToModify <= MAXIMUM_AMOUNT_IN_CHUNK;
         }
 
         @Override

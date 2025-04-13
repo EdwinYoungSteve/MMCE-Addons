@@ -39,9 +39,11 @@ public abstract class TileVisProvider extends AbstractMultiChunkHandler<Requirem
 
     public static class Output extends TileVisProvider {
 
+        public static final float MAXIMUM_AMOUNT_IN_CHUNK = 32766.0F; // This is a magic number imposed by the TC API
+
         @Override
         protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-            return currentAmount + amountToModify <= Float.MAX_VALUE;
+            return currentAmount + amountToModify <= MAXIMUM_AMOUNT_IN_CHUNK;
         }
 
         @Override

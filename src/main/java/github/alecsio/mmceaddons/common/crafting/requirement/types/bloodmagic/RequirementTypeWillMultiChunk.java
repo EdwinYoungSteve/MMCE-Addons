@@ -20,8 +20,8 @@ public class RequirementTypeWillMultiChunk extends BaseRequirementType<DemonWill
     public ComponentRequirement<DemonWill, ? extends RequirementType<DemonWill, RequirementWillMultiChunk>> createRequirement(IOType type, JsonObject json) {
         String willType = RequirementUtils.getRequiredString(json, "will-type", ModularMagicRequirements.KEY_REQUIREMENT_WILL.toString());
         double amount = RequirementUtils.getRequiredDouble(json, "amount", ModularMachineryAddonsRequirements.KEY_REQUIREMENT_WILL_MULTI_CHUNK.toString());
-        double min = RequirementUtils.getOptionalDouble(json, "min", 0.0F);
-        double max = RequirementUtils.getOptionalDouble(json, "max", 100.0F);
+        double min = RequirementUtils.getOptionalDouble(json, "minPerChunk", 0.0F);
+        double max = RequirementUtils.getOptionalDouble(json, "maxPerChunk", Integer.MAX_VALUE);
         int chunkRange = RequirementUtils.getOptionalInt(json, "chunkRange", 0); // Only the chunk the machine is in
 
         return RequirementWillMultiChunk.from(type, chunkRange, amount, min, max, willType);
