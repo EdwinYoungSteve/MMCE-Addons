@@ -20,4 +20,8 @@ public class RequirementValidator {
     public void validateNotNull(Object value, String errorMessage) {
         if (value == null) {throw new RequirementPrerequisiteFailedException(errorMessage);}
     }
+
+    public void validateNotAbove(double value, double max, String errorMessage) {
+        if (value > max) {throw new RequirementPrerequisiteFailedException(errorMessage);}
+    }
 }

@@ -9,6 +9,8 @@ import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentVi
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Vis;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentVisProvider;
+import github.alecsio.mmceaddons.common.tile.thaumcraft.TileFluxProvider;
+import github.alecsio.mmceaddons.common.tile.thaumcraft.TileVisProvider;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
@@ -27,8 +29,9 @@ public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis
     private final Vis vis;
 
     public static RequirementVis from(IOType ioType, int chunkRange, float amount) {
-        requirementValidator.validateNotNegative(chunkRange, "chunkRange");
-        requirementValidator.validateNotNegative(amount, "amount");
+        requirementValidator.validateNotNegative(chunkRange, "Chunk range must be a positive number!");
+        requirementValidator.validateNotNegative(amount, "Amount must be a positive number!");
+        if (ioType == IOType.OUTPUT) {requirementValidator.validateNotAbove(amount, TileVisProvider.Output.MAXIMUM_AMOUNT_IN_CHUNK, String.format("Amount cannot be greater than maximum amount allowed in chunk (this is a TC API limitation): %f", TileVisProvider.Output.MAXIMUM_AMOUNT_IN_CHUNK));}
 
         return new RequirementVis(ioType, chunkRange, amount);
     }

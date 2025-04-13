@@ -9,6 +9,7 @@ import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentFl
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Flux;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentFluxProvider;
+import github.alecsio.mmceaddons.common.tile.thaumcraft.TileFluxProvider;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
@@ -28,8 +29,9 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
     private final double amount;
 
     public static RequirementFlux from(IOType ioType, int chunkRange, float amount) {
-        requirementValidator.validateNotNegative(chunkRange, "chunkRange");
-        requirementValidator.validateNotNegative(amount, "amount");
+        requirementValidator.validateNotNegative(chunkRange, "Chunk range must be a positive number!");
+        requirementValidator.validateNotNegative(amount, "Amount must be a positive number!");
+        if (ioType == IOType.OUTPUT) {requirementValidator.validateNotAbove(amount, TileFluxProvider.Output.MAXIMUM_AMOUNT_IN_CHUNK, String.format("Amount cannot be greater than maximum amount allowed in chunk (this is a TC API limitation): %f", TileFluxProvider.Output.MAXIMUM_AMOUNT_IN_CHUNK));}
 
         return new RequirementFlux(ioType, chunkRange, amount);
     }
