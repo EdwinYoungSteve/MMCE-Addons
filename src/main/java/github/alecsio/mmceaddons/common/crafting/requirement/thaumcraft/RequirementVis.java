@@ -9,7 +9,6 @@ import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentVi
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Vis;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentVisProvider;
-import github.alecsio.mmceaddons.common.tile.thaumcraft.TileFluxProvider;
 import github.alecsio.mmceaddons.common.tile.thaumcraft.TileVisProvider;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
@@ -57,8 +56,19 @@ public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis
 
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getVisHandler(component).handle(this));
+        if (getActionType() == IOType.INPUT) {
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getVisHandler(component).handle(this));
+        }
         return true;
+    }
+
+    @Nonnull
+    @Override
+    public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
+        if (getActionType() == IOType.OUTPUT) {
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getVisHandler(component).handle(this));
+        }
+        return CraftCheck.success();
     }
 
     @Override

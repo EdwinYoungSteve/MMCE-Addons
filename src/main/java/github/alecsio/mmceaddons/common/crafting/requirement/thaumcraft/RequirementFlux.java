@@ -83,8 +83,19 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
 
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getFluxHandler(component).handle(this));
+        if (getActionType() == IOType.INPUT) {
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getFluxHandler(component).handle(this));
+        }
         return true;
+    }
+
+    @Nonnull
+    @Override
+    public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
+        if (getActionType() == IOType.OUTPUT) {
+            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getFluxHandler(component).handle(this));
+        }
+        return CraftCheck.success();
     }
 
     @Override

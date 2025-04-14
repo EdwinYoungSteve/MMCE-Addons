@@ -59,8 +59,19 @@ public class RequirementEssentia extends ComponentRequirement<Essentia, Requirem
 
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        ModularMachinery.EXECUTE_MANAGER.addTask(() -> getEssentiaHandler(component).handle(this));
+        if (getActionType() == IOType.INPUT) {
+            ModularMachinery.EXECUTE_MANAGER.addTask(() -> getEssentiaHandler(component).handle(this));
+        }
         return true;
+    }
+
+    @Nonnull
+    @Override
+    public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
+        if (getActionType() == IOType.OUTPUT) {
+            ModularMachinery.EXECUTE_MANAGER.addTask(() -> getEssentiaHandler(component).handle(this));
+        }
+        return CraftCheck.success();
     }
 
     @Override

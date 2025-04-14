@@ -72,7 +72,6 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
         if (getActionType() == IOType.OUTPUT) {
             ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getRadiationHandler(component).handle(this));
         }
-
         return CraftCheck.success();
     }
 
