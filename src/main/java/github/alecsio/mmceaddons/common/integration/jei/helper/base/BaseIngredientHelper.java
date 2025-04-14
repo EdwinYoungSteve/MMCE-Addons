@@ -41,6 +41,6 @@ public abstract class BaseIngredientHelper<T extends IRequiresEquals<T>> impleme
     @Override
     @Nonnull
     public String getErrorInfo(@Nullable T t) {
-        return "error"; // todo: fix
+        return "Encountered an error with ingredient";
     }
 }
