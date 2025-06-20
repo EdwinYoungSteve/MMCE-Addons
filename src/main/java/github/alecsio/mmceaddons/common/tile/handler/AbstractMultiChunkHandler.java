@@ -3,8 +3,8 @@ package github.alecsio.mmceaddons.common.tile.handler;
 import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.tile.handler.chunks.ChunksReader;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
+import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineComponent;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 
@@ -22,7 +22,7 @@ public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement
         List<Chunk> chunks = chunksReader.getSurroundingChunks(world, this.pos, requirement.getChunkRange());
         int totalChunksBeforeValidations = chunks.size();
         chunks = validateNotNullAndLoaded(chunks);
-        if (chunks.isEmpty() || chunks.size() != totalChunksBeforeValidations) return CraftCheck.failure(I18n.format("error.modularmachineryaddons.requirement.missing.multichunk", requirement.getIOType().toString().toLowerCase(), getRequirementName(requirement), requirement.getChunkRange()));
+        if (chunks.isEmpty() || chunks.size() != totalChunksBeforeValidations) return CraftCheck.failure(getKeyForRequirement(requirement));
 
         double totalAmount = requirement.getAmount();
         double amountPerChunk = totalAmount / chunks.size();
@@ -37,7 +37,7 @@ public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement
             totalHandled += amountPerChunk;
         }
 
-        return clampWithEpsilon(totalAmount - totalHandled, 0.0, 1.0, 1e-6) == 0 ? CraftCheck.success() : CraftCheck.failure(I18n.format("error.modularmachineryaddons.requirement.missing.multichunk", requirement.getIOType().toString().toLowerCase(), getRequirementName(requirement), requirement.getChunkRange()));
+        return clampWithEpsilon(totalAmount - totalHandled, 0.0, 1.0, 1e-6) == 0 ? CraftCheck.success() : CraftCheck.failure(getKeyForRequirement(requirement));
     }
 
     @Override
@@ -61,8 +61,8 @@ public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement
                 .collect(Collectors.toList());
     }
 
-    private String getRequirementName(T requirement) {
-        return requirement.getClass().getSimpleName().replace("Requirement", "");
+    private String getKeyForRequirement(T requirement) {
+        return requirement.getIOType().equals(IOType.INPUT) ? "error.modularmachineryaddons.requirement.missing.multichunk.input" : "error.modularmachineryaddons.requirement.missing.output";
     }
 
     public static double clampWithEpsilon(double value, double min, double max, double epsilon) {
