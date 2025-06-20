@@ -13,7 +13,7 @@ plugins {
 
 // Project properties
 group = "alecsio.modularmachineryaddons"
-version = "1.0.0"
+version = "1.0.1"
 
 // Set the toolchain version to decouple the Java we run Gradle with from the Java used to compile and run the mod
 java {
@@ -204,6 +204,8 @@ dependencies {
     implementation("curse.maven:projecte-226410:2702991")
     implementation("curse.maven:worldedit-225608:2941712")
     implementation(rfg.deobf("curse.maven:spark-361579:3542217"))
+
+    implementation(rfg.deobf("curse.maven:thaumicaug-319441:6047659"))
 
     implementation(rfg.deobf("curse.maven:contentTweaker-237065:3331364"))
     implementation(rfg.deobf("curse.maven:contentTweakerDependency-246996:3440963"))

@@ -19,14 +19,19 @@ import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
+import java.util.Optional;
 
 // Code was somehow adapted from a mix of whatever is being done in Thaumic Enenrgistics and in other ME hatches in MMCE
 public abstract class MEEssentiaBus extends MEMachineComponent implements IGridTickable, IRequirementHandler<RequirementEssentia> {
 
-    protected IMEInventory<IAEEssentiaStack> getStorageInventory() {
-        IStorageGrid storage = Objects.requireNonNull(this.getGridNode(AEPartLocation.UP)).getGrid().getCache(IStorageGrid.class);
-        return storage.getInventory(getChannel());
+    protected Optional<IMEInventory<IAEEssentiaStack>> getStorageInventory() {
+        IGridNode gridNode = this.getGridNode(AEPartLocation.UP);
+        if (gridNode == null) {
+            return Optional.empty();
+        }
+
+        IStorageGrid storage = gridNode.getGrid().getCache(IStorageGrid.class);
+        return Optional.of(storage.getInventory(getChannel()));
     }
 
     protected IEssentiaStorageChannel getChannel() {
@@ -49,15 +54,6 @@ public abstract class MEEssentiaBus extends MEMachineComponent implements IGridT
 
     @Override
     public CraftCheck canHandle(RequirementEssentia essentia) {
-        boolean canPerformOperation = canPerformOperation(Actionable.SIMULATE, essentia.getEssentiaStack());
-        if (canPerformOperation) {return CraftCheck.success();}
-
-        if (essentia.getActionType().equals(IOType.INPUT)) {
-
-        } else {
-
-        }
-
         return canPerformOperation(Actionable.SIMULATE, essentia.getEssentiaStack()) ? CraftCheck.success() : CraftCheck.failure(getKeyForRequirement(essentia));
     }
 

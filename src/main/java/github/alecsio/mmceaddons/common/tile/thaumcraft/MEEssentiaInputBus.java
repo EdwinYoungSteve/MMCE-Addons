@@ -1,6 +1,7 @@
 package github.alecsio.mmceaddons.common.tile.thaumcraft;
 
 import appeng.api.config.Actionable;
+import appeng.api.storage.IMEInventory;
 import github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics.RequirementEssentia;
 import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
 import github.alecsio.mmceaddons.common.tile.ae2.MEEssentiaBus;
@@ -14,6 +15,7 @@ import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.integration.appeng.AEEssentiaStack;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -36,7 +38,10 @@ public class MEEssentiaInputBus extends MEEssentiaBus {
     protected boolean canPerformOperation(Actionable actionable, EssentiaStack essentia) {
         lock.lock();
         try {
-            IAEEssentiaStack imported = getStorageInventory().extractItems(AEEssentiaStack.fromEssentiaStack(essentia), actionable, this.source);
+            Optional<IMEInventory<IAEEssentiaStack>> optInventory = getStorageInventory();
+            if (!optInventory.isPresent()) {return false;}
+
+            IAEEssentiaStack imported = optInventory.get().extractItems(AEEssentiaStack.fromEssentiaStack(essentia), actionable, this.source);
             return imported != null && imported.getStackSize() >= essentia.getAmount();
         } finally {
             lock.unlock();
