@@ -5,6 +5,8 @@ import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.FormatUtils;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.ITooltippable;
 import mezz.jei.api.recipe.IIngredientType;
+import net.minecraft.world.DimensionType;
+import net.minecraftforge.common.DimensionManager;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -15,13 +17,13 @@ public class Dimension implements IRequiresEquals<Dimension>, IIngredientType<Di
     private int id;
     private String name;
 
+    public Dimension(int id) {
+        this.id = id;
+    }
+
     public Dimension(int id, String name) {
         this(id);
         this.name = name;
-    }
-
-    public Dimension(int id) {
-        this.id = id;
     }
 
     public Dimension() {}
@@ -45,8 +47,19 @@ public class Dimension implements IRequiresEquals<Dimension>, IIngredientType<Di
         return this.getClass();
     }
 
+    // Client-side only
     @Override
     public List<String> getTooltip() {
+        setDimensionNameIfNotPresent();
         return Lists.newArrayList(FormatUtils.format("Dimension", name != null && !name.isEmpty() ? name : String.valueOf(id)));
+    }
+
+    public void setDimensionNameIfNotPresent() {
+        if (name != null) {return;}
+
+        if (DimensionManager.isDimensionRegistered(id)) {
+            DimensionType type = DimensionManager.getProviderType(id);
+            name = type.getName();
+        }
     }
 }

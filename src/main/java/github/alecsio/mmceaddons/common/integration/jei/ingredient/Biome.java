@@ -5,6 +5,7 @@ import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.FormatUtils;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.ITooltippable;
 import mezz.jei.api.recipe.IIngredientType;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -45,8 +46,18 @@ public class Biome implements IRequiresEquals<Biome>, IIngredientType<Biome>, IT
         return this.getClass();
     }
 
+    // Client-side only
     @Override
     public List<String> getTooltip() {
+        setBiomeNameIfNotPresent();
         return Lists.newArrayList(FormatUtils.format("Biome", name != null && !name.isEmpty() ? name : registryName));
+    }
+
+    private void setBiomeNameIfNotPresent() {
+        if (name != null) {return;}
+        Object biomeObj = net.minecraft.world.biome.Biome.REGISTRY.getObject(new ResourceLocation(registryName));
+        if (biomeObj instanceof net.minecraft.world.biome.Biome biome) {
+            name = biome.getBiomeName();
+        }
     }
 }
