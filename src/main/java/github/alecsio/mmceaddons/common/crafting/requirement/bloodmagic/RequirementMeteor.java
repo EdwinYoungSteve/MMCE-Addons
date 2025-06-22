@@ -109,7 +109,7 @@ public class RequirementMeteor extends ComponentRequirement.MultiComponentRequir
     }
 
     @Override
-    public void startCrafting(List<ProcessingComponent<?>> components, RecipeCraftingContext context, ResultChance chance) {
+    public void finishCrafting(List<ProcessingComponent<?>> components, RecipeCraftingContext context, ResultChance chance) {
         List<MeteorProviderCopy> copiedComponents = convertToMeteorProviderCopyList(components);
 
         for (MeteorProviderCopy component : copiedComponents) {
