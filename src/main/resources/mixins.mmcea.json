@@ -6,6 +6,9 @@
   "verbose": true,
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "MachineControllerRedstoneAffectedEventMixin",
+    "MachineNotFormedEventMixin",
+    "RadiationHandlerMixin",
     "IBlockInformationAccessor",
     "StructureSelectionMixin"
   ]

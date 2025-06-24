@@ -3,6 +3,7 @@ package github.alecsio.mmceaddons;
 import github.alecsio.mmceaddons.client.ClientTickHandler;
 import github.alecsio.mmceaddons.client.MouseScrollHandler;
 import github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler;
+import github.alecsio.mmceaddons.common.commands.CommandGetCacheInfo;
 import github.alecsio.mmceaddons.common.item.handler.RightClickHandler;
 import github.alecsio.mmceaddons.common.network.MouseScrollMessage;
 import github.alecsio.mmceaddons.common.network.handler.MouseScrollMessageHandler;
@@ -12,6 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -75,5 +77,11 @@ public class ModularMachineryAddons {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+    }
+
+    @Mod.EventHandler
+    public void serverStart(FMLServerStartingEvent serverStartEvent) {
+        ModularMachineryAddons.logger.info("MMCEA: Server starting");
+        serverStartEvent.registerServerCommand(new CommandGetCacheInfo());
     }
 }
