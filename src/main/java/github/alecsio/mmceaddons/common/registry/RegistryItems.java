@@ -2,6 +2,7 @@ package github.alecsio.mmceaddons.common.registry;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.item.ItemAdvancedConstructTool;
+import github.alecsio.mmceaddons.common.item.ItemAdvancedMachineAssembler;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;
@@ -13,13 +14,17 @@ public class RegistryItems {
     protected static final List<Item> ITEM_MODEL_REGISTER = new ArrayList<>();
 
     public static ItemAdvancedConstructTool constructTool;
+    public static ItemAdvancedMachineAssembler machineAssembler;
 
     public static void initialise() {
 
         constructTool = new ItemAdvancedConstructTool();
+        machineAssembler = new ItemAdvancedMachineAssembler();
 
         constructTool.setRegistryName(ModularMachineryAddons.MODID, "advancedconstructtool").setTranslationKey(ModularMachineryAddons.MODID + "." + constructTool.getClass().getSimpleName().toLowerCase());
+        machineAssembler.setRegistryName(ModularMachineryAddons.MODID, "advancedmachineassembler").setTranslationKey(ModularMachineryAddons.MODID + "." + machineAssembler.getClass().getSimpleName().toLowerCase());
         ITEM_BLOCKS.add(constructTool);
+        ITEM_BLOCKS.add(machineAssembler);
 
         registerItemBlocks();
         registerItemModels();
