@@ -10,6 +10,9 @@ public class MMCEAConfig {
     public static int cooldown = 1;
 
     @Config.Comment("The amount of blocks that should be processed during multiblock assembly, per tick. Default: 4")
-    public static int blocksProcessedPerTick = 16;
+    public static int assemblyBlocksProcessedPerTick = 4;
+
+    @Config.Comment("The amount of blocks that should be processed during multiblock disassembly, per tick. Default: 4")
+    public static int disassemblyBlocksProcessedPerTick = 4;
 
 }

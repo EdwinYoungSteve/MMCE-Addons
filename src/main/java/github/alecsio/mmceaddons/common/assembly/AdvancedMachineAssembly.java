@@ -16,13 +16,13 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.me.helpers.PlayerSource;
 import appeng.util.item.AEItemStack;
-import com.latmod.mods.projectex.integration.PersonalEMC;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.LoadedModsCache;
 import github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler;
 import github.alecsio.mmceaddons.common.config.MMCEAConfig;
 import github.alecsio.mmceaddons.common.item.ItemAdvancedMachineAssembler;
 import ink.ikx.mmce.common.utils.StructureIngredient;
+import moze_intel.projecte.api.ProjectEAPI;
 import moze_intel.projecte.api.capabilities.IKnowledgeProvider;
 import moze_intel.projecte.utils.EMCHelper;
 import net.minecraft.block.state.IBlockState;
@@ -38,11 +38,12 @@ import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import stanhebben.zenscript.annotations.NotNull;
 
 import java.util.*;
@@ -56,23 +57,21 @@ import java.util.*;
  */
 public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
-    // The last error that was reported by any of the handlers. If multiple errors were reported, only the last
-    // one will be displayed to the player.
-    private TextComponentTranslation lastError;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public AdvancedMachineAssembly(World world, BlockPos controllerPos, EntityPlayer player, StructureIngredient ingredient) {
         super(world, controllerPos, player, ingredient);
     }
 
     /**
-     * Processes up to {@link MMCEAConfig#blocksProcessedPerTick} blocks from the assembly
+     * Processes up to {@link MMCEAConfig#disassemblyBlocksProcessedPerTick} blocks from the assembly
      */
     @Override
     public void assembleTick() {
         List<StructureIngredient.ItemIngredient> itemIngredients = ingredient.itemIngredient();
         Iterator<StructureIngredient.ItemIngredient> iterator = itemIngredients.iterator();
 
-        for (int i = 0; i < MMCEAConfig.blocksProcessedPerTick; i++) {
+        for (int i = 0; i < MMCEAConfig.assemblyBlocksProcessedPerTick; i++) {
             if (!iterator.hasNext()) {
                 completed = true;
                 break;
@@ -101,7 +100,9 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         // The ingredient list contains a list of all valid blocks for the given block pos. For example, the different tiers
         // of hatches
 
-        for (Tuple<ItemStack, IBlockState> stackStateTuple : ingredientToProcess.ingredientList()) {
+        for (int i = 0; i < ingredientToProcess.ingredientList().size(); i++) {
+            Tuple<ItemStack, IBlockState> stackStateTuple = ingredientToProcess.ingredientList().get(i);
+
             ItemStack stack = stackStateTuple.getFirst();
             IBlockState state = stackStateTuple.getSecond();
 
@@ -116,6 +117,8 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
                     if (handled) {break;}
                 }
 
+                // Handling both the assembler and block lookup in the same loop means that even if you don't have an assembler
+                // it will still place items from your inventory. This happens if, for example, you start an assembly and throw the item.
                 if (ItemStack.areItemsEqual(stack, stackInSlot) && !handled) {
                     handled = true;
                     stackInSlot.shrink(stack.getCount());
@@ -127,18 +130,30 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
                 return;
             }
 
-            if (!handled && LoadedModsCache.aeLoaded) {
+            NBTTagCompound tag = assembler.getTagCompound();
+            int modeIndex;
+            if (tag == null) {
+                assembler.setTagCompound(tag = new NBTTagCompound());
+            }
+            modeIndex = tag.getInteger(ItemAdvancedMachineAssembler.MODE_INDEX);
+            AssemblyModes mode = AssemblyModes.getSupportedModes().get(modeIndex);
+
+            if (!handled && LoadedModsCache.aeLoaded && mode.supports(AssemblySupportedMods.APPLIEDENERGISTICS2)) {
                 handled = canMEHandle(stack, assembler);
             }
 
-            if (!handled && LoadedModsCache.projecteLoaded) {
+            if (!handled && LoadedModsCache.projecteLoaded && mode.supports(AssemblySupportedMods.PROJECTE)) {
                 handled = canEMCHandle(stack);
             }
 
             if (!handled) {
+                if (i == ingredientToProcess.ingredientList().size() - 1) {
+                    unhandledBlocks.add(stack.getDisplayName());
+                }
                 continue;
             }
 
+            lastError = null;
             world.setBlockState(toPlacePos, state);
             world.playSound(null, toPlacePos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             TileEntity te = world.getTileEntity(toPlacePos);
@@ -158,24 +173,18 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
     @Optional.Method(modid = LoadedModsCache.AE2)
     private boolean canMEHandle(ItemStack stack, @NotNull ItemStack assembler) {
         IAppEngApi aeApi = AEApi.instance();
-        java.util.Optional<String> optEncryptionKey = getEncryptionKey(assembler);
-        if (!optEncryptionKey.isPresent() || optEncryptionKey.get().isEmpty()) {
-            lastError = new TextComponentTranslation("error.encryption.key.not.found");
+        java.util.Optional<Long> optEncryptionKey = getOptionalEncryptionKeyFrom(assembler);
+        if (!optEncryptionKey.isPresent()) {
             return false;
         }
 
-        long parsedKey = Long.parseLong(optEncryptionKey.get());
+        long parsedKey = optEncryptionKey.get();
         ILocatable securityStation = aeApi.registries().locatable().getLocatableBy(parsedKey);
         if (!(securityStation instanceof IActionHost host)) {
             lastError = new TextComponentTranslation("error.security.station.not.found");
             return false;
         }
 
-        // wonder what the performance impact of retrieving all this stuff multiple times for each block is.
-        // Not sure if it would be possible to cache some of these things between assembly steps and still guarantee
-        // consistency, but I guess it would be safe to cache the IMEMonitor<IAEItemStack> in the same assembly step.
-        // so if 16 blocks need to be placed in an assembly step, all this will be retrieved only on the first block,
-        // while the 15 other blocks will just use the cached IMEMonitor<IAEItemStack>
         IGridNode node = host.getActionableNode();
         IGrid targetGrid = node.getGrid();
         IEnergyGrid energyGrid = targetGrid.getCache(IEnergyGrid.class);
@@ -196,7 +205,17 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
     @Optional.Method(modid = LoadedModsCache.PROJECTE)
     private boolean canEMCHandle(ItemStack stack) {
-        IKnowledgeProvider provider = PersonalEMC.get(player);
+        if (player == null) {
+            LOGGER.error("Null player in assembly. This should probably not happen.");
+            return false;
+        }
+
+        IKnowledgeProvider provider = player.getCapability(ProjectEAPI.KNOWLEDGE_CAPABILITY, null);
+        if (provider == null) {
+            LOGGER.error("Null IKnowledgeProvider in assembly. This should probably not happen.");
+            return false;
+        }
+
         boolean hasEmc = EMCHelper.doesItemHaveEmc(stack);
         if (!hasEmc) {
             return false;
@@ -219,23 +238,14 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         return true;
     }
 
-    private java.util.Optional<String> getEncryptionKey(ItemStack stack) {
-        NBTTagCompound tagCompound = stack.getTagCompound();
-        String key = null;
-        if (tagCompound != null) {
-            key = tagCompound.getString(ItemAdvancedMachineAssembler.AE2_ENCRYPTION_KEY);
-        }
-        return java.util.Optional.ofNullable(key);
-    }
-
-    @SuppressWarnings("deprecation") // Those warnings are only relevant for 1.13+
     private boolean canPlaceBlockAt(BlockPos pos) {
+        if (!player.isAllowEdit() || world.isOutsideBuildHeight(pos) || !world.isBlockModifiable(player, pos)) {
+            return false;
+        }
+
         BlockSnapshot blockSnapshot = BlockSnapshot.getBlockSnapshot(world, pos);
-        // probably double check this and ensure it works with ie claims
-        IBlockState placedAgainst = blockSnapshot.getWorld().getBlockState(blockSnapshot.getPos().offset(EnumFacing.DOWN)); // idk?
-        BlockEvent.PlaceEvent placeEvent = new BlockEvent.PlaceEvent(BlockSnapshot.getBlockSnapshot(world, pos), placedAgainst, player, EnumHand.MAIN_HAND);
-        MinecraftForge.EVENT_BUS.post(placeEvent);
-        return !placeEvent.isCanceled();
+
+        return !ForgeEventFactory.onPlayerBlockPlace(player, blockSnapshot, EnumFacing.UP, EnumHand.MAIN_HAND).isCanceled();
     }
 
     private void sendAndResetError() {

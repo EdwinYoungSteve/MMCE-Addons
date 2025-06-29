@@ -32,7 +32,7 @@ minecraft {
     mcVersion.set("1.12.2")
 
     // Username for client run configurations
-    username.set("Dev")
+    username.set("Dev2")
 
     // Generate a field named VERSION with the mod version in the injected Tags class
     injectedTags.put("VERSION", project.version)
@@ -199,6 +199,10 @@ dependencies {
     implementation("curse.maven:worldedit-225608:2941712")
     implementation("curse.maven:projectx-311378:3014173")
     implementation(rfg.deobf("curse.maven:spark-361579:3542217"))
+    implementation("curse.maven:ftbutils-237102:3157548")
+    implementation("curse.maven:ftbackups-314904:2819669")
+    implementation("curse.maven:ftblibrary-237167:2985811")
+    implementation("curse.maven:jmap-32274:5172461")
 
     implementation(rfg.deobf("curse.maven:thaumicaug-319441:6047659"))
 

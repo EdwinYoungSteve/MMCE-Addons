@@ -18,6 +18,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 public class MachineAssemblyEventHandler {
@@ -50,6 +52,21 @@ public class MachineAssemblyEventHandler {
                 if (assembly.isCompleted()) {
                     MachineAssemblyManager.removeMachineAssembly(assembly.getControllerPos());
                     player.sendMessage(new TextComponentTranslation("message.assembly.tip.success"));
+                    List<String> unhandledBlocks = assembly.getUnhandledBlocks();
+                    if (unhandledBlocks != null && !unhandledBlocks.isEmpty()) {
+                        Map<String, Long> blockCounts = unhandledBlocks.stream()
+                                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+                        StringBuilder unhandledBlocksBuilder = new StringBuilder().append("\n");
+                        blockCounts.forEach((block, count) ->
+                                unhandledBlocksBuilder.append(count).append("x ").append(block).append("\n")
+                        );
+
+                        player.sendMessage(new TextComponentTranslation(
+                                "message.assembly.tip.success.missing.blocks",
+                                unhandledBlocksBuilder.toString()
+                        ));
+                    }
                 }
             }
         });
