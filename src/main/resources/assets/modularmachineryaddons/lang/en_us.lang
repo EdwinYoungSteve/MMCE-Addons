@@ -2,7 +2,7 @@ itemGroup.modularmachineryaddons=Modular Machinery Addons
 
 tile.modularmachineryaddons.blockradiationprovideroutput.name=Radiation Output Hatch
 tile.modularmachineryaddons.blockradiationproviderinput.name=Radiation Input Hatch
-tile.modularmachineryaddons.blockmeessentiainputbus.name=Machinery Essentia Inpus Bus
+tile.modularmachineryaddons.blockmeessentiainputbus.name=Machinery Essentia Input Bus
 tile.modularmachineryaddons.blockmeessentiaoutputbus.name=Machinery Essentia Output Bus
 tile.modularmachineryaddons.blockmeteorprovideroutput.name=Meteor Hatch
 tile.modularmachineryaddons.blockwillmultichunkproviderinput.name=Will Multi-Chunk Input Hatch
@@ -16,6 +16,8 @@ tile.modularmachineryaddons.blockbiomeproviderinput.name=Biome Hatch
 tile.modularmachineryaddons.blockdimensionproviderinput.name=Dimension Hatch
 
 item.modularmachineryaddons.itemadvancedconstructtool.name=Advanced Wrench
+item.modularmachineryaddons.itemadvancedmachineassembler.name=Advanced Machine Assembler
+item.modularmachineryaddons.itemadvancedmachinedisassembler.name=Advanced Machine Disassembler
 
 # errors
 error.modularmachineryaddons.component.invalid.biome=No biome hatch found
@@ -27,6 +29,11 @@ error.modularmachineryaddons.component.invalid.scrubber=No scrubber hatch found
 error.modularmachineryaddons.component.invalid.radiation=No radiation hatch found
 error.modularmachineryaddons.component.invalid.will=No will hatch found
 error.modularmachineryaddons.component.invalid.meteor=No meteor hatch found
+error.assembler.not.found=Could not locate an advanced machine assembler item in the player's inventory
+error.encryption.key.not.found=The assembler must be linked to an ME system via a security station to allow item extraction
+error.security.station.not.found=Could not locate security station
+message.assembly.missing.machine=Could not identify machine. Insert a blueprint or convert the controller
+message.item.mode.changed=Changed item mode to %s
 
 # requirement check fails
 error.modularmachineryaddons.requirement.missing.multichunk.input=Missing multi-chunk input requirement
@@ -50,3 +57,14 @@ item.modularmachineryaddons.advancedconstructtool.tooltip=Select two corners and
 message.modularmachineryaddons.advancedconstructtool.cleared=Cleared tool selection
 message.modularmachineryaddons.advancedconstructtool.invalid.selection=Please select two corners!
 message.modularmachineryaddons.advancedconstructtool.selection=Successfully selected corner
+
+#assembly
+message.assembly.missing.item.knowledge=Missing knowledge of item %s
+message.assembly.missing.emc=Not enough EMC for item %s with count %s. Current EMC: %d Needed: %d
+message.assembly.overflow.emc=Could not add EMC for item %s with count %s. Adding the item's EMC value (%d) to the current EMC amount (%d) would go above maximum EMC!
+tooltip.builder.player_inventory=Mode: Player Inventory Only
+tooltip.builder.player_inventory_emc=Mode: Player Inventory + EMC
+tooltip.builder.player_inventory_me=Mode: Player Inventory + Linked ME Network
+tooltip.builder.all=Mode: Player Inventory + EMC + Linked ME Network
+message.assembly.tip.success.missing.blocks=Could not place the following blocks: %s
+message.assembly.too.quickly=Trying to perform action too quickly!
