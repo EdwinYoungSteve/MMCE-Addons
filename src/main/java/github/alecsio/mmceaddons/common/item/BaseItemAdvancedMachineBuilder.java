@@ -85,7 +85,7 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-        if (worldIn.isRemote || playerIn.isSneaking()) {
+        if (worldIn.isRemote || !playerIn.isSneaking()) {
             return super.onItemRightClick(worldIn, playerIn, handIn);
         }
 
@@ -101,71 +101,6 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
         playerIn.sendStatusMessage(new TextComponentTranslation("tooltip.builder." + supportedModes.get(tag.getInteger(MODE_INDEX)).name().toLowerCase()), true);
 
         return super.onItemRightClick(worldIn, playerIn, handIn);
-    }
-
-    @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (worldIn.isRemote) {
-            return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-        }
-
-        Boolean access = ASSEMBLY_ACCESS_TOKEN.getIfPresent(player);
-
-        if (Boolean.FALSE.equals(access)) {
-            player.sendMessage(new TextComponentTranslation("message.assembly.too.quickly"));
-            return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-        }
-        ASSEMBLY_ACCESS_TOKEN.put(player, false);
-
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-
-        if (!(tileEntity instanceof TileMultiblockMachineController controller)) {
-            return EnumActionResult.PASS;
-        }
-
-        Block block = worldIn.getBlockState(pos).getBlock();
-        DynamicMachine machine = controller.getBlueprintMachine();
-        if (machine == null) {
-            if (block instanceof BlockController) {
-                machine = ((BlockController) block).getParentMachine();
-            }
-            if (block instanceof BlockFactoryController) {
-                machine = ((BlockFactoryController) block).getParentMachine();
-            }
-        }
-
-        if (machine == null) {
-            player.sendMessage(new TextComponentTranslation("message.assembly.missing.machine"));
-            return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-        }
-
-        if (MachineAssemblyManager.machineExists(pos)) {
-            player.sendMessage(new TextComponentTranslation("message.assembly.tip.already_assembly"));
-            return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-        }
-
-        EnumFacing controllerFacing = player.world.getBlockState(pos).getValue(BlockController.FACING);
-        BlockArray machinePattern = new BlockArray(BlockArrayCache.getBlockArrayCache(machine.getPattern(), controllerFacing));
-
-        int dynamicPatternSize = 0;
-        Map<String, DynamicPattern> dynamicPatterns = machine.getDynamicPatterns();
-        for (final DynamicPattern pattern : dynamicPatterns.values()) {
-            dynamicPatternSize = Math.max(dynamicPatternSize, pattern.getMinSize());
-        }
-
-        for (final DynamicPattern pattern : dynamicPatterns.values()) {
-            pattern.addPatternToBlockArray(
-                    machinePattern,
-                    Math.min(Math.max(pattern.getMinSize(), dynamicPatternSize), pattern.getMaxSize()),
-                    pattern.getFaces().iterator().next(),
-                    controllerFacing);
-        }
-
-        IMachineAssembly machineAssembly = getAssembly(worldIn, pos, player, machinePattern);
-
-        MachineAssemblyManager.addMachineAssembly(machineAssembly);
-
-        return EnumActionResult.SUCCESS;
     }
 
     @Override

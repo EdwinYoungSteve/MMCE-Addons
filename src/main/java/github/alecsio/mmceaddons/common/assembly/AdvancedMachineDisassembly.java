@@ -88,21 +88,10 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
 
         if (!canBreakBlockAt(toBreakPos)) {return;}
 
-        // The ingredient list contains a list of all valid blocks for the given block pos. For example, the different tiers
-        // of hatches
-
-        ItemStack stack = null;
         IBlockState actualState = world.getBlockState(toBreakPos);
-        for (Tuple<ItemStack, IBlockState> tuple : ingredientToProcess.ingredientList()) {
-
-            if (tuple.getSecond() == actualState) {
-                stack = tuple.getFirst();
-                break;
-            }
-        }
-        if (stack == null) {return;}
 
         Block blockToBreak = world.getBlockState(toBreakPos).getBlock();
+        ItemStack stack = new ItemStack(blockToBreak, 1, blockToBreak.getMetaFromState(actualState));
         TileEntity tileEntity = world.getTileEntity(toBreakPos);
         if (blockToBreak == Blocks.AIR || isItemHandler(tileEntity) || isFluidHandler(tileEntity)) {
             return;

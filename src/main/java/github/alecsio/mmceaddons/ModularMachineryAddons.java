@@ -1,12 +1,14 @@
 package github.alecsio.mmceaddons;
 
 import github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler;
+import github.alecsio.mmceaddons.common.item.BuilderRightClickHandler;
 import github.alecsio.mmceaddons.common.registry.RegistryItems;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.royawesome.jlibnoise.module.combiner.Min;
 import org.apache.logging.log4j.Logger;
 
 @Mod(
@@ -22,13 +24,13 @@ import org.apache.logging.log4j.Logger;
                 + "after:nuclearcraft@[0.0.0,);"
         ,
         acceptedMinecraftVersions = "[1.12]",
-        acceptableRemoteVersions = "[1.0.3]"
+        acceptableRemoteVersions = "[2.0.0]"
 )
 public class ModularMachineryAddons {
 
     public static final String MODID = "modularmachineryaddons";
     public static final String NAME = "Modular Machinery: Community Edition Addons";
-    public static final String VERSION = "1.0.3";
+    public static final String VERSION = "2.0.0";
     public static final String CLIENT_PROXY = "github.alecsio.mmceaddons.client.ClientProxy";
     public static final String COMMON_PROXY = "github.alecsio.mmceaddons.CommonProxy";
 
@@ -55,6 +57,7 @@ public class ModularMachineryAddons {
         proxy.preInit(event);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new MachineAssemblyEventHandler());
+        MinecraftForge.EVENT_BUS.register(new BuilderRightClickHandler());
     }
 
     @Mod.EventHandler
