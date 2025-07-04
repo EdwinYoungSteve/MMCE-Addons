@@ -33,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -72,6 +73,16 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         sendAndResetError();
     }
 
+    @Override
+    public String getCompletedTranslationKey() {
+        return "message.modularmachineryaddons.disassembly.complete";
+    }
+
+    @Override
+    public String getErrorTranslationKey() {
+        return "message.modularmachineryaddons.disassembly.error";
+    }
+
     private void tryBreakBlock(StructureIngredient.ItemIngredient ingredientToProcess) {
         BlockPos toBreakPos = getControllerPos().add(ingredientToProcess.pos());
 
@@ -80,7 +91,16 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         // The ingredient list contains a list of all valid blocks for the given block pos. For example, the different tiers
         // of hatches
 
-        ItemStack stack = ingredientToProcess.ingredientList().get(0).getFirst();
+        ItemStack stack = null;
+        IBlockState actualState = world.getBlockState(toBreakPos);
+        for (Tuple<ItemStack, IBlockState> tuple : ingredientToProcess.ingredientList()) {
+
+            if (tuple.getSecond() == actualState) {
+                stack = tuple.getFirst();
+                break;
+            }
+        }
+        if (stack == null) {return;}
 
         Block blockToBreak = world.getBlockState(toBreakPos).getBlock();
         TileEntity tileEntity = world.getTileEntity(toBreakPos);

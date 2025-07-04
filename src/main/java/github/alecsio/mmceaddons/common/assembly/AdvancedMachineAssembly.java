@@ -84,6 +84,16 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         sendAndResetError();
     }
 
+    @Override
+    public String getCompletedTranslationKey() {
+        return "message.modularmachineryaddons.assembly.complete";
+    }
+
+    @Override
+    public String getErrorTranslationKey() {
+        return "message.modularmachineryaddons.assembly.error";
+    }
+
     /**
      * Tries to place the provided ingredient. This method will look for the provided ingredient in the following
      * locations, in this order:
@@ -146,7 +156,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
                 handled = canEMCHandle(stack);
             }
 
-            if (!handled) {
+            if (!handled || !world.isAirBlock(toPlacePos)) {
                 if (i == ingredientToProcess.ingredientList().size() - 1) {
                     unhandledBlocks.add(stack.getDisplayName());
                 }

@@ -11,5 +11,7 @@ public interface IMachineAssembly {
     EntityPlayer getPlayer();
     void assembleTick();
     boolean isCompleted();
+    String getCompletedTranslationKey();
+    String getErrorTranslationKey();
     List<String> getUnhandledBlocks();
 }

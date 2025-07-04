@@ -45,13 +45,13 @@ public class MachineAssemblyEventHandler {
             for (final IMachineAssembly assembly : machineAssemblies) {
                 if (!(world.getTileEntity(assembly.getControllerPos()) instanceof TileMultiblockMachineController)) {
                     MachineAssemblyManager.removeMachineAssembly(assembly.getControllerPos());
-                    player.sendMessage(new TextComponentTranslation("message.assembly.tip.cancelled"));
+                    player.sendMessage(new TextComponentTranslation(assembly.getErrorTranslationKey()));
                     return;
                 }
                 assembly.assembleTick();
                 if (assembly.isCompleted()) {
                     MachineAssemblyManager.removeMachineAssembly(assembly.getControllerPos());
-                    player.sendMessage(new TextComponentTranslation("message.assembly.tip.success"));
+                    player.sendMessage(new TextComponentTranslation(assembly.getCompletedTranslationKey()));
                     List<String> unhandledBlocks = assembly.getUnhandledBlocks();
                     if (unhandledBlocks != null && !unhandledBlocks.isEmpty()) {
                         Map<String, Long> blockCounts = unhandledBlocks.stream()
