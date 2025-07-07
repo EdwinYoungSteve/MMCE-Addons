@@ -27,13 +27,13 @@ import moze_intel.projecte.utils.EMCHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -91,7 +91,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         IBlockState actualState = world.getBlockState(toBreakPos);
 
         Block blockToBreak = world.getBlockState(toBreakPos).getBlock();
-        ItemStack stack = new ItemStack(blockToBreak, 1, blockToBreak.getMetaFromState(actualState));
+        ItemStack stack = blockToBreak.getPickBlock(actualState, null, world, toBreakPos, player);
         TileEntity tileEntity = world.getTileEntity(toBreakPos);
         if (blockToBreak == Blocks.AIR || isItemHandler(tileEntity) || isFluidHandler(tileEntity)) {
             return;
@@ -116,12 +116,12 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         int modeIndex = NBTUtil.getOrDefault(disassembler, ItemAdvancedMachineDisassembler.MODE_INDEX, 0);
         AssemblyModes mode = AssemblyModes.getSupportedModes().get(modeIndex);
 
-        if (LoadedModsCache.aeLoaded && mode.supports(AssemblySupportedMods.APPLIEDENERGISTICS2)) {
-            handled = canMEHandle(stack, disassembler);
+        if (LoadedModsCache.projecteLoaded && mode.supports(AssemblySupportedMods.PROJECTE)) {
+            handled = canEMCHandle(stack);
         }
 
-        if (!handled && LoadedModsCache.projecteLoaded && mode.supports(AssemblySupportedMods.PROJECTE)) {
-            handled = canEMCHandle(stack);
+        if (!handled && LoadedModsCache.aeLoaded && mode.supports(AssemblySupportedMods.APPLIEDENERGISTICS2)) {
+            handled = canMEHandle(stack, disassembler);
         }
 
         if (!handled) {
@@ -194,9 +194,12 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         long emc = provider.getEmc();
         long stackEmcValue = EMCHelper.getEmcValue(stack);
 
+        // Learn the item
         if (!provider.hasKnowledge(stack)) {
-            lastError = new TextComponentTranslation("message.assembly.missing.item.knowledge", stack.getDisplayName());
-            return false;
+            provider.addKnowledge(stack);
+            if (player instanceof EntityPlayerMP playerMP) {
+                provider.sync(playerMP);
+            }
         }
 
         if (stackEmcValue > 0 && emc > Long.MAX_VALUE - stackEmcValue) { // would overflow

@@ -15,16 +15,14 @@ import hellfirepvp.modularmachinery.common.util.BlockArray;
 import hellfirepvp.modularmachinery.common.util.BlockArrayCache;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -45,16 +43,70 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
     public static final String AE2_ENCRYPTION_KEY = "encryptionKey";
     public static final String MODE_INDEX = "modeIndex";
 
-    /**
-     *      Defines the index of the currently selected mode in the available modes list in {@link AssemblyModes#supportedModes}
-     */
-    protected int modeIndex = 0;
-
     public BaseItemAdvancedMachineBuilder() {
         this.setMaxStackSize(1);
         this.setNoRepair();
 
         setCreativeTab(CommonProxy.creativeTabModularMachineryAddons);
+    }
+
+    public boolean onControllerRightClick(EntityPlayer player, BlockPos controllerPos, World world) {
+        Boolean access = ASSEMBLY_ACCESS_TOKEN.getIfPresent(player);
+
+        if (Boolean.FALSE.equals(access)) {
+            player.sendMessage(new TextComponentTranslation("message.assembly.too.quickly"));
+            return false;
+        }
+        ASSEMBLY_ACCESS_TOKEN.put(player, false);
+
+        TileEntity tileEntity = world.getTileEntity(controllerPos);
+
+        if (!(tileEntity instanceof TileMultiblockMachineController controller)) {
+            return false;
+        }
+
+        Block block = world.getBlockState(controllerPos).getBlock();
+        DynamicMachine machine = controller.getBlueprintMachine();
+        if (machine == null) {
+            if (block instanceof BlockController) {
+                machine = ((BlockController) block).getParentMachine();
+            }
+            if (block instanceof BlockFactoryController) {
+                machine = ((BlockFactoryController) block).getParentMachine();
+            }
+        }
+
+        if (machine == null) {
+            player.sendMessage(new TextComponentTranslation("message.assembly.missing.machine"));
+            return false;
+        }
+
+        if (MachineAssemblyManager.machineExists(controllerPos)) {
+            player.sendMessage(new TextComponentTranslation("message.assembly.tip.already_assembly"));
+            return false;
+        }
+
+        EnumFacing controllerFacing = player.world.getBlockState(controllerPos).getValue(BlockController.FACING);
+        BlockArray machinePattern = new BlockArray(BlockArrayCache.getBlockArrayCache(machine.getPattern(), controllerFacing));
+
+        int dynamicPatternSize = 0;
+        Map<String, DynamicPattern> dynamicPatterns = machine.getDynamicPatterns();
+        for (final DynamicPattern pattern : dynamicPatterns.values()) {
+            dynamicPatternSize = Math.max(dynamicPatternSize, pattern.getMinSize());
+        }
+
+        for (final DynamicPattern pattern : dynamicPatterns.values()) {
+            pattern.addPatternToBlockArray(
+                    machinePattern,
+                    Math.min(Math.max(pattern.getMinSize(), dynamicPatternSize), pattern.getMaxSize()),
+                    pattern.getFaces().iterator().next(),
+                    controllerFacing);
+        }
+
+        IMachineAssembly machineAssembly = getAssembly(world, controllerPos, player, machinePattern);
+
+        MachineAssemblyManager.addMachineAssembly(machineAssembly);
+        return true;
     }
 
     @Override
@@ -77,30 +129,31 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
         List<AssemblyModes> modes = AssemblyModes.getSupportedModes();
         NBTTagCompound tag = stack.getTagCompound();
         if (tag != null) {
-            tooltip.add(new TextComponentTranslation("tooltip.builder." + modes.get(tag.getInteger(MODE_INDEX)).name().toLowerCase()).getFormattedText());
+            int modeIndex = Math.min(Math.abs(tag.getInteger(MODE_INDEX)), modes.size()); // Safeguard against inconsistent values, but it shouldn't happen
+            tooltip.add(I18n.format("tooltip.builder." + modes.get(modeIndex).name().toLowerCase()));
         }
+        tooltip.add(I18n.format("tooltip.builder.change.modes"));
 
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-        if (worldIn.isRemote || !playerIn.isSneaking()) {
-            return super.onItemRightClick(worldIn, playerIn, handIn);
-        }
-
-        ItemStack stack = playerIn.getHeldItem(handIn);
-        NBTTagCompound tag = stack.getTagCompound();
+    /**
+     * Called from {@link github.alecsio.mmceaddons.client.MouseScrollHandler}
+     */
+    public static void onMouseScroll(ItemStack builderStack, EntityPlayer player, ScrollDirection direction) {
+        NBTTagCompound tag = builderStack.getTagCompound();
         if (tag == null) {
-            stack.setTagCompound(tag = new NBTTagCompound());
+            tag = new NBTTagCompound();
+            builderStack.setTagCompound(tag);
         }
 
         List<AssemblyModes> supportedModes = AssemblyModes.getSupportedModes();
-        modeIndex = (modeIndex + 1) % supportedModes.size();
+        int modeIndex = tag.getInteger(MODE_INDEX);
+        modeIndex = (direction == ScrollDirection.UP
+                ? (modeIndex + 1) % supportedModes.size()
+                : (modeIndex - 1 + supportedModes.size()) % supportedModes.size());
         tag.setInteger(MODE_INDEX, modeIndex);
-        playerIn.sendStatusMessage(new TextComponentTranslation("tooltip.builder." + supportedModes.get(tag.getInteger(MODE_INDEX)).name().toLowerCase()), true);
-
-        return super.onItemRightClick(worldIn, playerIn, handIn);
+        player.sendStatusMessage(new TextComponentTranslation("tooltip.builder." + supportedModes.get(tag.getInteger(MODE_INDEX)).name().toLowerCase()), true);
     }
 
     @Override
