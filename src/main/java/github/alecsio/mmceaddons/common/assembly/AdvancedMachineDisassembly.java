@@ -16,6 +16,7 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.me.helpers.PlayerSource;
 import appeng.util.item.AEItemStack;
+import com.google.common.collect.Lists;
 import github.alecsio.mmceaddons.common.LoadedModsCache;
 import github.alecsio.mmceaddons.common.config.MMCEAConfig;
 import github.alecsio.mmceaddons.common.item.ItemAdvancedMachineDisassembler;
@@ -37,13 +38,19 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import stanhebben.zenscript.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -93,7 +100,20 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         Block blockToBreak = world.getBlockState(toBreakPos).getBlock();
         ItemStack stack = blockToBreak.getPickBlock(actualState, null, world, toBreakPos, player);
         TileEntity tileEntity = world.getTileEntity(toBreakPos);
-        if (blockToBreak == Blocks.AIR || isItemHandler(tileEntity) || isFluidHandler(tileEntity)) {
+        if (blockToBreak == Blocks.AIR) {
+            // Don't inform the player if it's air
+            return;
+        }
+
+        if (!isItemHandlerEmpty(tileEntity)) {
+            // Bypassing the last error so that the player is always informed of this
+            player.sendMessage(new TextComponentTranslation("error.disassembler.nonempty.itemhandler"));
+            return;
+        }
+
+        if (!isFluidHandlerEmpty(tileEntity)) {
+            // Bypassing the last error so that the player is always informed of this
+            player.sendMessage(new TextComponentTranslation("error.disassembler.nonempty.fluidhandler"));
             return;
         }
 
@@ -216,28 +236,69 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         return player.isAllowEdit() && world.isBlockModifiable(player, pos) && !state.getBlock().isAir(state, world, pos);
     }
 
-    private boolean isFluidHandler(TileEntity te) {
-        if (te == null) {return false;}
-        boolean fluidHandler = false;
-        for (EnumFacing facing : EnumFacing.values()) {
-            fluidHandler = te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+    private boolean isFluidHandlerEmpty(TileEntity te) {
+        if (te == null) {return true;}
+        boolean allEmpty = true;
+        for (EnumFacing facing : getFacings()) {
+            boolean fluidHandler = te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
             if (fluidHandler) {
-                break;
+                IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+                allEmpty = !(handler == null) && isFluidHandlerEmpty(handler);
+                if (!allEmpty) {
+                    break;
+                }
             }
         }
-        return fluidHandler || te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+
+        return allEmpty;
     }
 
-    private boolean isItemHandler(TileEntity te) {
-        if (te == null) {return false;}
-        boolean itemHandler = false;
-        for (EnumFacing facing : EnumFacing.values()) {
-            itemHandler = te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
-            if (itemHandler) {
+    private boolean isFluidHandlerEmpty(IFluidHandler handler) {
+        boolean allEmpty = true;
+        IFluidTankProperties[] tankProperties = handler.getTankProperties();
+        for (IFluidTankProperties tankProperty : tankProperties) {
+            FluidStack tankContents = tankProperty.getContents();
+            if (tankContents != null) {
+                allEmpty = false;
                 break;
             }
         }
-        return itemHandler || te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        return allEmpty;
+    }
+
+    private boolean isItemHandlerEmpty(TileEntity te) {
+        if (te == null) {return true;}
+        boolean allEmpty = true;
+        for (EnumFacing facing : getFacings()) {
+            boolean itemHandler = te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
+            if (itemHandler) {
+                IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
+                allEmpty = !(handler == null) && isItemHandlerEmpty(handler);
+                if (!allEmpty) {break;}
+            }
+        }
+
+        return allEmpty;
+    }
+
+    private boolean isItemHandlerEmpty(IItemHandler handler) {
+        boolean allEmpty = true;
+        int slots = handler.getSlots();
+        for (int i = 0; i < slots; i++) {
+            ItemStack itemStack = handler.getStackInSlot(i);
+            if (!itemStack.isEmpty()) {
+                allEmpty = false;
+                break;
+            }
+        }
+        return allEmpty;
+    }
+
+    // Null is defined to represent 'internal' or 'self'
+    private List<EnumFacing> getFacings() {
+        List<EnumFacing> facings = Lists.newArrayList(EnumFacing.values());
+        facings.add(null);
+        return facings;
     }
 
     private void sendAndResetError() {

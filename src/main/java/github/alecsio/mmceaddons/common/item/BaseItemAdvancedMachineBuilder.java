@@ -6,13 +6,16 @@ import github.alecsio.mmceaddons.CommonProxy;
 import github.alecsio.mmceaddons.common.assembly.AssemblyModes;
 import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
 import github.alecsio.mmceaddons.common.assembly.MachineAssemblyManager;
+import github.alecsio.mmceaddons.common.mixin.IBlockInformationAccessor;
 import github.kasuminova.mmce.common.util.DynamicPattern;
 import hellfirepvp.modularmachinery.common.block.BlockController;
 import hellfirepvp.modularmachinery.common.block.BlockFactoryController;
 import hellfirepvp.modularmachinery.common.machine.DynamicMachine;
+import hellfirepvp.modularmachinery.common.modifier.SingleBlockModifierReplacement;
 import hellfirepvp.modularmachinery.common.tiles.base.TileMultiblockMachineController;
 import hellfirepvp.modularmachinery.common.util.BlockArray;
 import hellfirepvp.modularmachinery.common.util.BlockArrayCache;
+import hellfirepvp.modularmachinery.common.util.IBlockStateDescriptor;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
@@ -23,13 +26,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +49,8 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
 
     public static final String AE2_ENCRYPTION_KEY = "encryptionKey";
     public static final String MODE_INDEX = "modeIndex";
+    private static final Logger log = LogManager.getLogger(BaseItemAdvancedMachineBuilder.class);
+
 
     public BaseItemAdvancedMachineBuilder() {
         this.setMaxStackSize(1);
@@ -101,6 +110,18 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
                     Math.min(Math.max(pattern.getMinSize(), dynamicPatternSize), pattern.getMaxSize()),
                     pattern.getFaces().iterator().next(),
                     controllerFacing);
+        }
+
+        // I hate this :D
+        var modifiers = machine.getModifiers();
+        Map<BlockPos, BlockArray.BlockInformation> blockPosBlockInformationMap = machinePattern.getPattern();
+        for (final BlockPos modifierPos : modifiers.keySet()) {
+            List<SingleBlockModifierReplacement> modifierReplacements = modifiers.get(modifierPos);
+            BlockArray.BlockInformation blockInfo = blockPosBlockInformationMap.get(modifierPos.rotate(getRotationFrom(controllerFacing)));
+            for (final SingleBlockModifierReplacement modifierReplacement : modifierReplacements) {
+                BlockArray.BlockInformation modifierBlockInfo = modifierReplacement.getBlockInformation();
+                blockInfo.addMatchingStates(((IBlockInformationAccessor) modifierBlockInfo).getMatchingStates());
+            }
         }
 
         IMachineAssembly machineAssembly = getAssembly(world, controllerPos, player, machinePattern);
@@ -169,6 +190,16 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
     @Override
     public void setDamage(final ItemStack stack, final int damage) {
 
+    }
+
+    private Rotation getRotationFrom(EnumFacing facing) {
+        return switch (facing) {
+            case NORTH -> Rotation.NONE;
+            case EAST -> Rotation.CLOCKWISE_90;
+            case SOUTH -> Rotation.CLOCKWISE_180;
+            case WEST -> Rotation.COUNTERCLOCKWISE_90;
+            default -> Rotation.NONE; // UP and DOWN don't map to horizontal rotation
+        };
     }
 
     abstract IMachineAssembly getAssembly(World world, BlockPos controllerPos, EntityPlayer player, BlockArray machineDef);
