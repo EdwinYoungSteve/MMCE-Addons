@@ -70,5 +70,10 @@ tooltip.builder.player_inventory=Mode: Player Inventory Only
 tooltip.builder.player_inventory_emc=Mode: Player Inventory + EMC
 tooltip.builder.player_inventory_me=Mode: Player Inventory + Linked ME Network
 tooltip.builder.all=Mode: Player Inventory + EMC + Linked ME Network
+tooltip.builder.change.modes=Hold Shift and scroll UP/DOWN to change modes, or use the keybind
 message.assembly.tip.success.missing.blocks=Could not place the following blocks: %s
 message.assembly.too.quickly=Trying to perform action too quickly!
+
+modularmachineryaddons.config.title=Modular Machinery Addons
+key.cycle=Cycle through tool modes
+key.categories.mmcea=Modular Machinery Addons

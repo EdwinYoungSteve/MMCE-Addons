@@ -249,7 +249,8 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
     }
 
     private boolean canPlaceBlockAt(BlockPos pos) {
-        if (!player.isAllowEdit() || world.isOutsideBuildHeight(pos) || !world.isBlockModifiable(player, pos)) {
+        IBlockState state = world.getBlockState(pos);
+        if (!player.isAllowEdit() || world.isOutsideBuildHeight(pos) || !world.isBlockModifiable(player, pos) || !state.getBlock().isAir(state, world, pos)) {
             return false;
         }
 

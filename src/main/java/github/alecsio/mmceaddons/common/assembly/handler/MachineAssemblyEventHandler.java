@@ -11,7 +11,6 @@ import ink.ikx.mmce.core.AssemblyConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -28,7 +27,7 @@ public class MachineAssemblyEventHandler {
             .expireAfterWrite(MMCEAConfig.cooldown, TimeUnit.SECONDS)
             .build();
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
+    @SubscribeEvent()
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
         World world = player.world;
