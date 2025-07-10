@@ -51,7 +51,7 @@ public class TileScrubberProvider extends AbstractMultiChunkHandler<RequirementS
     @Override
     public void handle(RequirementScrubber requirement) {
         if (currentChunkRange != requirement.getChunkRange() || needsRefresh.compareAndSet(true, false)) {
-            log.info("Current chunk range for scrubber at {} is {}. New chunk range: {}", this.pos.toString(), currentChunkRange, requirement.getChunkRange());
+            log.debug("Current chunk range for scrubber at {} is {}. New chunk range: {}", this.pos.toString(), currentChunkRange, requirement.getChunkRange());
             replaceScrubbedChunks(requirement.getChunkRange());
         }
     }
@@ -120,7 +120,7 @@ public class TileScrubberProvider extends AbstractMultiChunkHandler<RequirementS
     @Override
     public void onMachineEvent(MachineEvent event) {
         if (event instanceof MachineNotFormedEvent || event instanceof MachineControllerInvalidatedEvent) {
-            log.info("Received event {} from controller. Clearing scrubber chunk cache at {}", event.getClass().getSimpleName(), pos.toString());
+            log.debug("Received event {} from controller. Clearing scrubber chunk cache at {}", event.getClass().getSimpleName(), pos.toString());
             clearScrubbedChunks();
         }
 

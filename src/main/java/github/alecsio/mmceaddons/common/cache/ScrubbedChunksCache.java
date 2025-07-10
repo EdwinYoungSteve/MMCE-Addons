@@ -76,11 +76,11 @@ public class ScrubbedChunksCache {
             }
         } finally { // Regardless of early return or not, process invalid positions
             positions.removeAll(invalidPositions);
-            invalidPositions.forEach(pos -> LOGGER.info("Removed invalid scrubber position: {}. For chunk: {}", pos, chunkPos));
+            invalidPositions.forEach(pos -> LOGGER.debug("Removed invalid scrubber position: {}. For chunk: {}", pos, chunkPos));
 
             if (positions.isEmpty()) {
                 SCRUBBED_CHUNKS_CACHE.remove(chunkPos);
-                LOGGER.info("Removed empty chunk entry {} from cache", chunkPos);
+                LOGGER.debug("Removed empty chunk entry {} from cache", chunkPos);
             }
         }
 
