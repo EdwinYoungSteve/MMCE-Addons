@@ -67,7 +67,9 @@ tooltip.modularmachineryaddons.scrubber=May still cause leaks for a short time w
 
 # messages
 message.modularmachineryaddons.assembly.complete=Multiblock assembly completed successfully
+message.modularmachineryaddons.assembly.complete.error=Multiblock assembly completed, but some blocks were not placed
 message.modularmachineryaddons.disassembly.complete=Multiblock disassembly completed successfully
+message.modularmachineryaddons.disassembly.complete.error=Multiblock disassembly completed, but some blocks were not removed
 message.modularmachineryaddons.assembly.error=Multiblock assembly interrupted
 message.modularmachineryaddons.disassembly.error=Multiblock disassembly interrupted
 message.modularmachineryaddons.advancedconstructtool.cleared=Cleared tool selection

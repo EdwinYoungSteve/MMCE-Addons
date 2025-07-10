@@ -1,5 +1,6 @@
 package github.alecsio.mmceaddons.common.assembly;
 
+import github.alecsio.mmceaddons.common.assembly.handler.exception.MultiblockBuilderNotFoundException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 
@@ -9,7 +10,7 @@ public interface IMachineAssembly {
 
     BlockPos getControllerPos();
     EntityPlayer getPlayer();
-    void assembleTick();
+    void assembleTick() throws MultiblockBuilderNotFoundException;
     boolean isCompleted();
     String getCompletedTranslationKey();
     String getErrorTranslationKey();

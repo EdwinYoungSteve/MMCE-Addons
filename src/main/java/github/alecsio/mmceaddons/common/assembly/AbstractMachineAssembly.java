@@ -24,6 +24,9 @@ public abstract class AbstractMachineAssembly implements IMachineAssembly {
     // The last error that was reported by any of the handlers. If multiple errors were reported, only the last
     // one will be displayed to the player.
     protected TextComponentTranslation lastError;
+    // Keeps track of whether any errors were present in the assembly. It is used to determine the message that should be
+    // displayed at the end of the assembly
+    protected boolean hadError = false;
 
     protected boolean completed = false;
 
@@ -62,6 +65,14 @@ public abstract class AbstractMachineAssembly implements IMachineAssembly {
             return java.util.Optional.empty();
         }
         return java.util.Optional.of(Long.parseLong(optEncryptionKey.get()));
+    }
+
+    protected void sendAndResetError() {
+        if (lastError != null) {
+            player.sendMessage(lastError);
+            hadError = true;
+            lastError = null;
+        }
     }
 
     private java.util.Optional<String> getEncryptionKey(ItemStack stack) {

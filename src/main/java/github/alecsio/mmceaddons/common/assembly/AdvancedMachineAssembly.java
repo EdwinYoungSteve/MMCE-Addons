@@ -19,6 +19,7 @@ import appeng.util.item.AEItemStack;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.LoadedModsCache;
 import github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler;
+import github.alecsio.mmceaddons.common.assembly.handler.exception.MultiblockBuilderNotFoundException;
 import github.alecsio.mmceaddons.common.config.MMCEAConfig;
 import github.alecsio.mmceaddons.common.item.ItemAdvancedMachineAssembler;
 import ink.ikx.mmce.common.utils.StructureIngredient;
@@ -68,7 +69,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
      * Processes up to {@link MMCEAConfig#disassemblyBlocksProcessedPerTick} blocks from the assembly
      */
     @Override
-    public void assembleTick() {
+    public void assembleTick() throws MultiblockBuilderNotFoundException {
         List<StructureIngredient.ItemIngredient> itemIngredients = ingredient.itemIngredient();
         Iterator<StructureIngredient.ItemIngredient> iterator = itemIngredients.iterator();
 
@@ -87,7 +88,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
     @Override
     public String getCompletedTranslationKey() {
-        return "message.modularmachineryaddons.assembly.complete";
+        return hadError ? "message.modularmachineryaddons.assembly.complete.error" : "message.modularmachineryaddons.assembly.complete";
     }
 
     @Override
@@ -103,7 +104,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
      * - From the linked ME system, if the mod is present and the assembler is linked to an ME system
      * - From the EMC network, if the mod is present
      */
-    private void tryPlaceBlock(StructureIngredient.ItemIngredient ingredientToProcess) {
+    private void tryPlaceBlock(StructureIngredient.ItemIngredient ingredientToProcess) throws MultiblockBuilderNotFoundException {
         BlockPos toPlacePos = getControllerPos().add(ingredientToProcess.pos());
 
         if (!canPlaceBlockAt(toPlacePos)) {return;}
@@ -119,6 +120,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
             boolean handled = false;
             ItemStack assembler = null;
+            ItemStack stackInInvToConsume = null;
             // player inv
             for (final ItemStack stackInSlot : player.inventory.mainInventory) {
                 // If there's more than one assembler this will work incorrectly (say if one is linked to the ME system and the other is not)
@@ -132,13 +134,16 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
                 // it will still place items from your inventory. This happens if, for example, you start an assembly and throw the item.
                 if (ItemStack.areItemsEqual(stack, stackInSlot) && !handled) {
                     handled = true;
-                    stackInSlot.shrink(stack.getCount());
+                    stackInInvToConsume = stackInSlot;
                 }
             }
 
             if (assembler == null) {
-                lastError = new TextComponentTranslation("error.assembler.not.found");
-                return;
+                throw new MultiblockBuilderNotFoundException();
+            }
+
+            if (stackInInvToConsume != null) {
+                stackInInvToConsume.shrink(stack.getCount());
             }
 
             NBTTagCompound tag = assembler.getTagCompound();
@@ -160,6 +165,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
             if (!handled || !world.isAirBlock(toPlacePos)) {
                 if (i == ingredientToProcess.ingredientList().size() - 1) {
                     unhandledBlocks.add(stack.getDisplayName());
+                    hadError = true;
                 }
                 continue;
             }
@@ -258,13 +264,6 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         BlockSnapshot blockSnapshot = BlockSnapshot.getBlockSnapshot(world, pos);
 
         return !ForgeEventFactory.onPlayerBlockPlace(player, blockSnapshot, EnumFacing.UP, EnumHand.MAIN_HAND).isCanceled();
-    }
-
-    private void sendAndResetError() {
-        if (lastError != null) {
-            player.sendMessage(lastError);
-            lastError = null;
-        }
     }
 
 }
