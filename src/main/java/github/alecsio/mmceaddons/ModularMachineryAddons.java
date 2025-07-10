@@ -24,7 +24,7 @@ import org.apache.logging.log4j.Logger;
         name = ModularMachineryAddons.NAME,
         version = ModularMachineryAddons.VERSION,
         dependencies = "required-after:forge@[14.21.0.2371,);"
-                + "required-after:modularmachinery@[1.11.1,);"
+                + "required-after:modularmachinery@[2.1.5,);"
                 + "after:jei@[4.13.1.222,);"
                 + "after:bloodmagic@[0.0.0,);"
                 + "after:thaumcraft@[0.0.0,);"
@@ -50,7 +50,7 @@ public class ModularMachineryAddons {
 
     public static Logger logger;
 
-    public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
+    public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel("mmaddons"); // MODID could not be used here as the max length of the channel name must be < 20
 
     @SidedProxy(clientSide = CLIENT_PROXY, serverSide = COMMON_PROXY)
     public static CommonProxy proxy;

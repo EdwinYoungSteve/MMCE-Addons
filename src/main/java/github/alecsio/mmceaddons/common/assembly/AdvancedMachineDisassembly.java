@@ -18,6 +18,7 @@ import appeng.me.helpers.PlayerSource;
 import appeng.util.item.AEItemStack;
 import com.google.common.collect.Lists;
 import github.alecsio.mmceaddons.common.LoadedModsCache;
+import github.alecsio.mmceaddons.common.assembly.handler.exception.MultiblockBuilderNotFoundException;
 import github.alecsio.mmceaddons.common.config.MMCEAConfig;
 import github.alecsio.mmceaddons.common.item.ItemAdvancedMachineDisassembler;
 import github.alecsio.mmceaddons.util.NBTUtil;
@@ -63,7 +64,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
     }
 
     @Override
-    public void assembleTick() {
+    public void assembleTick() throws MultiblockBuilderNotFoundException {
         List<StructureIngredient.ItemIngredient> itemIngredients = ingredient.itemIngredient();
         Iterator<StructureIngredient.ItemIngredient> iterator = itemIngredients.iterator();
 
@@ -82,7 +83,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
 
     @Override
     public String getCompletedTranslationKey() {
-        return "message.modularmachineryaddons.disassembly.complete";
+        return hadError ? "message.modularmachineryaddons.disassembly.complete.error" : "message.modularmachineryaddons.disassembly.complete";
     }
 
     @Override
@@ -90,7 +91,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         return "message.modularmachineryaddons.disassembly.error";
     }
 
-    private void tryBreakBlock(StructureIngredient.ItemIngredient ingredientToProcess) {
+    private void tryBreakBlock(StructureIngredient.ItemIngredient ingredientToProcess) throws MultiblockBuilderNotFoundException {
         BlockPos toBreakPos = getControllerPos().add(ingredientToProcess.pos());
 
         if (!canBreakBlockAt(toBreakPos)) {return;}
@@ -107,12 +108,14 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
 
         if (!isItemHandlerEmpty(tileEntity)) {
             // Bypassing the last error so that the player is always informed of this
+            hadError = true;
             player.sendMessage(new TextComponentTranslation("error.disassembler.nonempty.itemhandler"));
             return;
         }
 
         if (!isFluidHandlerEmpty(tileEntity)) {
             // Bypassing the last error so that the player is always informed of this
+            hadError = true;
             player.sendMessage(new TextComponentTranslation("error.disassembler.nonempty.fluidhandler"));
             return;
         }
@@ -129,8 +132,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         }
 
         if (disassembler == null) {
-            lastError = new TextComponentTranslation("error.assembler.not.found");
-            return;
+            throw new MultiblockBuilderNotFoundException();
         }
 
         int modeIndex = NBTUtil.getOrDefault(disassembler, ItemAdvancedMachineDisassembler.MODE_INDEX, 0);
@@ -299,12 +301,5 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         List<EnumFacing> facings = Lists.newArrayList(EnumFacing.values());
         facings.add(null);
         return facings;
-    }
-
-    private void sendAndResetError() {
-        if (lastError != null) {
-            player.sendMessage(lastError);
-            lastError = null;
-        }
     }
 }
