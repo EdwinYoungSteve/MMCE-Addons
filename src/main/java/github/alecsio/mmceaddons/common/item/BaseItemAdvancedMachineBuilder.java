@@ -19,7 +19,6 @@ import hellfirepvp.modularmachinery.common.util.BlockArrayCache;
 import hellfirepvp.modularmachinery.common.util.IBlockStateDescriptor;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,7 +37,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -126,7 +124,7 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
 
         for (final BlockPos modifierPos : modifiers.keySet()) {
             List<SingleBlockModifierReplacement> modifierReplacements = modifiers.get(modifierPos);
-            BlockArray.BlockInformation blockInfo = blockPosBlockInformationMapCopy.get(modifierPos.rotate(getRotationFrom(controllerFacing)));
+            BlockArray.BlockInformation blockInfo = machinePatternCopy.getPattern().get(modifierPos.rotate(getRotationFrom(controllerFacing)));
             for (final SingleBlockModifierReplacement modifierReplacement : modifierReplacements) {
                 BlockArray.BlockInformation modifierBlockInfo = modifierReplacement.getBlockInformation();
                 blockInfo.addMatchingStates(((IBlockInformationAccessor) modifierBlockInfo).getMatchingStates());
