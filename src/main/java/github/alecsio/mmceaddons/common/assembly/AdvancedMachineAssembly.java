@@ -215,9 +215,10 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
         IMEMonitor<IAEItemStack> itemStorage = storageGrid.getInventory(storageHelper.getStorageChannel(IItemStorageChannel.class));
 
-        IAEStack<IAEItemStack> aeStack = aeApi.storage().poweredExtraction(energyGrid, itemStorage, AEItemStack.fromItemStack(stack), new PlayerSource(player, host), Actionable.SIMULATE);
+        AEItemStack aeItemStack = AEItemStack.fromItemStack(stack);
+        IAEStack<IAEItemStack> aeStack = aeApi.storage().poweredExtraction(energyGrid, itemStorage, aeItemStack, new PlayerSource(player, host), Actionable.SIMULATE);
         if (aeStack != null && aeStack.getStackSize() == stack.getCount()) {
-            IAEStack<IAEItemStack> extracted = storageHelper.poweredExtraction(energyGrid, itemStorage, AEItemStack.fromItemStack(stack), new PlayerSource(player, host), Actionable.MODULATE);
+            IAEStack<IAEItemStack> extracted = storageHelper.poweredExtraction(energyGrid, itemStorage, aeItemStack, new PlayerSource(player, host), Actionable.MODULATE);
             return extracted.asItemStackRepresentation();
         }
 
