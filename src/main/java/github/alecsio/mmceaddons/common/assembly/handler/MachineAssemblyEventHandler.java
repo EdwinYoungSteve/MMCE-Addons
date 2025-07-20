@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
 import github.alecsio.mmceaddons.common.assembly.MachineAssemblyManager;
+import github.alecsio.mmceaddons.common.assembly.handler.exception.MultiblockBuilderNotFoundException;
 import github.alecsio.mmceaddons.common.config.MMCEAConfig;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.tiles.base.TileMultiblockMachineController;
@@ -49,7 +50,13 @@ public class MachineAssemblyEventHandler {
                     player.sendMessage(new TextComponentTranslation(assembly.getErrorTranslationKey()));
                     return;
                 }
-                assembly.assembleTick();
+                try {
+                    assembly.assembleTick();
+                } catch (MultiblockBuilderNotFoundException e) {
+                    player.sendMessage(new TextComponentTranslation("error.assembler.not.found"));
+                    MachineAssemblyManager.removeMachineAssembly(assembly.getControllerPos());
+                }
+
                 if (assembly.isCompleted()) {
                     MachineAssemblyManager.removeMachineAssembly(assembly.getControllerPos());
                     player.sendMessage(new TextComponentTranslation(assembly.getCompletedTranslationKey()));

@@ -6,6 +6,7 @@ import github.alecsio.mmceaddons.CommonProxy;
 import github.alecsio.mmceaddons.common.assembly.AssemblyModes;
 import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
 import github.alecsio.mmceaddons.common.assembly.MachineAssemblyManager;
+import github.alecsio.mmceaddons.common.mixin.BlockStateDescriptorMixin;
 import github.alecsio.mmceaddons.common.mixin.IBlockInformationAccessor;
 import github.kasuminova.mmce.common.util.DynamicPattern;
 import hellfirepvp.modularmachinery.common.block.BlockController;
@@ -18,6 +19,7 @@ import hellfirepvp.modularmachinery.common.util.BlockArrayCache;
 import hellfirepvp.modularmachinery.common.util.IBlockStateDescriptor;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,6 +39,8 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -114,20 +118,45 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
 
         // I hate this :D
         var modifiers = machine.getModifiers();
-        Map<BlockPos, BlockArray.BlockInformation> blockPosBlockInformationMap = machinePattern.getPattern();
+        BlockArray machinePatternCopy = new BlockArray();
+        Map<BlockPos, BlockArray.BlockInformation> blockPosBlockInformationMapCopy = getPatternDeepCopy(machinePattern.getPattern());
+        for (BlockPos blockPos : blockPosBlockInformationMapCopy.keySet()) {
+            machinePatternCopy.addBlock(blockPos, blockPosBlockInformationMapCopy.get(blockPos));
+        }
+
         for (final BlockPos modifierPos : modifiers.keySet()) {
             List<SingleBlockModifierReplacement> modifierReplacements = modifiers.get(modifierPos);
-            BlockArray.BlockInformation blockInfo = blockPosBlockInformationMap.get(modifierPos.rotate(getRotationFrom(controllerFacing)));
+            BlockArray.BlockInformation blockInfo = blockPosBlockInformationMapCopy.get(modifierPos.rotate(getRotationFrom(controllerFacing)));
             for (final SingleBlockModifierReplacement modifierReplacement : modifierReplacements) {
                 BlockArray.BlockInformation modifierBlockInfo = modifierReplacement.getBlockInformation();
                 blockInfo.addMatchingStates(((IBlockInformationAccessor) modifierBlockInfo).getMatchingStates());
             }
         }
 
-        IMachineAssembly machineAssembly = getAssembly(world, controllerPos, player, machinePattern);
+        IMachineAssembly machineAssembly = getAssembly(world, controllerPos, player, machinePatternCopy);
 
         MachineAssemblyManager.addMachineAssembly(machineAssembly);
         return true;
+    }
+
+    private Map<BlockPos, BlockArray.BlockInformation> getPatternDeepCopy(Map<BlockPos, BlockArray.BlockInformation> original) {
+        Map<BlockPos, BlockArray.BlockInformation> copy = new HashMap<>();
+        for (Map.Entry<BlockPos, BlockArray.BlockInformation> entry : original.entrySet()) {
+            BlockPos originalPos = entry.getKey();
+            BlockArray.BlockInformation originalBlockInfo = entry.getValue();
+
+            BlockPos copiedPos = new BlockPos(originalPos.getX(), originalPos.getY(), originalPos.getZ()).toImmutable();
+
+            List<IBlockStateDescriptor> stateDescriptorsCopy = new ArrayList<>();
+            for (IBlockStateDescriptor stateDescriptor : ((IBlockInformationAccessor) originalBlockInfo).getMatchingStates()) {
+                IBlockStateDescriptor stateDescriptorCopy = BlockStateDescriptorMixin.invokeConstructor(stateDescriptor.getApplicable());
+                stateDescriptorsCopy.add(stateDescriptorCopy);
+            }
+            BlockArray.BlockInformation copiedBlockInfo = new BlockArray.BlockInformation(stateDescriptorsCopy);
+
+            copy.put(copiedPos, copiedBlockInfo);
+        }
+        return copy;
     }
 
     @Override
