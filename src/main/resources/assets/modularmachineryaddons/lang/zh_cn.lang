@@ -79,7 +79,7 @@ message.modularmachineryaddons.advancedconstructtool.selection=已成功选择�
 #assembly
 message.assembly.missing.item.knowledge=缺少对物品：%s的知识
 message.assembly.missing.emc=EMC不足，无法提取物品：%s（数量：%s）。当前EMC：%d 所需EMC：%d
-message.assembly.overflow.emc=无法将物品：%s（数量：%s）放入EMC网络。若将物品的EMC值（%d）添加到当前EMC量（%d）中，将超过最大EMC上限！
+message.assembly.overflow.emc=无法将物品：%s（数量：%s）放入EMC网络。若将物品的EMC值（%d）添加到当前网络EMC（%d）中，将超过最大EMC上限！
 tooltip.builder.player_inventory=模式：仅玩家物品栏
 tooltip.builder.player_inventory_emc=模式：玩家物品栏+EMC
 tooltip.builder.player_inventory_me=模式：玩家物品栏+连接的ME网络
