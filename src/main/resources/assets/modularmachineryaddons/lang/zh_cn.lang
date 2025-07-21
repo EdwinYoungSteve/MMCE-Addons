@@ -37,9 +37,9 @@ error.modularmachineryaddons.component.invalid.meteor=没有找到坠星仓
 error.assembler.not.found=玩家物品栏中没有找到高级机械组装器
 error.encryption.key.not.found=组装器必须通过安全终端连接到ME系统才可进行物品提取
 error.security.station.not.found=无法定位安全终端
-error.disassembler.nonempty.itemhandler=发现包含物品的方块。请清空其中物品后重试，或手动破坏方块
-error.disassembler.nonempty.fluidhandler=发现包含流体的方块。请清空其中流体后重试，或手动破坏方块
-message.assembly.missing.machine=无法识别机械。请在控制器中放入蓝图，或转换控制器
+error.disassembler.nonempty.itemhandler=发现包含物品的方块。请清空其中物品后重试，或手动破坏它
+error.disassembler.nonempty.fluidhandler=发现包含流体的方块。请清空其中流体后重试，或手动破坏它
+message.assembly.missing.machine=无法识别机械。插入蓝图或转换控制器
 message.item.mode.changed=物品模式已更改为%s
 
 # requirement check fails
@@ -79,7 +79,7 @@ message.modularmachineryaddons.advancedconstructtool.selection=已成功选择�
 #assembly
 message.assembly.missing.item.knowledge=缺少对物品：%s的知识
 message.assembly.missing.emc=EMC不足，无法提取物品：%s（数量：%s）。当前EMC：%d 所需EMC：%d
-message.assembly.overflow.emc=无法为物品：%s（数量：%s）添加EMC。将物品的EMC值（%d）添加到当前EMC量（%d）中，将超过最大EMC上限！
+message.assembly.overflow.emc=无法将物品：%s（数量：%s）放入EMC网络。若将物品的EMC值（%d）添加到当前EMC量（%d）中，将超过最大EMC上限！
 tooltip.builder.player_inventory=模式：仅玩家物品栏
 tooltip.builder.player_inventory_emc=模式：玩家物品栏+EMC
 tooltip.builder.player_inventory_me=模式：玩家物品栏+连接的ME网络
