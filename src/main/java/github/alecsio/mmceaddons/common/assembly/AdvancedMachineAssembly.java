@@ -3,11 +3,13 @@ package github.alecsio.mmceaddons.common.assembly;
 import appeng.api.AEApi;
 import appeng.api.IAppEngApi;
 import appeng.api.config.Actionable;
+import appeng.api.config.FuzzyMode;
 import appeng.api.features.ILocatable;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.security.IActionHost;
+import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.IStorageHelper;
@@ -16,6 +18,7 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.me.helpers.PlayerSource;
 import appeng.util.item.AEItemStack;
+import com.google.common.collect.ImmutableList;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.LoadedModsCache;
 import github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler;
@@ -210,15 +213,30 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         IGrid targetGrid = node.getGrid();
         IEnergyGrid energyGrid = targetGrid.getCache(IEnergyGrid.class);
         IStorageGrid storageGrid = targetGrid.getCache(IStorageGrid.class);
+        IActionSource playerSource = new PlayerSource(player, host);
 
         IStorageHelper storageHelper = aeApi.storage();
 
         IMEMonitor<IAEItemStack> itemStorage = storageGrid.getInventory(storageHelper.getStorageChannel(IItemStorageChannel.class));
 
+        NBTTagCompound stackTag = stack.getTagCompound();
         AEItemStack aeItemStack = AEItemStack.fromItemStack(stack);
-        IAEStack<IAEItemStack> aeStack = aeApi.storage().poweredExtraction(energyGrid, itemStorage, aeItemStack, new PlayerSource(player, host), Actionable.SIMULATE);
+        IAEStack<IAEItemStack> aeStack = aeApi.storage().poweredExtraction(energyGrid, itemStorage, aeItemStack, playerSource, Actionable.SIMULATE);
+
+        // If we don't need to match exact NBT for this block
+        // and we were not able to find the stack yet
+        if (stackTag == null && aeStack == null) {
+            for (final IAEItemStack toExtract : ImmutableList.copyOf(itemStorage.getStorageList().findFuzzy(aeItemStack, FuzzyMode.IGNORE_ALL))) {
+                if (toExtract.getStackSize() >= 1) {
+                    ItemStack cachedStack = toExtract.getCachedItemStack(1);
+                    aeItemStack = AEItemStack.fromItemStack(cachedStack);
+                    break;
+                }
+            }
+        }
+
         if (aeStack != null && aeStack.getStackSize() == stack.getCount()) {
-            IAEStack<IAEItemStack> extracted = storageHelper.poweredExtraction(energyGrid, itemStorage, aeItemStack, new PlayerSource(player, host), Actionable.MODULATE);
+            IAEStack<IAEItemStack> extracted = storageHelper.poweredExtraction(energyGrid, itemStorage, aeItemStack, playerSource, Actionable.MODULATE);
             return extracted.asItemStackRepresentation();
         }
 
