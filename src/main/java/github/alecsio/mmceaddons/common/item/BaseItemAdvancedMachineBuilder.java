@@ -3,10 +3,12 @@ package github.alecsio.mmceaddons.common.item;
 import appeng.api.features.INetworkEncodable;
 import appeng.util.Platform;
 import github.alecsio.mmceaddons.CommonProxy;
+import github.alecsio.mmceaddons.client.MouseScrollHandler;
 import github.alecsio.mmceaddons.common.assembly.AssemblyModes;
 import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
 import github.alecsio.mmceaddons.common.assembly.MachineAssemblyManager;
 import github.alecsio.mmceaddons.common.mixin.BlockStateDescriptorMixin;
+import github.alecsio.mmceaddons.common.mixin.IBlockArrayInvoker;
 import github.alecsio.mmceaddons.common.mixin.IBlockInformationAccessor;
 import github.kasuminova.mmce.common.util.DynamicPattern;
 import hellfirepvp.modularmachinery.common.block.BlockController;
@@ -19,6 +21,7 @@ import hellfirepvp.modularmachinery.common.util.BlockArrayCache;
 import hellfirepvp.modularmachinery.common.util.IBlockStateDescriptor;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,6 +44,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler.ASSEMBLY_ACCESS_TOKEN;
 
@@ -119,7 +124,8 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
         BlockArray machinePatternCopy = new BlockArray();
         Map<BlockPos, BlockArray.BlockInformation> blockPosBlockInformationMapCopy = getPatternDeepCopy(machinePattern.getPattern());
         for (BlockPos blockPos : blockPosBlockInformationMapCopy.keySet()) {
-            machinePatternCopy.addBlock(blockPos, blockPosBlockInformationMapCopy.get(blockPos));
+            machinePatternCopy.getPattern().put(blockPos, blockPosBlockInformationMapCopy.get(blockPos));
+            ((IBlockArrayInvoker) machinePatternCopy).invokeUpdateSize(blockPos);
         }
 
         for (final BlockPos modifierPos : modifiers.keySet()) {
@@ -127,7 +133,7 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
             BlockArray.BlockInformation blockInfo = machinePatternCopy.getPattern().get(modifierPos.rotate(getRotationFrom(controllerFacing)));
             for (final SingleBlockModifierReplacement modifierReplacement : modifierReplacements) {
                 BlockArray.BlockInformation modifierBlockInfo = modifierReplacement.getBlockInformation();
-                blockInfo.addMatchingStates(((IBlockInformationAccessor) modifierBlockInfo).getMatchingStates());
+                blockInfo.addMatchingStates(deepCopyDescriptors(((IBlockInformationAccessor) modifierBlockInfo).getMatchingStates()));
             }
         }
 
@@ -145,16 +151,20 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
 
             BlockPos copiedPos = new BlockPos(originalPos.getX(), originalPos.getY(), originalPos.getZ()).toImmutable();
 
-            List<IBlockStateDescriptor> stateDescriptorsCopy = new ArrayList<>();
-            for (IBlockStateDescriptor stateDescriptor : ((IBlockInformationAccessor) originalBlockInfo).getMatchingStates()) {
-                IBlockStateDescriptor stateDescriptorCopy = BlockStateDescriptorMixin.invokeConstructor(stateDescriptor.getApplicable());
-                stateDescriptorsCopy.add(stateDescriptorCopy);
-            }
+            List<IBlockStateDescriptor> stateDescriptorsCopy = deepCopyDescriptors(((IBlockInformationAccessor) originalBlockInfo).getMatchingStates());
+
             BlockArray.BlockInformation copiedBlockInfo = new BlockArray.BlockInformation(stateDescriptorsCopy);
 
             copy.put(copiedPos, copiedBlockInfo);
         }
         return copy;
+    }
+
+    private List<IBlockStateDescriptor> deepCopyDescriptors(List<IBlockStateDescriptor> original) {
+        return deepCopyList(original, stateDescriptor -> {
+            List<IBlockState> applicableStatesCopy = deepCopyList(stateDescriptor.getApplicable(), state -> state);
+            return BlockStateDescriptorMixin.invokeConstructor(applicableStatesCopy);
+        });
     }
 
     @Override
@@ -186,7 +196,7 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
     }
 
     /**
-     * Called from {@link github.alecsio.mmceaddons.client.MouseScrollHandler}
+     * Called from {@link MouseScrollHandler}
      */
     public static void onMouseScroll(ItemStack builderStack, EntityPlayer player, ScrollDirection direction) {
         NBTTagCompound tag = builderStack.getTagCompound();
@@ -217,6 +227,18 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
     @Override
     public void setDamage(final ItemStack stack, final int damage) {
 
+    }
+
+    private static <T> List<T> deepCopyList(List<T> original, Function<T, T> copyFunction) {
+        List<T> newList = new ArrayList<>(original.size());
+        for (T t : original) {
+            newList.add(deepCopy(t, copyFunction));
+        }
+        return newList;
+    }
+
+    private static <T> T deepCopy(T original, Function<T, T> copyFunction) {
+        return copyFunction.apply(original);
     }
 
     private Rotation getRotationFrom(EnumFacing facing) {

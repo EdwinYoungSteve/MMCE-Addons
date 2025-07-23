@@ -64,6 +64,7 @@ import java.util.List;
 public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final int AMOUNT_TO_EXTRACT = 1;
 
     public AdvancedMachineAssembly(World world, BlockPos controllerPos, EntityPlayer player, StructureIngredient ingredient) {
         super(world, controllerPos, player, ingredient);
@@ -221,19 +222,19 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
         NBTTagCompound stackTag = stack.getTagCompound();
         AEItemStack aeItemStack = AEItemStack.fromItemStack(stack);
-        IAEStack<IAEItemStack> aeStack = aeApi.storage().poweredExtraction(energyGrid, itemStorage, aeItemStack, playerSource, Actionable.SIMULATE);
 
         // If we don't need to match exact NBT for this block
-        // and we were not able to find the stack yet
-        if (stackTag == null && aeStack == null) {
+        if (stackTag == null) {
             for (final IAEItemStack toExtract : ImmutableList.copyOf(itemStorage.getStorageList().findFuzzy(aeItemStack, FuzzyMode.IGNORE_ALL))) {
-                if (toExtract.getStackSize() >= 1) {
-                    ItemStack cachedStack = toExtract.getCachedItemStack(1);
+                if (toExtract.getStackSize() >= AMOUNT_TO_EXTRACT) {
+                    ItemStack cachedStack = toExtract.getCachedItemStack(AMOUNT_TO_EXTRACT);
                     aeItemStack = AEItemStack.fromItemStack(cachedStack);
                     break;
                 }
             }
         }
+
+        IAEStack<IAEItemStack> aeStack = aeApi.storage().poweredExtraction(energyGrid, itemStorage, aeItemStack, playerSource, Actionable.SIMULATE);
 
         if (aeStack != null && aeStack.getStackSize() == stack.getCount()) {
             IAEStack<IAEItemStack> extracted = storageHelper.poweredExtraction(energyGrid, itemStorage, aeItemStack, playerSource, Actionable.MODULATE);
