@@ -71,7 +71,7 @@ public class MachineAssemblyEventHandler {
                         );
 
                         player.sendMessage(new TextComponentTranslation(
-                                "message.assembly.tip.success.missing.blocks",
+                                assembly.getMissingBlocksTranslationKey(),
                                 unhandledBlocksBuilder.toString()
                         ));
                     }
