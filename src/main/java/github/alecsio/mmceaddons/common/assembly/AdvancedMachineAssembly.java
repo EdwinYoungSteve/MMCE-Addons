@@ -227,8 +227,19 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         if (stackTag == null) {
             for (final IAEItemStack toExtract : ImmutableList.copyOf(itemStorage.getStorageList().findFuzzy(aeItemStack, FuzzyMode.IGNORE_ALL))) {
                 if (toExtract.getStackSize() >= AMOUNT_TO_EXTRACT) {
-                    ItemStack cachedStack = toExtract.getCachedItemStack(AMOUNT_TO_EXTRACT);
-                    aeItemStack = AEItemStack.fromItemStack(cachedStack);
+                    // The only interaction with itemStorage directly is to get the stack to extract
+                    ItemStack matchedStack = toExtract.getCachedItemStack(toExtract.getStackSize());
+                    // So once I get it, I just put it back in the cached item stack to avoid inconsistencies
+                    // the actual extraction will be handled by poweredExtraction
+                    toExtract.setCachedItemStack(matchedStack.copy());
+
+                    // Check meta, else it could end up placing a different block, this totally did not happen during development
+                    if (matchedStack.getMetadata() != stack.getMetadata()) {
+                        continue;
+                    }
+
+                    matchedStack.setCount(AMOUNT_TO_EXTRACT);
+                    aeItemStack = AEItemStack.fromItemStack(matchedStack);
                     break;
                 }
             }
