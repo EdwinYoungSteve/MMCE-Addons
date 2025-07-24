@@ -101,6 +101,11 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         return "message.modularmachineryaddons.assembly.error";
     }
 
+    @Override
+    public String getMissingBlocksTranslationKey() {
+        return "message.assembly.tip.success.missing.blocks";
+    }
+
     /**
      * Tries to place the provided ingredient. This method will look for the provided ingredient in the following
      * locations, in this order:

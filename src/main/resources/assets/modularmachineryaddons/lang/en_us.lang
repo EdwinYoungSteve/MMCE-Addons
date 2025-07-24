@@ -86,6 +86,7 @@ tooltip.builder.player_inventory_me=Mode: Player Inventory + Linked ME Network
 tooltip.builder.all=Mode: Player Inventory + EMC + Linked ME Network
 tooltip.builder.change.modes=Hold Shift and scroll UP/DOWN to change modes, or use the keybind
 message.assembly.tip.success.missing.blocks=Could not place the following blocks: %s
+message.disassembly.tip.success.missing.blocks=Could not break the following blocks: %s
 message.assembly.too.quickly=Trying to perform action too quickly!
 message.modularmachineryaddons.radiationsponge.success=Scrubbed Radiation: [%d from %s] [%d from chunk buffer] [%d from chunk level]
 

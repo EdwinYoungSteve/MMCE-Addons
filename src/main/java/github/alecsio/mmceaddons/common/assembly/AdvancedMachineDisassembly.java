@@ -50,8 +50,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import stanhebben.zenscript.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -89,6 +87,11 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
     @Override
     public String getErrorTranslationKey() {
         return "message.modularmachineryaddons.disassembly.error";
+    }
+
+    @Override
+    public String getMissingBlocksTranslationKey() {
+        return "message.disassembly.tip.success.missing.blocks";
     }
 
     private void tryBreakBlock(StructureIngredient.ItemIngredient ingredientToProcess) throws MultiblockBuilderNotFoundException {

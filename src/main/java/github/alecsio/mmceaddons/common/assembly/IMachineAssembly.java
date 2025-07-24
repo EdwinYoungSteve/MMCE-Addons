@@ -14,5 +14,6 @@ public interface IMachineAssembly {
     boolean isCompleted();
     String getCompletedTranslationKey();
     String getErrorTranslationKey();
+    String getMissingBlocksTranslationKey();
     List<String> getUnhandledBlocks();
 }
