@@ -37,7 +37,7 @@ public abstract class TileFluxProvider extends AbstractMultiChunkHandler<Require
 
         @Override
         protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-            return currentAmount - amountToModify >= 0;
+            return currentAmount - amountToModify >= requirement.getMinPerChunk();
         }
 
         @Override
@@ -58,7 +58,7 @@ public abstract class TileFluxProvider extends AbstractMultiChunkHandler<Require
 
         @Override
         protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-            return currentAmount + amountToModify <= MAXIMUM_AMOUNT_IN_CHUNK;
+            return currentAmount + amountToModify <= requirement.getMaxPerChunk();
         }
 
         @Override

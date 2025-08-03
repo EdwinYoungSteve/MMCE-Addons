@@ -50,6 +50,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import stanhebben.zenscript.annotations.NotNull;
+import thaumcraft.common.blocks.basic.BlockPillar;
 
 import java.util.Iterator;
 import java.util.List;
@@ -201,7 +202,8 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
     private void handleBlockPlacement(BlockPos toPlacePos, IBlockState state, ItemStack handledItem, NBTTagCompound tag) {
         world.setBlockState(toPlacePos, state);
         Block block = world.getBlockState(toPlacePos).getBlock();
-        block.onBlockPlacedBy(world, toPlacePos, state, player, handledItem);
+        // For some reason pillars (specifically TC eldritch pillars are placed with a different facing direction if this is called on them
+        if (!(block instanceof BlockPillar)) {block.onBlockPlacedBy(world, toPlacePos, state, player, handledItem);}
         world.playSound(null, toPlacePos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
         TileEntity te = world.getTileEntity(toPlacePos);
         if (te != null && tag != null) {

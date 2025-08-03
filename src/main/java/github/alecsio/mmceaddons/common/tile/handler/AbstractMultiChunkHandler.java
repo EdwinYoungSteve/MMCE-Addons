@@ -62,7 +62,7 @@ public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement
     }
 
     private String getKeyForRequirement(T requirement) {
-        return requirement.getIOType().equals(IOType.INPUT) ? "error.modularmachineryaddons.requirement.missing.multichunk.input" : "error.modularmachineryaddons.requirement.missing.output";
+        return requirement.getIOType().equals(IOType.INPUT) ? "error.modularmachineryaddons.requirement.missing.multichunk.input" : "error.modularmachineryaddons.requirement.missing.multichunk.output";
     }
 
     public static double clampWithEpsilon(double value, double min, double max, double epsilon) {
