@@ -78,6 +78,17 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         List<StructureIngredient.ItemIngredient> itemIngredients = ingredient.itemIngredient();
         Iterator<StructureIngredient.ItemIngredient> iterator = itemIngredients.iterator();
 
+        if (player.isCreative()) {
+            while (iterator.hasNext()) {
+                StructureIngredient.ItemIngredient ingredient = iterator.next();
+                Tuple<ItemStack, IBlockState> stackStateTuple = ingredient.ingredientList().get(0);
+                handleBlockPlacement(getControllerPos().add(ingredient.pos()), stackStateTuple.getSecond(), stackStateTuple.getFirst(), ingredient.nbt());
+                iterator.remove();
+            }
+            completed = true;
+            return;
+        }
+
         for (int i = 0; i < MMCEAConfig.assemblyBlocksProcessedPerTick; i++) {
             if (!iterator.hasNext()) {
                 completed = true;
@@ -122,7 +133,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         // The ingredient list contains a list of all valid blocks for the given block pos. For example, the different tiers
         // of hatches
 
-        for (int i = 0; i < ingredientToProcess.ingredientList().size(); i++) {
+        for (int i = ingredientToProcess.ingredientList().size() - 1; i >= 0; i--) {
             Tuple<ItemStack, IBlockState> stackStateTuple = ingredientToProcess.ingredientList().get(i);
 
             ItemStack stack = stackStateTuple.getFirst();
@@ -173,7 +184,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
             }
 
             if (handledItem.isEmpty() || !world.isAirBlock(toPlacePos)) {
-                if (i == ingredientToProcess.ingredientList().size() - 1) {
+                if (i == 0) {
                     unhandledBlocks.add(stack.getDisplayName());
                     hadError = true;
                 }
@@ -182,21 +193,25 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
             lastError = null;
 
-            world.setBlockState(toPlacePos, state);
-            Block block = world.getBlockState(toPlacePos).getBlock();
-            block.onBlockPlacedBy(world, toPlacePos, state, player, handledItem);
-            world.playSound(null, toPlacePos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            TileEntity te = world.getTileEntity(toPlacePos);
-            if (te != null && ingredientToProcess.nbt() != null) {
-                try {
-                    te.readFromNBT(ingredientToProcess.nbt());
-                } catch (Exception e) {
-                    ModularMachineryAddons.logger.warn("Failed to apply NBT to TileEntity!", e);
-                    world.removeTileEntity(toPlacePos);
-                    world.setTileEntity(toPlacePos, state.getBlock().createTileEntity(world, state));
-                }
-            }
+            handleBlockPlacement(toPlacePos, state, handledItem, ingredientToProcess.nbt());
             break;
+        }
+    }
+
+    private void handleBlockPlacement(BlockPos toPlacePos, IBlockState state, ItemStack handledItem, NBTTagCompound tag) {
+        world.setBlockState(toPlacePos, state);
+        Block block = world.getBlockState(toPlacePos).getBlock();
+        block.onBlockPlacedBy(world, toPlacePos, state, player, handledItem);
+        world.playSound(null, toPlacePos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        TileEntity te = world.getTileEntity(toPlacePos);
+        if (te != null && tag != null) {
+            try {
+                te.readFromNBT(tag);
+            } catch (Exception e) {
+                ModularMachineryAddons.logger.warn("Failed to apply NBT to TileEntity!", e);
+                world.removeTileEntity(toPlacePos);
+                world.setTileEntity(toPlacePos, state.getBlock().createTileEntity(world, state));
+            }
         }
     }
 
