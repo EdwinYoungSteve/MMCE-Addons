@@ -213,7 +213,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
             if (handledFluid == null) {
                 if (i == 0) {
-                    unhandledBlocks.add(fluidStack.getLocalizedName());
+                    unhandledBlocks.add(fluidStack.getUnlocalizedName());
                     hadError = true;
                 }
                 continue;
@@ -289,7 +289,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
             if (handledItem.isEmpty()) {
                 if (i == 0) {
-                    unhandledBlocks.add(stack.getDisplayName());
+                    unhandledBlocks.add(stack.getTranslationKey());
                     hadError = true;
                 }
                 continue;

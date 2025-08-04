@@ -5,7 +5,9 @@ import github.alecsio.mmceaddons.client.MouseScrollHandler;
 import github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler;
 import github.alecsio.mmceaddons.common.commands.CommandGetCacheInfo;
 import github.alecsio.mmceaddons.common.item.handler.RightClickHandler;
+import github.alecsio.mmceaddons.common.network.MachineAssemblyMessage;
 import github.alecsio.mmceaddons.common.network.MouseScrollMessage;
+import github.alecsio.mmceaddons.common.network.handler.MachineAssemblyMessageHandler;
 import github.alecsio.mmceaddons.common.network.handler.MouseScrollMessageHandler;
 import github.alecsio.mmceaddons.common.registry.RegistryItems;
 import net.minecraftforge.common.MinecraftForge;
@@ -72,8 +74,10 @@ public class ModularMachineryAddons {
         if (event.getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new MouseScrollHandler());
             MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
+            MinecraftForge.EVENT_BUS.register(new MachineAssemblyMessageHandler());
         }
         INSTANCE.registerMessage(MouseScrollMessageHandler.class, MouseScrollMessage.class, 0, Side.SERVER);
+        INSTANCE.registerMessage(MachineAssemblyMessageHandler.class, MachineAssemblyMessage.class, 1, Side.CLIENT);
     }
 
     @Mod.EventHandler

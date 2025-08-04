@@ -55,7 +55,7 @@ public abstract class AbstractMachineAssembly implements IMachineAssembly {
     }
 
     @Override
-    public List<String> getUnhandledBlocks() {
+    public List<String > getUnhandledBlockTranslationKeys() {
         return unhandledBlocks;
     }
 

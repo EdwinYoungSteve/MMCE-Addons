@@ -2,20 +2,25 @@ package github.alecsio.mmceaddons.common.assembly.handler;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
 import github.alecsio.mmceaddons.common.assembly.MachineAssemblyManager;
 import github.alecsio.mmceaddons.common.assembly.handler.exception.MultiblockBuilderNotFoundException;
 import github.alecsio.mmceaddons.common.config.MMCEAConfig;
+import github.alecsio.mmceaddons.common.network.MachineAssemblyMessage;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.tiles.base.TileMultiblockMachineController;
 import ink.ikx.mmce.core.AssemblyConfig;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +40,10 @@ public class MachineAssemblyEventHandler {
         EntityPlayer player = event.player;
         World world = player.world;
         if (event.phase == TickEvent.Phase.START || world.isRemote || world.getTotalWorldTime() % AssemblyConfig.tickBlock != 0) {
+            return;
+        }
+
+        if (!(player instanceof EntityPlayerMP entityPlayerMP)) {
             return;
         }
 
@@ -59,22 +68,18 @@ public class MachineAssemblyEventHandler {
 
                 if (assembly.isCompleted()) {
                     MachineAssemblyManager.removeMachineAssembly(assembly.getControllerPos());
-                    player.sendMessage(new TextComponentTranslation(assembly.getCompletedTranslationKey()));
-                    List<String> unhandledBlocks = assembly.getUnhandledBlocks();
+
+                    List<String> unhandledBlocks = assembly.getUnhandledBlockTranslationKeys();
+                    List<Tuple<String, Long>> toSend = new ArrayList<>();
                     if (unhandledBlocks != null && !unhandledBlocks.isEmpty()) {
                         Map<String, Long> blockCounts = unhandledBlocks.stream()
                                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-                        StringBuilder unhandledBlocksBuilder = new StringBuilder().append("\n");
-                        blockCounts.forEach((block, count) ->
-                                unhandledBlocksBuilder.append(count).append("x ").append(block).append("\n")
-                        );
-
-                        player.sendMessage(new TextComponentTranslation(
-                                assembly.getMissingBlocksTranslationKey(),
-                                unhandledBlocksBuilder.toString()
-                        ));
+                        blockCounts.forEach((k, v) -> toSend.add(new Tuple<>(k, v)));
                     }
+
+                    MachineAssemblyMessage machineAssemblyMessage = new MachineAssemblyMessage(assembly.getCompletedTranslationKey(), assembly.getMissingBlocksTranslationKey(), toSend);
+                    ModularMachineryAddons.INSTANCE.sendTo(machineAssemblyMessage, entityPlayerMP);
                 }
             }
         });

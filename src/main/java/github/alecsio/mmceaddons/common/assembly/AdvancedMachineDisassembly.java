@@ -37,7 +37,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -152,9 +154,14 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         IBlockState fluidState = world.getBlockState(toBreakPos);
 
         Fluid fluid = getFluid(fluidState);
-        if (fluid == null || !isSource(fluidState)) {
+        if (fluid == null) {
             // if it's not a fluid, try to break the block
             tryBreakBlock(new StructureIngredient.ItemIngredient(fluidIngredient.pos(), null, null));
+            return;
+        }
+
+        // It's a fluid but not a source, skip
+        if (!isSource(fluidState)) {
             return;
         }
 
@@ -171,7 +178,8 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
                 disassembler = stackInSlot;
             }
 
-            if (FluidUtils.isFluidHandler(stackInSlot)) {
+            Item item = stackInSlot.getItem();
+            if (FluidUtils.isFluidHandler(stackInSlot) && !(item instanceof UniversalBucket || item == Items.LAVA_BUCKET || item == Items.WATER_BUCKET) ) {
                 fluidHandlers.add(FluidUtil.getFluidHandler(stackInSlot));
             }
         }
@@ -197,7 +205,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         }
 
         if (!handledFluid) {
-            unhandledBlocks.add(fluidToBreak.getLocalizedName());
+            unhandledBlocks.add(fluidToBreak.getUnlocalizedName());
             return;
         }
 
@@ -240,7 +248,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         Block blockToBreak = world.getBlockState(toBreakPos).getBlock();
         ItemStack stack = blockToBreak.getPickBlock(actualState, null, world, toBreakPos, player);
         TileEntity tileEntity = world.getTileEntity(toBreakPos);
-        if (blockToBreak == Blocks.AIR) {
+        if (blockToBreak == Blocks.AIR || getFluid(actualState) != null) {
             // Don't inform the player if it's air
             return;
         }
@@ -289,7 +297,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         }
 
         if (!handled) {
-            unhandledBlocks.add(stack.getDisplayName());
+            unhandledBlocks.add(stack.getTranslationKey());
             return;
         }
 
