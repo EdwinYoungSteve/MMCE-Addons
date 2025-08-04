@@ -66,7 +66,6 @@ public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement
         List<Integer> indexes = IntStream.range(0, chunks.size()).boxed().collect(Collectors.toList());
         Collections.shuffle(indexes);
 
-
         double totalAmount = requirement.getAmount();
         double totalHandled = 0;
 

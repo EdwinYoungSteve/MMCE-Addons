@@ -10,7 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
 import java.util.List;
 
 @MethodsReturnNonnullByDefault
@@ -19,17 +18,10 @@ public class ItemAdvancedMachineDisassembler extends BaseItemAdvancedMachineBuil
 
     @Override
     IMachineAssembly getAssembly(World world, BlockPos controllerPos, EntityPlayer player, BlockArray machineDef) {
-        return new AdvancedMachineDisassembly(world, controllerPos, player, new StructureIngredient(getBlockStateIngredientList(world, controllerPos, machineDef), null));
+        List<StructureIngredient.ItemIngredient> itemIngredients = getBlockStateIngredientList(world, controllerPos, machineDef);
+        List<StructureIngredient.FluidIngredient> fluidIngredients = getBlockStateFluidIngredientList(itemIngredients);
+        return new AdvancedMachineDisassembly(world, controllerPos, player, new StructureIngredient(itemIngredients, fluidIngredients));
     }
 
-    public List<StructureIngredient.ItemIngredient> getBlockStateIngredientList(World world, BlockPos ctrlPos, BlockArray machineDef) {
-        List<StructureIngredient.ItemIngredient> ingredientList = new ArrayList<>();
-        machineDef.getPattern().forEach((pos, info) -> {
-            BlockPos realPos = ctrlPos.add(pos);
-            if (info.matches(world, realPos, false)) {
-                ingredientList.add(new StructureIngredient.ItemIngredient(pos, info.getBlockStateIngredientList(), info.getMatchingTag()));
-            }
-        });
-        return ingredientList;
-    }
+
 }

@@ -32,7 +32,7 @@ minecraft {
     mcVersion.set("1.12.2")
 
     // Username for client run configurations
-    username.set("Dev2")
+    username.set("Alecsio")
 
     // Generate a field named VERSION with the mod version in the injected Tags class
     injectedTags.put("VERSION", project.version)
@@ -194,6 +194,7 @@ dependencies {
 
 
     implementation(rfg.deobf("curse.maven:ae2-570458:6302098-sources-6302100"))
+    implementation(rfg.deobf("curse.maven:ae2fc-623955:5751930"))
     implementation(rfg.deobf("curse.maven:ModularMachineryCE-817377:6480528"))
     implementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+")
     implementation("curse.maven:thaumicEnergistics-223666:2915506")

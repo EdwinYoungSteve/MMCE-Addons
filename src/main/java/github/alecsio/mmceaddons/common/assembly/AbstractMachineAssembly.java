@@ -1,7 +1,6 @@
 package github.alecsio.mmceaddons.common.assembly;
 
 import github.alecsio.mmceaddons.common.LoadedModsCache;
-import github.alecsio.mmceaddons.common.item.ItemAdvancedMachineAssembler;
 import ink.ikx.mmce.common.utils.StructureIngredient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractMachineAssembly implements IMachineAssembly {
+
+    public static final String MODE_INDEX = "modeIndex";
+    public static final String AE2_ENCRYPTION_KEY = "encryptionKey";
 
     protected final World world;
     protected final BlockPos controllerPos;
@@ -75,11 +77,23 @@ public abstract class AbstractMachineAssembly implements IMachineAssembly {
         }
     }
 
+    protected AssemblyModes getAssemblyModesFrom(ItemStack multiblockBuilder) {
+        NBTTagCompound tag = multiblockBuilder.getTagCompound();
+        int modeIndex;
+        if (tag == null) {
+            multiblockBuilder.setTagCompound(tag = new NBTTagCompound());
+        }
+        modeIndex = tag.getInteger(MODE_INDEX);
+        return AssemblyModes.getSupportedModes().get(modeIndex);
+    }
+
+    protected abstract void handleCreativeAssembly();
+
     private java.util.Optional<String> getEncryptionKey(ItemStack stack) {
         NBTTagCompound tagCompound = stack.getTagCompound();
         String key = null;
         if (tagCompound != null) {
-            key = tagCompound.getString(ItemAdvancedMachineAssembler.AE2_ENCRYPTION_KEY);
+            key = tagCompound.getString(AE2_ENCRYPTION_KEY);
         }
         return java.util.Optional.ofNullable(key);
     }

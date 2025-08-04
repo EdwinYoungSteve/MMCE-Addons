@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -17,7 +18,9 @@ public class ItemAdvancedMachineAssembler extends BaseItemAdvancedMachineBuilder
 
     @Override
     IMachineAssembly getAssembly(World world, BlockPos controllerPos, EntityPlayer player, BlockArray machineDef) {
-        return new AdvancedMachineAssembly(world, controllerPos, player, StructureIngredient.of(world, controllerPos, machineDef));
+        List<StructureIngredient.ItemIngredient> itemIngredients = getBlockStateIngredientList(world, controllerPos, machineDef);
+        List<StructureIngredient.FluidIngredient> fluidIngredients = getBlockStateFluidIngredientList(itemIngredients);
+        return new AdvancedMachineAssembly(world, controllerPos, player, new StructureIngredient(itemIngredients, fluidIngredients));
     }
 
 }

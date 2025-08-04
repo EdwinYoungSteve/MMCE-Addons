@@ -19,6 +19,8 @@ import hellfirepvp.modularmachinery.common.tiles.base.TileMultiblockMachineContr
 import hellfirepvp.modularmachinery.common.util.BlockArray;
 import hellfirepvp.modularmachinery.common.util.BlockArrayCache;
 import hellfirepvp.modularmachinery.common.util.IBlockStateDescriptor;
+import ink.ikx.mmce.common.utils.FluidUtils;
+import ink.ikx.mmce.common.utils.StructureIngredient;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -31,19 +33,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Optional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 import static github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler.ASSEMBLY_ACCESS_TOKEN;
@@ -55,8 +55,6 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
 
     public static final String AE2_ENCRYPTION_KEY = "encryptionKey";
     public static final String MODE_INDEX = "modeIndex";
-    private static final Logger log = LogManager.getLogger(BaseItemAdvancedMachineBuilder.class);
-
 
     public BaseItemAdvancedMachineBuilder() {
         this.setMaxStackSize(1);
@@ -142,7 +140,48 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
         return true;
     }
 
-    private Map<BlockPos, BlockArray.BlockInformation> getPatternDeepCopy(Map<BlockPos, BlockArray.BlockInformation> original) {
+    public List<StructureIngredient.ItemIngredient> getBlockStateIngredientList(World world, BlockPos ctrlPos, BlockArray machineDef) {
+        List<StructureIngredient.ItemIngredient> ingredientList = new ArrayList<>();
+        machineDef.getPattern().forEach((pos, info) -> {
+            BlockPos realPos = ctrlPos.add(pos);
+            IBlockState blockState = world.getBlockState(realPos);
+            if (info.matches(world, realPos, false) || !isSource(blockState)) {
+                ingredientList.add(new StructureIngredient.ItemIngredient(pos, info.getBlockStateIngredientList(), info.getMatchingTag()));
+            }
+        });
+        return ingredientList;
+    }
+
+    private boolean isSource(IBlockState blockState) {
+        return blockState.getProperties().containsKey(BlockFluidBase.LEVEL) && blockState.getValue(BlockFluidBase.LEVEL) == 0;
+    }
+
+    protected List<StructureIngredient.FluidIngredient> getBlockStateFluidIngredientList(List<StructureIngredient.ItemIngredient> itemIngredients) {
+        List<StructureIngredient.FluidIngredient> fluidIngredientList = new ArrayList<>();
+        Iterator<StructureIngredient.ItemIngredient> iterator = itemIngredients.iterator();
+        while (iterator.hasNext()) {
+            StructureIngredient.ItemIngredient itemIngredient = iterator.next();
+            BlockPos pos = itemIngredient.pos();
+            List<Tuple<FluidStack, IBlockState>> fluidIngredient = new ArrayList<>();
+
+            for (final Tuple<ItemStack, IBlockState> tuple : itemIngredient.ingredientList()) {
+                IBlockState state = tuple.getSecond();
+                FluidStack fluidStack = FluidUtils.getFluidStackFromBlockState(state);
+                if (fluidStack == null) {
+                    continue;
+                }
+                fluidIngredient.add(new Tuple<>(fluidStack, state));
+            }
+
+            if (!fluidIngredient.isEmpty()) {
+                fluidIngredientList.add(new StructureIngredient.FluidIngredient(pos, fluidIngredient));
+                iterator.remove();
+            }
+        }
+        return fluidIngredientList;
+    }
+
+    protected Map<BlockPos, BlockArray.BlockInformation> getPatternDeepCopy(Map<BlockPos, BlockArray.BlockInformation> original) {
         Map<BlockPos, BlockArray.BlockInformation> copy = new HashMap<>();
         for (Map.Entry<BlockPos, BlockArray.BlockInformation> entry : original.entrySet()) {
             BlockPos originalPos = entry.getKey();
