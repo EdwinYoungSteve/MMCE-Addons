@@ -39,7 +39,7 @@ public class CommonProxy {
         LoadedModsCache.initialize();
     }
 
-
+    public void init() {}
 
     // Optional methods to register models; these would be overridden on the client side
     public void registerItemModel(net.minecraft.item.Item item) {}
