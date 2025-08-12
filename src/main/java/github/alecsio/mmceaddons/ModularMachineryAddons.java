@@ -11,7 +11,6 @@ import github.alecsio.mmceaddons.common.registry.RegistryItems;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -74,11 +73,6 @@ public class ModularMachineryAddons {
             MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
         }
         INSTANCE.registerMessage(MouseScrollMessageHandler.class, MouseScrollMessage.class, 0, Side.SERVER);
-    }
-
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event) {
-        proxy.init();
     }
 
     @Mod.EventHandler

@@ -2,14 +2,9 @@ package github.alecsio.mmceaddons.client;
 
 import github.alecsio.mmceaddons.CommonProxy;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
-import hellfirepvp.modularmachinery.common.block.BlockDynamicColor;
-import hellfirepvp.modularmachinery.common.item.ItemDynamicColor;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -34,25 +29,6 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(this);
         KeyBindings.init();
         super.preInit(event);
-    }
-
-    @Override
-    public void init() {
-        super.init();
-        BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
-
-        for (Block block : BLOCK_MODELS_TO_REGISTER) {
-            if (block instanceof BlockDynamicColor blockDynamicColor) {
-                blockColors.registerBlockColorHandler(blockDynamicColor::getColorMultiplier, block);
-            }
-        }
-
-        ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
-        for (Item item : ITEM_MODELS_TO_REGISTER) {
-            if (item instanceof ItemDynamicColor itemDynamicColor) {
-                itemColors.registerItemColorHandler(itemDynamicColor::getColorFromItemstack, item);
-            }
-        }
     }
 
     @SubscribeEvent
